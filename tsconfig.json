@@ -1,5 +1,13 @@
 {
   "compileOnSave": false,
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ],
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",
@@ -9,6 +17,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "forceConsistentCasingInFileNames": true,
+    "strict":true,
     "typeRoots": [
       "node_modules/@types"
     ],

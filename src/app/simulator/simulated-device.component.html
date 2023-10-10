@@ -1,0 +1,8 @@
+<h3>{{prompt}}</h3>
+<textarea title="Cisco Terminal Emulator Output" #autoScroll rows="20" class="console-output" readonly>{{commandOutput}}</textarea>
+<form (submit)="submitCommand()" autocomplete="off">
+  <input [(ngModel)]="command" name="command" placeholder="Enter a console command"
+     (keydown)="onKey($event)" class="console-output">
+  <!--<button type="submit">Submit</button>
+  <button type="button" (click)="completeCommand()">Autocomplete</button>-->
+</form>

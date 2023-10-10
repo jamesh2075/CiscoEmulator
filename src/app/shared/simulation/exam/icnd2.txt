@@ -1,0 +1,2072 @@
+import {
+    SimDefinition,
+    SimTask,
+    SimDevice,
+    SimConnection,
+    SimConnectionEndpoint,
+    SimDeviceType,
+    SimCommandData
+} from '../sim-definition';
+
+let deviceVlanModel = [{
+    device: "SW1",
+    vlans: [
+        {
+            VLAN: 1,
+            Name: 'default',
+            status: 'active',
+            ipaddress: '',
+            defaultMode: 'ieee',
+            priority: 32768,
+            ports: ['Gi0/3', 'Gi1/3', 'Gi2/0', 'Gi2/1', 'Gi2/2', 'Gi2/3', 'Gi3/0', 'Gi3/1', 'Gi3/2', 'Gi3/3']
+        },
+        {
+            VLAN: 10,
+            Name: 'VLAN0010',
+            status: 'active',
+            ipaddress: '',
+            defaultMode: 'ieee',
+            priority: 32768,
+            ports: ['Gi0/0']
+        },
+        {
+            VLAN: 20,
+            Name: 'VLAN0020',
+            status: 'active',
+            ipaddress: '',
+            defaultMode: 'ieee',
+            priority: 32768,
+            ports: ['Gi1/1']
+        },
+        {
+            VLAN: 30,
+            Name: 'VLAN0030',
+            status: 'active',
+            ipaddress: '',
+            defaultMode: 'ieee',
+            priority: 32768,
+            ports: ['Gi1/2']
+        },
+        {
+            VLAN: 40,
+            Name: 'VLAN0040',
+            status: 'active',
+            ipaddress: '',
+            defaultMode: 'ieee',
+            priority: 32768,
+            ports: ['Gi0/1', 'Gi0/2']
+        }
+    ],
+    ports: [
+        {
+            interface: 'Gi0/3',
+            role: 'Desg',
+            status: 'FWD',
+            cost: 4,
+            priorNo: '128.4',
+            type: 'Shr'
+        },
+
+        {
+            interface: 'Gi1/3',
+            role: 'Desg',
+            status: 'FWD',
+            cost: 4,
+            priorNo: '128.8',
+            type: 'Shr'
+        },
+        {
+            interface: 'Gi2/0',
+            role: 'Desg',
+            status: 'FWD',
+            cost: 4,
+            trunkEnabled: true,
+            priorNo: '128.9',
+            type: 'Shr'
+        },
+        {
+            interface: 'Gi2/1',
+            role: 'Desg',
+            status: 'FWD',
+            cost: 4,
+            priorNo: '128.10',
+            type: 'Shr'
+        },
+        {
+            interface: 'Gi2/2',
+            role: 'Desg',
+            status: 'FWD',
+            cost: 4,
+            priorNo: '128.11',
+            type: 'Shr'
+        },
+
+        {
+            interface: 'Gi2/3',
+            role: 'Desg',
+            status: 'FWD',
+            cost: 4,
+            priorNo: '128.12',
+            type: 'Shr'
+        },
+        {
+            interface: 'Gi3/2',
+            role: 'Desg',
+            status: 'FWD',
+            cost: 4,
+            priorNo: '128.15',
+            type: 'Shr'
+        },
+        {
+            interface: 'Gi3/3',
+            role: 'Desg',
+            status: 'FWD',
+            cost: 4,
+            priorNo: '128.16',
+            type: 'Shr'
+        }
+    ]
+}];
+
+let devices: SimDevice[] = [
+    {
+        name: 'SW1',
+        type: 'SIMPLE',
+        subtype: 'IOSvL2',
+        address: 'fa16.3ec7.4863',
+        vtpConfig: "GigabitEthernet0/0",
+        // version 15.2
+        // service timestamps debug datetime msec
+        // service timestamps log datetime msec
+        // no service password-encryption
+        // service compress-config
+        //
+        // hostname SW1
+        //
+        // boot-start-marker
+        // boot-end-marker
+        //
+        //
+        // vrf definition Mgmt-intf
+        //
+        //  address-family ipv4
+        //  exit-address-family
+        //
+        //  address-family ipv6
+        //  exit-address-family
+        //
+        //
+        // no aaa new-model
+        // no process cpu extended history
+        // no process cpu autoprofile hog
+        //
+        //
+        //
+        //
+        //
+        vtp: {
+            domain: 'ACME',
+            mode: 'transparent'
+        },
+        //
+        //
+        //
+        // no ip domain-lookup
+        // ip cef
+        // no ipv6 cef
+        //
+        //
+        // no memory lite
+        //
+        // spanning-tree mode pvst
+        // spanning-tree extend system-id
+        //
+        vlan: {
+            internal: {
+                allocation: {
+                    policy: "ascending"
+                }
+            },
+
+        },
+        // vlan internal allocation policy ascending
+        //
+        // vlan 10
+        //  name Servers
+        //
+        // vlan 20
+        //  name Clients
+        //
+        // vlan 30
+        //  name Printers
+        //
+        vlans: [
+            {
+                id: 1,
+                name: 'default',
+                status: 'active',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                spanningEnabled: true,
+                trunkingEnabled: true,
+                priority: 32768,
+                ports: ['Gi0/1', 'Gi0/2', 'Gi0/3', 'Gi1/2', 'Gi1/3', 'Gi2/1', 'Gi2/2', 'Gi2/3', 'Gi3/0', 'Gi3/1', 'Gi3/2', 'Gi3/3'],
+                type: 'enet',
+                SAID: '100001',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 10,
+                name: 'Server',
+                status: 'active',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                spanningEnabled: true,
+                trunkingEnabled: true,
+                priority: 32768,
+                ports: ['Gi1/0', 'Gi1/1'],
+                type: 'enet',
+                SAID: '100010',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 20,
+                name: 'Clients',
+                status: 'active',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                spanningEnabled: true,
+                trunkingEnabled: true,
+                priority: 32768,
+                ports: [''],
+                type: 'enet',
+                SAID: '100020',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 30,
+                name: 'Printers',
+                status: 'active',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                spanningEnabled: true,
+                trunkingEnabled: true,
+                priority: 32768,
+                ports: [''],
+                type: 'enet',
+                SAID: '100020',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            // {  //SIM Defualt state for ICND2 Does NOT have a Vlan 40.
+            //     id: 40,
+            //     name: 'VLAN0040',
+            //     status: 'active',
+            //     ipAddress: '',
+            //     defaultMode: 'ieee',
+            //     spanningEnabled: true,
+            //     trunkingEnabled: true,
+            //     priority: 32768,
+            //     ports: ['Gi0/1', 'Gi0/2'],
+            //     type: 'enet',
+            //     SAID: '101003',
+            //     MTU: '1500',
+            //     Parent: '-',
+            //     RingNo: '-',
+            //     BridgeNo: '-',
+            //     Stp: '-',
+            //     BrdgMode: '-',
+            //     Trans1: '0',
+            //     Trans2: '0'
+            // },
+            {
+                id: 1002,
+                name: 'fddi-default',
+                status: 'act/unsup',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                spanningEnabled: false,
+                trunkingEnabled: true,
+                priority: 32768,
+                ports: [''],
+                type: 'enet',
+                SAID: '101003',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 1003,
+                name: 'token-ring-default',
+                status: 'act/unsup',
+                ipAddress: '',
+                defaultMode: '',
+                spanningEnabled: false,
+                trunkingEnabled: true,
+                priority: 32768,
+                ports: [''],
+                type: 'tr',
+                SAID: '101003',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 1004,
+                name: 'fddinet-default',
+                status: 'act/unsup',
+                ipAddress: '',
+                defaultMode: '',
+                spanningEnabled: false,
+                trunkingEnabled: true,
+                priority: 32768,
+                ports: [''],
+                type: 'fdnet',
+                SAID: '101004',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: 'ieee',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 1005,
+                name: 'trnet-default',
+                status: 'act/unsup',
+                ipAddress: '',
+                defaultMode: '',
+                spanningEnabled: false,
+                trunkingEnabled: true,
+                priority: 32768,
+                ports: [''],
+                type: 'trnet',
+                SAID: '101005',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: 'ibm',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            }
+        ],
+        interfaces: [/*{ // TODO: This represents a ChannelGroup Port
+         id: 1,
+         type: 'Port',
+         },*/{
+            id: 0,
+            name: 'GigabitEthernet0/1',
+            interface: 'Gi0/1',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.2',
+            type: 'Shr',
+            address: 'fa16.3e61.e523',
+            ChannelGroup: 0,
+            description: '',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            stat: 'connected',
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'static access',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'Off',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 1,
+            name: 'GigabitEthernet0/2',
+            interface: 'Gi0/2',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.3',
+            type: 'Shr',
+            address: 'fa16.3ebd.7c1a',
+            ChannelGroup: 0,
+            description: '',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            stat: 'connected',
+
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'static access',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'Off',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            description: '',
+            id: 2,
+            name: 'GigabitEthernet0/3',
+            interface: 'Gi0/3',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.4',
+            type: 'Shr',
+            address: 'fa16.3ed7.5933',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            stat: 'connected',
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            name: 'GigabitEthernet0/0',
+            description: 'OOB Management',
+            // no switchport
+            // vrf forwarding Mgmt-intf
+            ipv4: '10.255.0.3',
+            ipv4Mask: '255.255.0.0',
+            interface: 'Gi0/0',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'up',
+            priorNo: '128.1',
+            switchportMode: 'Disabled',
+            type: 'Shr',
+            address: 'fa16.3e7f.dc0f',
+            vlan: 'routed',
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            stat: 'connected',
+            // negotiation auto
+            // no cdp enable
+        }, {
+            id: 3,
+            name: 'GigabitEthernet1/0',
+            interface: 'Gi1/0',
+            role: 'Desg',
+            status: 'admin down',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'down',
+            priorNo: '128.5',
+            type: 'Shr',
+            address: 'fa16.3ed5.89a2',
+            vlan: 10,
+            duplex: 'auto',
+            speed: 'auto',
+            stat: 'disconnected',
+            portType: 'unknown',
+            description: 'to FS',
+            //  switchport access vlan 10
+            //  switchport mode access
+            //  shutdown
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'static access',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'Off',
+                accessVlan: 10,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 4,
+            name: 'GigabitEthernet1/1',
+            interface: 'Gi1/1',
+            role: 'Desg',
+            status: 'admin down',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'down',
+            priorNo: '128.6',
+            type: 'Shr',
+            address: 'fa16.3e8b.3021',
+            vlan: 10,
+            duplex: 'auto',
+            speed: 'auto',
+            stat: 'disconnected',
+            portType: 'unknown',
+            description: 'to FS',
+            //  switchport access vlan 10
+            //  switchport mode access
+            //  shutdown
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'static access',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'Off',
+                accessVlan: 10,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            description: '',
+            id: 5,
+            name: 'GigabitEthernet1/2',
+            interface: 'Gi1/2',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'up',
+            priorNo: '128.7',
+            type: 'Shr',
+            address: 'fa16.3e61.62f5',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            stat: 'connected',
+            portType: 'unknown',
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'static access',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'Off',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            description: '',
+            id: 6,
+            name: 'GigabitEthernet1/3',
+            interface: 'Gi1/3',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'up',
+            priorNo: '128.8',
+            type: 'Shr',
+            address: 'fa16.3e48.23ad',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            stat: 'connected',
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 7,
+            name: 'GigabitEthernet2/0',
+            interface: 'Gi2/0',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'up',
+            priorNo: '128.9',
+            type: 'Shr',
+            address: 'fa16.3e97.ca60',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            stat: 'connected',
+            portType: 'unknown',
+            description: '=== R1 ===',
+            trunkEnabled: true,
+            // switchport trunk encapsulation dot1q
+            // switchport mode trunk
+            // media-type rj45
+            // negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            description: '',
+            id: 8,
+            name: 'GigabitEthernet2/1',
+            interface: 'Gi2/1',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'up',
+            priorNo: '128.10',
+            type: 'Shr',
+            address: 'fa16.3e61.3ce8',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            stat: 'connected',
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            description: '',
+            id: 9,
+            name: 'GigabitEthernet2/2',
+            interface: 'Gi2/2',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'up',
+            priorNo: '128.11',
+            type: 'Shr',
+            address: 'fa16.3e1c.b12a',
+            vlan: 1,
+            duplex: 'auto',
+            portType: 'unknown',
+            speed: 'auto',
+            stat: 'connected',
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            description: '',
+            id: 10,
+            name: 'GigabitEthernet2/3',
+            interface: 'Gi2/3',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'up',
+            priorNo: '128.12',
+            type: 'Shr',
+            address: 'fa16.3e38.de5e',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            stat: 'connected',
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 11,
+            name: 'GigabitEthernet3/0',
+            interface: 'Gi3/0',
+            role: 'up',
+            status: 'admin down',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'down',
+            priorNo: '128.13',
+            type: 'Shr',
+            address: 'fa16.3e98.6b3a',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            stat: 'disconnected',
+            portType: 'unknown',
+            description: 'to SW2',
+            //  shutdown
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'down',
+                adminTrunkEncapsulation: 'negotiate',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 12,
+            name: 'GigabitEthernet3/1',
+            interface: 'Gi3/1',
+            role: 'Desg',
+            status: 'admin down',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'down',
+            priorNo: '128.14',
+            type: 'Shr',
+            address: 'fa16.3e94.6659',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            stat: 'disconnected',
+            portType: 'unknown',
+            description: 'to SW2',
+            //  shutdown
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'down',
+                adminTrunkEncapsulation: 'negotiate',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            description: '',
+            id: 13,
+            name: 'GigabitEthernet3/2',
+            interface: 'Gi3/2',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'up',
+            priorNo: '128.15',
+            type: 'Shr',
+            address: 'fa16.3e92.dc2c',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            stat: 'connected',
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            description: '',
+            id: 14,
+            name: 'GigabitEthernet3/3',
+            interface: 'Gi3/3',
+            role: 'Desg',
+            status: 'up',
+            portState: 'FWD',
+            cost: 4,
+            protocol: 'up',
+            priorNo: '128.16',
+            type: 'Shr',
+            address: 'fa16.3eed.6c99',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            stat: 'connected',
+            //  media-type rj45
+            //  negotiation auto
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q'
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        },
+            {
+                //id: 0,
+                name: 'Loopback0',
+                interface: 'Lo0',
+                type: 'loopback',
+                ipv4: undefined,
+                description: 'Loopback',
+                status: 'up',
+                protocol: 'up',
+
+            },]
+        //
+        // ip forward-protocol nd
+        //
+        // no ip http server
+        // no ip http secure-server
+        //
+        //
+        // control-plane
+        //
+        // no banner exec
+        // no banner incoming
+        // no banner login
+        //
+        // line con 0
+        // line aux 0
+        // line vty 0 4
+        //  exec-timeout 720 0
+        //  password cisco
+        //  login
+        //  transport input telnet ssh
+    }, {
+        name: 'SW2',
+        type: 'SIMPLE',
+        subtype: 'IOSvL2',
+        address: 'fa16.3e18.41a2',
+        vtpConfig: "GigabitEthernet0/0",
+        // version 15.2
+        // service timestamps debug datetime msec
+        // service timestamps log datetime msec
+        // no service password-encryption
+        // service compress-config
+        //
+        // hostname SW2
+        //
+        // boot-start-marker
+        // boot-end-marker
+        //
+        //
+        // vrf definition Mgmt-intf
+        //
+        //  address-family ipv4
+        //  exit-address-family
+        //
+        //  address-family ipv6
+        //  exit-address-family
+        //
+        //
+        // no aaa new-model
+        // no process cpu extended history
+        // no process cpu autoprofile hog
+        //
+        //
+        //
+        //
+        //
+        // vtp domain ACME
+        vtp: {
+            domain: 'ZENITH',
+            mode: 'server'
+        },
+        //
+        //
+        //
+        // no ip domain-lookup
+        // ip cef
+        // no ipv6 cef
+        //
+        //
+        // no memory lite
+        //
+        // spanning-tree mode pvst
+        // spanning-tree extend system-id
+        //
+        // vlan internal allocation policy ascending
+        //
+        // vlan 10
+        //  name Servers
+        //
+        // vlan 20
+        //  name Clients
+        //
+        // vlan 30
+        //  name Printers
+        //
+        // vlan 40
+        //  name IoT
+        //
+        vlans: [
+            {
+                id: 1,
+                name: 'default',
+                status: 'active',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                spanningEnabled: true,
+                priority: 32768,
+                ports: ['Gi0/3', 'Gi1/3', 'Gi2/0', 'Gi2/1', 'Gi2/2', 'Gi2/3', 'Gi3/0', 'Gi3/1', 'Gi3/2', 'Gi3/3'],
+                type: 'enet',
+                SAID: '100001',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 10,
+                name: 'VLAN0010',
+                status: 'active',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                spanningEnabled: true,
+                priority: 32768,
+                ports: ['Gi1/0'],
+                type: 'enet',
+                SAID: '100010',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 20,
+                name: 'VLAN0020',
+                status: 'active',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                spanningEnabled: true,
+                priority: 32768,
+                ports: ['Gi1/1'],
+                type: 'enet',
+                SAID: '100020',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 30,
+                name: 'VLAN0030',
+                status: 'active',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                priority: 32768,
+                ports: ['Gi1/2'],
+                type: 'enet',
+                SAID: '100030',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 40,
+                name: 'VLAN0040',
+                status: 'active',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                spanningEnabled: true,
+                priority: 32768,
+                ports: ['Gi0/1', 'Gi0/2'],
+                type: 'enet',
+                SAID: '100040',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 1002,
+                name: 'fddi-default',
+                status: 'act/unsup',
+                ipAddress: '',
+                defaultMode: 'ieee',
+                priority: 32768,
+                ports: [],
+                type: 'enet',
+                SAID: '101003',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 1003,
+                name: 'token-ring-default',
+                status: 'act/unsup',
+                ipAddress: '',
+                defaultMode: '',
+                priority: 32768,
+                ports: [],
+                type: 'tr',
+                SAID: '101003',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: '-',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 1004,
+                name: 'fddinet-default',
+                status: 'act/unsup',
+                ipAddress: '',
+                defaultMode: '',
+                priority: 32768,
+                ports: [],
+                type: 'fdnet',
+                SAID: '101004',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: 'ieee',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            },
+            {
+                id: 1005,
+                name: 'trnet-default',
+                status: 'act/unsup',
+                ipAddress: '',
+                defaultMode: '',
+                priority: 32768,
+                ports: [],
+                type: 'trnet',
+                SAID: '101005',
+                MTU: '1500',
+                Parent: '-',
+                RingNo: '-',
+                BridgeNo: '-',
+                Stp: 'ibm',
+                BrdgMode: '-',
+                Trans1: '0',
+                Trans2: '0'
+            }
+        ],
+        // this is a sample configuration   ------   TODO : Change the configuration as per VIRL
+        interfaces: [{
+            id: 0,
+            interface: 'Gi0/1',
+            name: 'GigabitEthernet0/1',
+            description: '=== IoT ===',
+            status: 'up',
+            stat: 'connected',
+            vlan: 40,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            protocol: 'up',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.2',
+            type: 'Shr',
+            address: 'fa16.3eef.0fb1',
+            //  description === IoT ===
+            //  switchport access vlan 40
+            //  switchport mode access
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'static access',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'Off',
+                accessVlan: 40,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 1,
+            interface: 'Gi0/2',
+            name: 'GigabitEthernet0/2',
+            description: '=== IoT ===',
+            status: 'up',
+            stat: 'connected',
+            vlan: 40,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            protocol: 'up',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.3',
+            type: 'Shr',
+            address: 'fa16.3ebc.d2ea',
+            //  description === IoT ===
+            //  switchport access vlan 40
+            //  switchport mode access
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'static access',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'Off',
+                accessVlan: 40,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 2,
+            name: 'GigabitEthernet0/3',
+            interface: 'Gi0/3',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.4',
+            type: 'Shr',
+            address: 'fa16.3e02.b09c',
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            name: 'GigabitEthernet0/0',
+            interface: 'Gi0/0',
+            description: 'OOB Management',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 'routed',
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            // no switchport
+            // vrf forwarding Mgmt-intf
+            ipv4: '10.255.0.5',
+            ipv4Mask: '255.255.0.0',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.1',
+            type: 'Shr',
+            address: 'fa16.3ea4.5c06',
+            switchportMode: 'Disabled'
+            // negotiation auto
+            // no cdp enable
+        }, {
+            id: 3,
+            name: 'GigabitEthernet1/0',
+            interface: 'Gi1/0',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 10,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.5',
+            type: 'Shr',
+            address: 'fa16.3ebe.6658',
+            //  switchport access vlan 10
+            //  switchport mode access
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'static access',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'Off',
+                accessVlan: 10,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 4,
+            name: 'GigabitEthernet1/1',
+            interface: 'Gi1/1',
+            status: 'up',
+            protocol: 'up',
+            stat: 'connected',
+            vlan: 20,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.6',
+            type: 'Shr',
+            address: 'fa16.3e75.329d',
+            //  switchport access vlan 10
+            //  switchport mode access
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'static access',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'Off',
+                accessVlan: 20,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 5,
+            name: 'GigabitEthernet1/2',
+            interface: 'Gi1/2',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 30,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.7',
+            type: 'Shr',
+            address: 'fa16.3e0b.790a',
+            //  switchport access vlan 30
+            //  switchport mode access
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'static access',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'Off',
+                accessVlan: 30,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 6,
+            name: 'GigabitEthernet1/3',
+            interface: 'Gi1/3',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.8',
+            type: 'Shr',
+            address: 'fa16.3e24.70a8',
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 7,
+            name: 'GigabitEthernet2/0',
+            interface: 'Gi2/0',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.9',
+            type: 'Shr',
+            address: 'fa16.3ed7.f822',
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 8,
+            name: 'GigabitEthernet2/1',
+            interface: 'Gi2/1',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.10',
+            type: 'Shr',
+            address: 'fa16.3efb.533e',
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 9,
+            name: 'GigabitEthernet2/2',
+            interface: 'Gi2/2',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.11',
+            type: 'Shr',
+            address: 'fa16.3e9d.dc06',
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 10,
+            name: 'GigabitEthernet2/3',
+            interface: 'Gi2/3',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.12',
+            type: 'Shr',
+            address: 'fa16.3ead.25a5',
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 11,
+            name: 'GigabitEthernet3/0',
+            interface: 'Gi3/0',
+            description: 'to SW1',
+            status: 'admin down',
+            stat: 'disconnected',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            protocol: 'down',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.13',
+            type: 'Shr',
+            address: 'fa16.3e6b.5ce1',
+            //  description: 'to SW1',
+            //  shutdown
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'down',
+                adminTrunkEncapsulation: 'negotiate',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 12,
+            name: 'GigabitEthernet3/1',
+            interface: 'Gi3/1',
+            description: 'to SW1',
+            status: 'admin down',
+            stat: 'disconnected',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            protocol: 'down',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.14',
+            type: 'Shr',
+            address: 'fa16.3ebb.eec6',
+            //  description: 'to SW1',
+            //  shutdown
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'down',
+                adminTrunkEncapsulation: 'negotiate',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 13,
+            name: 'GigabitEthernet3/2',
+            interface: 'Gi3/2',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.15',
+            type: 'Shr',
+            address: 'fa16.3ef4.11ba',
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+        }, {
+            id: 14,
+            name: 'GigabitEthernet3/3',
+            interface: 'Gi3/3',
+            status: 'up',
+            stat: 'connected',
+            protocol: 'up',
+            vlan: 1,
+            duplex: 'auto',
+            speed: 'auto',
+            portType: 'unknown',
+            description: '',
+            role: 'Desg',
+            portState: 'FWD',
+            cost: 4,
+            priorNo: '128.16',
+            type: 'Shr',
+            address: 'fa16.3e93.2f45',
+            // 'media-type': 'rj45',
+            // 'negotiation': 'auto',
+            switchportMode: 'Enabled',
+            switchport: {
+                adminMode: 'dynamic auto',
+                opMode: 'static access',
+                adminTrunkEncapsulation: 'negotiate',
+                opTrunkEncapsulation: 'native',
+                trunkNegotiation: 'On',
+                accessVlan: 1,
+                trunkVlan: 1,
+                adminVlanTag: 'enabled',
+                voiceVlan: 'none',
+                adminPrivateVlan: {
+                    host: 'none',
+                    mapping: 'none',
+                    trunkVlan: 'none',
+                    trunkVlanTag: 'enabled',
+                    trunkEncapsulation: 'dot1q',
+                },
+                opPrivateVlan: 'none',
+                trunkingVlans: 'ALL'
+            }
+
+        },
+            {
+                //id: 0,
+                name: 'Loopback0',
+                type: 'loopback',
+                interface: 'Lo0',
+                ipv4: undefined,
+                description: 'Loopback',
+                status: 'up',
+                protocol: 'up',
+            },]
+        //
+        // ip forward-protocol nd
+        //
+        // no ip http server
+        // no ip http secure-server
+        //
+        //
+        //
+        //
+        //
+        //
+        // control-plane
+        //
+        // no banner exec
+        // no banner incoming
+        // no banner login
+        //
+        // line con 0
+        // line aux 0
+        // line vty 0 4
+        //  exec-timeout 720 0
+        //  password cisco
+        //  login
+        //  transport input telnet ssh
+    }, {
+        name: 'SERVER',
+        type: 'SIMPLE',
+        subtype: 'lxc',
+        ipv4: '192.168.0.4',
+        interfaces: [{
+            id: 0,
+            name: 'eth1'
+        }, {
+            id: 0,
+            name: 'eth2'
+        }],
+        noTerminal: true
+    }, {
+        name: 'R1',
+        type: 'SIMPLE',
+        subtype: 'IOSv',
+        interfaces: [{
+            id: 0,
+            name: 'GigabitEthernet0/1'
+        }],
+        noTerminal: true
+    }
+];
+
+let connections: SimConnection[] = [
+    {
+        dest: {name: 'SERVER', id: 0}, // TODO: What are these IDs for
+        src: {name: 'SW1', id: 3}
+    }, {
+        dest: {name: 'SERVER', id: 1},
+        src: {name: 'SW1', id: 4}
+    }, {
+        dest: {name: 'R1', id: 0},
+        src: {name: 'SW1', id: 7}
+    }, {
+        dest: {name: 'SW1', id: 11},
+        src: {name: 'SW2', id: 11}
+    }, {
+        dest: {name: 'SW1', id: 12},
+        src: {name: 'SW2', id: 12}
+    }
+];
+
+
+export let SimICND2: SimDefinition = {
+    name: 'ICND2',
+    // deviceTypes: deviceTypes,
+    devices: devices,
+    connections: connections
+    //tasks: {} // TODO: What does tasks represent
+    //commands: {}, // TODO: What does commands represent
+    //strings: {} // TODO: What does string represent
+};
+
+let data = {topology: SimICND2};
+console.log('####### COPY BELOW #######');
+console.log(JSON.stringify(data));
+console.log('####### COPY ABOVE #######');

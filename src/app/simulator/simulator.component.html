@@ -1,0 +1,5 @@
+<div>
+  <div *ngFor="let device of simulation.devices">
+    <sd-simulated-device *ngIf="(device.isTerminalEnabled())" [device]="device"></sd-simulated-device>
+  </div>
+</div>
