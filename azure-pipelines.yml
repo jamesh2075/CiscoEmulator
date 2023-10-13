@@ -42,7 +42,7 @@ stages:
     - script: |
         npm install -g @angular/cli@1.0.0
         npm install
-        ng build --prod --aot=false
+        ng build --prod --aot=true
       displayName: 'Install Node Packages and Build the App'
   
     - task: ArchiveFiles@2
