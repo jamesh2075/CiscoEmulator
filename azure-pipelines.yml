@@ -9,7 +9,7 @@ trigger:
 variables:
 
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'a2b01fe4-5aa1-4a0a-8d61-f129980c4e0d'
+  azureSubscription: 'BlueVisionAzure'
   
   # Web app name
   webAppName: 'CiscoEmulator'
