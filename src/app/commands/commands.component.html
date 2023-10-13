@@ -2,6 +2,7 @@
     <tr>
         <td>
             <p><b>SW1</b></p>
+            <p>en</p>
             <p>conf t<br />int range gi1/0-1<br />channel-group 1 mode active<br />no shutdown</p>
             <p>int po1<br />switchport access vlan 10<br />switchport mode access</p>
             <p>int range gi3/0-1<br />channel-group 2 mode desirable<br />no shutdown</p>
@@ -12,6 +13,7 @@
         </td>
         <td>
             <p><b>SW2</b></p>
+            <p>en</p>
             <p>conf t<br />vtp mode transparent</p>
             <p>int range gi3/0-1<br />channel-group 2 mode auto<br />no shutdown</p>
             <p>int po2<br />switchport trunk encapsulation dot1q<br />switchport mode trunk<br />switchport trunk allowed vlan except 40</p>
@@ -19,7 +21,24 @@
             <p>no spanning-tree vlan 40</p>
         </td>
         <td>
-            <p><b>Verification</b><br />show run<br />show interfaces<br />show interfaces  &lt;id&gt; switchport<br />show ip interface<br />show ip iterface brief<br />show vlan<br />show etherchannel<br />show etherchannel summary<br />show spanning-tree<br />show spanning-tree vlan &lt;id&gt;<br />show vtp status<br />show ip interface</p>
+            <p>
+                <b>Verification</b><br />
+                show run<br />
+                show interfaces<br />
+                show interfaces  &lt;id&gt; switchport<br />
+                show ip interface<br />
+                show ip iterface brief<br />
+                show vlan<br />
+                show etherchannel<br />
+                show etherchannel summary<br />
+                show spanning-tree<br />
+                show spanning-tree vlan &lt;id&gt;<br />
+                show vtp status<br />
+                show ip interface
+            </p>
+            <p>
+                <b>Note:</b> After configuration mode (config t), you must specify <b>do show [command]</b>
+            </p>
         </td>
     </tr>
 </table>
