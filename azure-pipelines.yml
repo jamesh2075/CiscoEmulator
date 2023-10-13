@@ -22,29 +22,44 @@ steps:
     ng build --prod --aot=false
   displayName: 'npm install and build'
   
-- task: ArchiveFiles@2
-  displayName: 'Archive files'
-  inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-    includeRootFolder: false
-    archiveType: zip
-    archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    replaceExistingArchive: true
+# - task: ArchiveFiles@2
+#   displayName: 'Archive files'
+#   inputs:
+#     rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+#     includeRootFolder: false
+#     archiveType: zip
+#     archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+#     replaceExistingArchive: true
 
-- upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-  artifact: drop
+# - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+#   artifact: drop
 
+
+# - task: CopyFiles@2
+#   inputs:
+#     SourceFolder: '$(Build.SourcesDirectory)'
+#     Contents: |
+#        src/*
+#        public/*
+#     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+#     OverWrite: true
+#   displayName: 'Copy project files'
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: |
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: |
        src/*
        public/*
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    OverWrite: true
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy project files'
 
+- task: PublishPipelineArtifact@1
+  inputs:
+    artifactName: e2e-server
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    publishLocation: 'pipeline'
+  displayName: 'Publish npm artifact'
 - task: PublishPipelineArtifact@1
   inputs:
     artifactName: CiscoEmulator
@@ -52,10 +67,10 @@ steps:
     publishLocation: 'pipeline'
   displayName: 'Publish npm artifact'
 
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'BlueVisionAzure'
-    appType: 'webApp'
-    WebAppName: 'ciscoemulator'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/CiscoEmulator.zip'
+# - task: AzureRmWebAppDeployment@4
+#   inputs:
+#     ConnectionType: 'AzureRM'
+#     azureSubscription: 'BlueVisionAzure'
+#     appType: 'webApp'
+#     WebAppName: 'ciscoemulator'
+#     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
