@@ -47,7 +47,7 @@ steps:
 
 - task: PublishPipelineArtifact@1
   inputs:
-    artifactName: e2e-server
+    artifactName: CiscoEmulator
     targetPath: '$(Build.ArtifactStagingDirectory)'
     publishLocation: 'pipeline'
   displayName: 'Publish npm artifact'
@@ -58,4 +58,4 @@ steps:
     azureSubscription: 'BlueVisionAzure'
     appType: 'webApp'
     WebAppName: 'ciscoemulator'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/CiscoEmulator.zip'
