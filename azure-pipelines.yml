@@ -70,12 +70,12 @@ stages:
     strategy:
       runOnce:
         deploy:
-          steps:            
-          - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy: nodejs-cicd-16353'
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure Web App Deploy: CiscoEmulator'
             inputs:
+              ConnectionType: 'AzureRM'
               azureSubscription: 'BlueVisionAzure'
               appType: 'webApp'
-              appName: 'ciscoemulator'
-              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              deploymentMethod: 'auto'
+              WebAppName: 'ciscoemulator'
+              packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
