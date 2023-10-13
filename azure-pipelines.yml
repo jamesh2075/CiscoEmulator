@@ -25,6 +25,7 @@ steps:
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
+    azureSubscription: 'BlueVisionAzure'
     appType: 'webApp'
-    WebAppName: 
+    WebAppName: 'ciscoemulator'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
