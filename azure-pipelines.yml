@@ -15,7 +15,7 @@ variables:
   webAppName: 'CiscoEmulator'
   
   # Environment name
-  environmentName: 'nodejs-cicd-16353'
+  environmentName: 'Production'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -43,12 +43,12 @@ stages:
         npm install -g @angular/cli@1.0.0
         npm install
         ng build --prod --aot=false
-      displayName: 'npm install and build'
+      displayName: 'Install Node Packages and Build the App'
   
     - task: ArchiveFiles@2
-      displayName: 'Archive files'
+      displayName: 'Archive files in the DIST folder'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist'
         includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
@@ -72,10 +72,10 @@ stages:
         deploy:
           steps:
           - task: AzureRmWebAppDeployment@4
-            displayName: 'Azure Web App Deploy: CiscoEmulator'
+            displayName: 'Deploy the CiscoEmulator Azure Web App Deploy'
             inputs:
               ConnectionType: 'AzureRM'
-              azureSubscription: 'BlueVisionAzure'
+              azureSubscription: '$(azureSubscription)'
               appType: 'webApp'
               WebAppName: 'ciscoemulator'
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
