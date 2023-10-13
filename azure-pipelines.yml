@@ -19,7 +19,7 @@ steps:
 - script: |
     npm install -g @angular/cli@1.0.0
     npm install
-    ng build --prod
+    ng build --prod --aot=false
   displayName: 'npm install and build'
   
 
