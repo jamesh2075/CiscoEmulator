@@ -1,6 +1,6 @@
 import { VlanCommands } from './vlan-commands';
 import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../command-tester';
-import { NoCommands } from "../no-commands";
+import { NoCommands } from '../no-commands';
 
 // export interface CommandTestCase {
 //     commands: string | string[];
@@ -10,15 +10,15 @@ import { NoCommands } from "../no-commands";
 
 export function main() {
 
-    let testCases: CommandTestCase[] = [];
-    let noTestCases: CommandTestCase[] = [{
+    const testCases: CommandTestCase[] = [];
+    const noTestCases: CommandTestCase[] = [{
         commands: 'no vlan 1',
         model: {},
         output: '% Default VLAN 1 may not be deleted.',
         context: CommandTester.createCommandContext(undefined, true, true, false)
-    },];
+    }];
 
-    let excludedCases: CommandTestCase[] = [{
+    const excludedCases: CommandTestCase[] = [{
         // minimum value correct
         commands: 'vlan 222',
         model: { 'vlans': { id: 222, mode: 'active' } }
