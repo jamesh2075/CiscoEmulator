@@ -5,14 +5,14 @@ import { StateContainer } from '../../../../emulator-state';
 import { CiscoCommandParser } from '../../../command-parser';
 import { CiscoCommandContext } from '../../../cisco-terminal-command';
 import { NotSupportedCommand } from "../../notsupported";
-import { vtpCommand } from "./vtp-command";
+import { vtpCommand } from './vtp-command';
 import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../../command-tester';
-import { CommandConstants } from "../../../common/cisco-constants";
+import { CommandConstants } from '../../../common/cisco-constants';
 
 
 export function main() {
 
-    let testCases: CommandTestCase[] = [
+    const testCases: CommandTestCase[] = [
         {
             commands: 'vtp',
             model: {},
@@ -39,7 +39,7 @@ export function main() {
 
     ];
 
-    let excludedCases: CommandTestCase[] = [{
+    const excludedCases: CommandTestCase[] = [{
         commands: ['vtp z t',
             'vtp m y',
             'vtp m t x',
