@@ -6,7 +6,7 @@ import { CommandTester, CommandTestCase } from './command-tester';
 
 export function main() {
 
-    let exitCases: CommandTestCase[] = [
+    const exitCases: CommandTestCase[] = [
         {
             commands: [
                 'exit',

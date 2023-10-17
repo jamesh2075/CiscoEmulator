@@ -1,12 +1,12 @@
-﻿import { TerminalCommand } from "../../interfaces/terminal-command";
+﻿import { TerminalCommand } from '../../interfaces/terminal-command';
 import { CommandState } from '../../interfaces/command-state';
 import { ICiscoDevice, ICiscoInterface } from '../icisco-device';
 import { NotSupportedCommand } from './notsupported';
 import { CiscoCommandParser } from '../command-parser';
 import { CiscoCommandContext } from '../cisco-terminal-command';
 import { StateContainer } from '../../emulator-state';
-import { CiscoDevice } from "../cisco-device";
-import { plainToClass } from "class-transformer";
+import { CiscoDevice } from '../cisco-device';
+import { plainToClass } from 'class-transformer';
 import { AsArray } from '../../util';
 
 import { CiscoAction, CiscoCommandAction } from '../cisco-command-actions';
@@ -42,7 +42,7 @@ export interface CommandTestCase {
 }
 
 export interface CommandTestCaseResult {
-    cmdState: CommandState; //access to output through cmdState
+    cmdState: CommandState; // access to output through cmdState
     model: any;
     contextModel: any;
 }
@@ -50,12 +50,12 @@ export interface CommandTestCaseResult {
 export class CommandTester {
     static RunTestCases(testCases: CommandTestCase[], target: TerminalCommand) {
 
-        for (let item of testCases) {
-            let commandLines = (Array.isArray(item.commands)) ? item.commands : [item.commands];
-            for (let cmdLine of commandLines) {
-                let action = () => {
-                    let commandContext = item.context ? item.context : CommandTester.createCommandContext();
-                    let result: CommandTestCaseResult = CommandTester.TestInvoke(commandContext, target, cmdLine);
+        for (const item of testCases) {
+            const commandLines = (Array.isArray(item.commands)) ? item.commands : [item.commands];
+            for (const cmdLine of commandLines) {
+                const action = () => {
+                    const commandContext = item.context ? item.context : CommandTester.createCommandContext();
+                    const result: CommandTestCaseResult = CommandTester.TestInvoke(commandContext, target, cmdLine);
 
                     // check any model changes
                     if (item.model) {
@@ -64,13 +64,13 @@ export class CommandTester {
 
                     // check any actions
                     if (item.actions) {
-                      let actions = AsArray(item.actions);
-                      for (let i = 0; i < actions.length; i++) {
-                        let expectedAction = actions[i];
-                        let action = result.cmdState.actions[i] as CiscoCommandAction<any>;
-                        expect(action.actionId).toEqual(expectedAction.actionId);
-                        expect(JSON.stringify(action.model)).toEqual(JSON.stringify(expectedAction.model));
-                      }
+                        const actions = AsArray(item.actions);
+                        for (let i = 0; i < actions.length; i++) {
+                            const expectedAction = actions[i];
+                            const ciscoAction = result.cmdState.actions[i] as CiscoCommandAction<any>;
+                            expect(ciscoAction.actionId).toEqual(expectedAction.actionId);
+                            expect(JSON.stringify(ciscoAction.model)).toEqual(JSON.stringify(expectedAction.model));
+                        }
                     }
 
                     // check any context changes
@@ -78,8 +78,8 @@ export class CommandTester {
                         expect(JSON.stringify(result.contextModel)).toEqual(JSON.stringify(item.contextModel));
                     }
 
-                    //Check the output
-                    let expectedOutput = item.output ? Array.isArray(item.output) ? item.output : [item.output] : [];
+                    // Check the output
+                    const expectedOutput = item.output ? Array.isArray(item.output) ? item.output : [item.output] : [];
                     item.output = item.output ? item.output : '';
                     expect(JSON.stringify(result.cmdState.output)).toEqual(JSON.stringify(item.output));
                 };
@@ -112,7 +112,7 @@ export class CommandTester {
             );
         }
         return {
-            //default context
+            // default context
             enabled: enabled,
             confTerminal: confTerminal,
             confInterface: confInterface,
@@ -125,12 +125,12 @@ export class CommandTester {
     static TestInvoke(context: CiscoCommandContext, target: TerminalCommand,
         commandLine: string): CommandTestCaseResult {
 
-        let parsed = CiscoCommandParser.Parse(commandLine, [target]);
+        const parsed = CiscoCommandParser.Parse(commandLine, [target]);
 
-        let cmdState = CommandTester.createCommandState();
+        const cmdState = CommandTester.createCommandState();
         // TODO: cmdState.parameters = parsed.parameters;
         for (let index = parsed.commands.length - 1; index >= 0; index--) {
-            let command = parsed.commands[index].command;
+            const command = parsed.commands[index].command;
             let handler = command.handler;
             if (handler === undefined) {
                 handler = NotSupportedCommand.NotSupported;
@@ -144,13 +144,13 @@ export class CommandTester {
             }
         }
 
-        let result = { cmdState, model: {}, contextModel: {} };
+        const result = { cmdState, model: {}, contextModel: {} };
         let state = new StateContainer(result.model);
-        for (let stateChange of cmdState.changes) {
+        for (const stateChange of cmdState.changes) {
             state.setProperty(stateChange.selector, stateChange.value);
         }
         state = new StateContainer(result.contextModel);
-        for (let stateChange of cmdState.contextChanges) {
+        for (const stateChange of cmdState.contextChanges) {
             state.setProperty(stateChange.selector, stateChange.value);
         }
 
