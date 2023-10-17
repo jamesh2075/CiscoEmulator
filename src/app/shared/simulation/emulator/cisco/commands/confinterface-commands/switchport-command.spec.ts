@@ -1,5 +1,5 @@
 import { CommandConstants } from '../../common/cisco-constants';
-import { switchportCommand } from "./switchport-command";
+import { switchportCommand } from './switchport-command';
 import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../command-tester';
 
 export function main() {
@@ -7,17 +7,17 @@ export function main() {
 
     // switchport base commands
 
-    let switchportCases: CommandTestCase[] = [
+    const switchportCases: CommandTestCase[] = [
         {
             commands: ['switchport', 'sw'],
             model: {},
             output: ''
         }
-    ]
+    ];
 
     // switchport nonegotiate test cases
 
-    let switchportNonegotiateCases: CommandTestCase[] = [
+    const switchportNonegotiateCases: CommandTestCase[] = [
         {
             commands: ['switchport nonegotiate', 'sw n'],
             model: { 'switchport': { 'trunkNegotiation': 'Off' } }
@@ -27,10 +27,10 @@ export function main() {
             model: {},
             output: CommandConstants.ERROR_MESSAGES.INVALID_INPUT
         }
-    ]
+    ];
     // switchport mode test cases
 
-    let switchportModeCases: CommandTestCase[] = [
+    const switchportModeCases: CommandTestCase[] = [
         {
             commands: ['switchport mode', 'sw m'],
             model: {},
@@ -78,11 +78,11 @@ export function main() {
             model: {},
             output: CommandConstants.ERROR_MESSAGES.UNSUPPORTED_COMMAND
         }
-    ]
+    ];
 
     // switchport access test cases
 
-    let switchportAccessCases: CommandTestCase[] = [
+    const switchportAccessCases: CommandTestCase[] = [
         {
             commands: ['switchport access', 'sw ac', 'sw a'],
             model: {},
@@ -97,11 +97,11 @@ export function main() {
             commands: ['switchport access vlan 10', 'sw a v 10'],
             model: { 'switchport': { 'accessVlan': '10' } }
         },*/
-    ]
+    ];
 
     // switchport trunk allowed test cases
 
-    let switchportTrunkAllowedCases: CommandTestCase[] = [
+    const switchportTrunkAllowedCases: CommandTestCase[] = [
         {
             commands: ['switchport trunk allowed', 'sw t a', 'sw t allowed'],
             model: {},
@@ -115,26 +115,26 @@ export function main() {
                 'sw trunk a v all'
             ],
             model: { 'switchport': { 'trunkingVlans': 'ALL' } }
-        },{
+        }, {
             // Failure case for invalid in trunk
-            commands: ['sw t 0x v e 40',],
+            commands: ['sw t 0x v e 40'],
             model: {},
             output: CommandConstants.ERROR_MESSAGES.INVALID_INPUT
         },
-    ]
+    ];
 
     // switchport trunk native test cases
 
-    let switchportTrunkNativeCases: CommandTestCase[] = [
+    const switchportTrunkNativeCases: CommandTestCase[] = [
         {
             commands: ['switchport trunk allowed', 'sw t a', 'sw t allowed'],
             model: {},
             output: CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND
         }
-    ]
+    ];
 
     // switchport trunk encapsulation test cases
-    let switchportTrunkEncapsulationCases: CommandTestCase[] = [
+    const switchportTrunkEncapsulationCases: CommandTestCase[] = [
         {
             commands: ['switchport trunk encapsulation dot1q', 'sw t e dot1Q', 'sw t en d'],
             model: { 'switchport': { adminPrivateVlan: { 'trunkEncapsulation': 'dot1q' } } }
@@ -146,34 +146,34 @@ export function main() {
             commands: [
                 'switchport trunk encapsulation negotiate', 'sw t e n', 'sw trunk e ne'],
             model: { 'switchport': { 'adminPrivateVlan': { 'trunkEncapsulation': 'negotiate' } } }
-        },]
+        }];
 
     // switchport trunk test cases
 
-    let switchportTrunkCases: CommandTestCase[] = [
+    const switchportTrunkCases: CommandTestCase[] = [
         {
             commands: ['switchport trunk', 'sw t', 'sw tr encapsulation'],
             model: {},
             output: CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND
-        }, 
+        },
 
         ...switchportTrunkAllowedCases,
         ...switchportTrunkNativeCases,
         ...switchportTrunkEncapsulationCases
-    ]
+    ];
 
     // switchport voice test cases
 
-    let switchportVoiceCases: CommandTestCase[] = [
+    const switchportVoiceCases: CommandTestCase[] = [
         {
             commands: ['switchport voice', 'sw v'],
             model: {},
             output: CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND
         },
-    ]
+    ];
 
 
-    let testCases: CommandTestCase[] = [
+    const testCases: CommandTestCase[] = [
         ...switchportCases,
         ...switchportModeCases,
         ...switchportNonegotiateCases,
@@ -184,7 +184,7 @@ export function main() {
 
 
 
-    let excludedCases: CommandTestCase[] = [
+    const excludedCases: CommandTestCase[] = [
         {
             commands: ['switchport access vlan 10',
                 'sw ac v 10',
@@ -256,7 +256,7 @@ export function main() {
                 'sw a vlan 40',
                 'sw ac vlan 40'],
             model: {},
-            output: '% Access VLAN does not exist. Creating vlan 40'  // This output only display's when vlan 40 is not already exist. 
+            output: '% Access VLAN does not exist. Creating vlan 40'  // This output only display's when vlan 40 is not already exist.
         }, {
             commands: ['sw ac 1',
                 'sw ac 1 1',
@@ -278,12 +278,12 @@ export function main() {
             model: {},
             output: 'Vlan has Range [1..4094]'
         }, {
-            //Test case for child command acceptance
+            // Test case for child command acceptance
             commands: ['switchport trunk', 'switchport trunk encapsulation'],
             model: {},
             output: CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND
         }, {
-            //Test case for child command acceptance
+            // Test case for child command acceptance
             commands: ['switchport access vlan', 'sw a v'],
             model: {},
             output: CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND
@@ -309,23 +309,23 @@ export function main() {
             model: {},
             output: CommandConstants.ERROR_MESSAGES.INVALID_INPUT
         }, {
-            //Test case for acceptance of value
+            // Test case for acceptance of value
             commands: ['switchport trunk allowed vlan except 40',
                 'sw t a v e 40',
                 'sw t al v ex 40'],
             model: { 'switchport': { 'trunk': 'allowed vlan except 40' } }
         }, {
-            //Test case for no value
+            // Test case for no value
             commands: ['switchport trunk allowed vlan except', 'sw t a v e'],
             model: {},
             output: CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND
         }, {
-            //Test case for type checking
+            // Test case for type checking
             commands: 'sw 1 1 1 1',
             model: {},
             output: CommandConstants.ERROR_MESSAGES.INVALID_INPUT
         }, {
-            //Test case for no parameter
+            // Test case for no parameter
             commands: 'sw t a v e 0x',
             model: {},
             output: 'Command rejected: Bad VLAN list'
@@ -363,7 +363,7 @@ export function main() {
             ],
             model: { 'switchport': { 'trunkingVlans': '50' } }
         }, {
-            //Test case for acceptance of value
+            // Test case for acceptance of value
             commands: ['switchport trunk allowed vlan except 40',
                 'sw t a v e 40',
                 'sw t al v ex 40'],
@@ -543,7 +543,7 @@ export function main() {
             model: { 'switchport': { 'trunkVlan': '1002' } }
         }, {
             commands: [
-                'switchport trunk native vlan 1',           //valid  Only if the vlan is already created
+                'switchport trunk native vlan 1',           // valid  Only if the vlan is already created
                 'sw t n v 1',
                 'sw trunk na v 1',
                 'sw t native v 1'
@@ -559,7 +559,7 @@ export function main() {
             model: { 'switchport': { 'trunkVlan': '20' } }
         }, {
             commands: [
-                'switchport trunk native vlan 60',      //valid  Only if the vlan is already created
+                'switchport trunk native vlan 60',      // valid  Only if the vlan is already created
                 'sw t n v 60',
                 'sw trunk na v 60',
                 'sw t native v 60'
@@ -568,7 +568,7 @@ export function main() {
         },
         {
             commands: [
-                'switchport trunk pruning vlan 60',      //valid  Only if the vlan is already created
+                'switchport trunk pruning vlan 60',      // valid  Only if the vlan is already created
                 'sw t p v 60',
                 'sw trunk pr v 60',
                 'sw t pruning v 60'
@@ -576,7 +576,7 @@ export function main() {
             model: { 'switchport': { 'trunkVlan': '60' } }
         }, {
             commands: [
-                'switchport trunk pruning vlan 40',      //valid  Only if the vlan is already created
+                'switchport trunk pruning vlan 40',      // valid  Only if the vlan is already created
                 'sw t p v 40',
                 'sw trunk pr v 40',
                 'sw t pruning v 40'
@@ -584,7 +584,7 @@ export function main() {
             model: { 'switchport': { 'trunkVlan': '40' } }
         }, {
             commands: [
-                'switchport trunk pruning vlan 2',      //valid  Only if the vlan is already created
+                'switchport trunk pruning vlan 2',      // valid  Only if the vlan is already created
                 'sw t p v 2',
                 'sw trunk pr v 2',
                 'sw t pruning v 2'
@@ -592,7 +592,7 @@ export function main() {
             model: { 'switchport': { 'trunkVlan': '2' } }
         }, {
             commands: [
-                'switchport trunk allowed vlan none',      //valid  Only if the vlan is already created
+                'switchport trunk allowed vlan none',      // valid  Only if the vlan is already created
                 'sw t a v n',
                 'sw trunk al v no',
                 'sw t allowed v n'
@@ -602,13 +602,13 @@ export function main() {
 
     ];
 
-    let todoCases: CommandTestCase[] = [
+    const todoCases: CommandTestCase[] = [
 
         // Not a valid test - would test parsing of the command relative to sibling commands, not this command
         // {
         //     commands: 's',
         //     model: {},
-        //     output: 'Ambiguous commamd'    
+        //     output: 'Ambiguous commamd'
         // },
         {
             commands: ['switchport', 'sw'],

@@ -104,7 +104,7 @@ export function main() {
 
     ];
 
-    let excludedBaseCases: CommandTestCase[] =
+    const excludedBaseCases: CommandTestCase[] =
     [
         // TODO: Add excluded cases
         {
