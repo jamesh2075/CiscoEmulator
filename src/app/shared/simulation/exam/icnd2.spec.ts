@@ -12,29 +12,29 @@ import { icnd2ScoreKey } from './icnd2-scorekey';
 export function main() {
 
   describe('ICND2 Spec - path 0', () => {
-    let paths = new ExamItemPaths(icnd2SimSpec, { includeCommandLineForms: true });
+    const paths = new ExamItemPaths(icnd2SimSpec, { includeCommandLineForms: true });
 
     it('Test spec passes validity checks', () => {
         expect(ExamItemSpec.AreTasksValid(icnd2SimSpec)).toBeTruthy();
     });
     it('ICND2 Invoke and Score path 0', () => {
-      let sim = SimulationFactory.load(SimICND2);
-      let scoreKey = icnd2ScoreKey;
-      let result = ExamItemTester.InvokePath(sim, paths, 0, scoreKey);
+      const sim = SimulationFactory.load(SimICND2);
+      const scoreKey = icnd2ScoreKey;
+      const result = ExamItemTester.InvokePath(sim, paths, 0, scoreKey);
 
       let priorTaskDistractor = false;
-      for(let taskId in result.taskResults) {
+      for (const taskId in result.taskResults) {
         let expectedPoints = scoreKey[taskId].points; // by default expect all points to be awarded
-        if(priorTaskDistractor || IsDistractorPath(result.taskPaths[taskId])) {
+        if (priorTaskDistractor || IsDistractorPath(result.taskPaths[taskId])) {
           expectedPoints = 0; // no points should be awarded
           priorTaskDistractor = true; // expect no points for all subsequent tasks
         }
 
         // log detail to the console if points not as expected
-        if(result.taskResults[taskId].score.points !== expectedPoints) {
+        if (result.taskResults[taskId].score.points !== expectedPoints) {
           console.log(`${taskId} awarded ${result.taskResults[taskId].score.points} points instead of ${expectedPoints} as expected`);
-          for(let verification of result.taskResults[taskId].score.verifications) {
-            console.log(`${verification.pass?'+Pass:':'-Fail'} [${verification.device}][${verification.iface}] ${verification.name}\n`+
+          for (const verification of result.taskResults[taskId].score.verifications) {
+            console.log(`${verification.pass ? '+Pass:' : '-Fail'} [${verification.device}][${verification.iface}] ${verification.name}\n` +
               `\tmodel: ${JSON.stringify(verification.model)}\n\texpected: ${JSON.stringify(verification.expected)}`);
           }
         }
@@ -42,42 +42,44 @@ export function main() {
         expect(result.taskResults[taskId].score.points).toEqual(expectedPoints);
       }
 
-      for (let taskId in result.taskResults) {
+      for (const taskId in result.taskResults) {
         console.log(`--Task ${taskId} (${result.taskResults[taskId].commands.length} commands)`);
-        for (let command of result.taskResults[taskId].commands) {
+        for (const command of result.taskResults[taskId].commands) {
           console.log(`${command.device} ${command.interfaces} > ${command.commandLine}`);
           if (command.resultCode !== CommandResultCode.Success) {
             console.log(`Result code: ${command.resultCode}`);
           }
-          if (command.output) console.log(command.output);
+          if (command.output) {
+            console.log(command.output);
+          }
         }
       }
 
       // Check for command errors
-      //it('invoked all commands without error'), () => {
-        for (let taskId in result.taskResults) {
-          for (let command of result.taskResults[taskId].commands) {
+      // it('invoked all commands without error'), () => {
+        for (const taskId in result.taskResults) {
+          for (const command of result.taskResults[taskId].commands) {
             if (command.resultCode !== CommandResultCode.Success) {
               expect(command.resultCode).toEqual(CommandResultCode.Success);
             }
           }
         }
-      //});
+      // });
 
     });
   });
 
   xdescribe('ICND2 Spec - All paths', () => {
-    let paths = new ExamItemPaths(icnd2SimSpec, { includeCommandLineForms: true });
+    const paths = new ExamItemPaths(icnd2SimSpec, { includeCommandLineForms: true });
 
     it('Test spec passes validity checks', () => {
         expect(ExamItemSpec.AreTasksValid(icnd2SimSpec)).toBeTruthy();
     });
     it('Invoke and Score All Correct and Distractor Paths', () => {
-      let pathCount = paths.GetPathCount();
-      for(let ordinal=0; ordinal<pathCount; ordinal++) {
-        let sim = SimulationFactory.load(SimICND2);
-        let result = ExamItemTester.InvokePath(sim, paths, ordinal, icnd2ScoreKey);
+      const pathCount = paths.GetPathCount();
+      for (let ordinal = 0; ordinal < pathCount; ordinal++) {
+        const sim = SimulationFactory.load(SimICND2);
+        const result = ExamItemTester.InvokePath(sim, paths, ordinal, icnd2ScoreKey);
         // TODO: Verify proper scoring
 
         // TODO: Check for command errors

@@ -28,7 +28,7 @@ export let icnd2SimSpec: IExamItemTasks = {
   ],
   'B': {
     devices: 'SW2',
-    //interfaces: 'Port-channel 1',
+    // interfaces: 'Port-channel 1',
     label: 'Set VTP mode',
     steps: {
       commandLine: 'vtp mode transparent',
