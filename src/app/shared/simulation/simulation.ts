@@ -1,13 +1,13 @@
-﻿import { IEmulatedDevice, IEmulatedInterface, IInterfaceConnection, IPeerConnection } from "./emulator/interfaces/iemulated-device";
+﻿import { IEmulatedDevice, IEmulatedInterface, IInterfaceConnection, IPeerConnection } from './emulator/interfaces/iemulated-device';
 import { StateContainer } from './emulator/emulator-state';
 import { EmulatedDevice } from './emulator/emulated-device';
 import { SimulationModel, DeviceModel, InterfaceModel } from './simulation-model';
 import { IConnection, Connection } from './emulator/cisco/model/connection.model';
-import { CiscoDevice } from "./emulator/cisco/cisco-device";
-import { CISCO_CONTROLLERS } from "./emulator/cisco/controllers/controllers.module";
-import { SimDefinition } from "./sim-definition";
-import { Topology } from "./emulator/cisco/model/topology.model";
-import { plainToClass } from "class-transformer";
+import { CiscoDevice } from './emulator/cisco/cisco-device';
+import { CISCO_CONTROLLERS } from './emulator/cisco/controllers/controllers.module';
+import { SimDefinition } from './sim-definition';
+import { Topology } from './emulator/cisco/model/topology.model';
+import { plainToClass } from 'class-transformer';
 import { Injectable } from '@angular/core';
 import { SimICND2 } from './exam/icnd2';
 
@@ -39,13 +39,13 @@ export class Simulation implements ISimulation {
 
   getDevice(name: string): IEmulatedDevice {
     // TODO: Convert to expression
-    let searchName = name.toLowerCase();
-    for (let device of this.devices) {
+    const searchName = name.toLowerCase();
+    for (const device of this.devices) {
       if (searchName === device.name.toLowerCase()) {
         return device;
       }
     }
-    let nullDevice:any = null;
+    const nullDevice:any = null;
     return nullDevice;
   }
 
@@ -60,9 +60,9 @@ export class Simulation implements ISimulation {
   setupModel(data: SimDefinition) {
     this.topology = plainToClass(Topology, data) as Topology;
 
-    let model = new SimulationModel();
+    const model = new SimulationModel();
 
-    for (let device of this.topology.devices) {
+    for (const device of this.topology.devices) {
       model.devices[device.name] = device as DeviceModel;
     }
 
@@ -71,31 +71,31 @@ export class Simulation implements ISimulation {
     this.__state = new StateContainer(model);
 
     // create the devices
-    for (let device in model.devices) {
+    for (const device in model.devices) {
       this.devices.push(new CiscoDevice(model.devices[device]));
     }
 
     // establish connections
-    for (let connection of this.topology.connections) {
+    for (const connection of this.topology.connections) {
       this.connect(connection);
     }
 
-    for (let ControllerClass of CISCO_CONTROLLERS) {
+    for (const ControllerClass of CISCO_CONTROLLERS) {
       ControllerClass['init']();
     }
   }
 
   private connect(connection: IConnection): SimConnection {
-    let srcDevice = this.getDevice(connection.srcDevice);
-    let destDevice = this.getDevice(connection.destDevice);
+    const srcDevice = this.getDevice(connection.srcDevice);
+    const destDevice = this.getDevice(connection.destDevice);
 
-    let result = new SimConnection(srcDevice.getInterface(connection.srcIface), destDevice.getInterface(connection.destIface));
+    const result = new SimConnection(srcDevice.getInterface(connection.srcIface), destDevice.getInterface(connection.destIface));
     this.connections.push(result);
     return result;
   }
 
   private createDevice(model: DeviceModel): IEmulatedDevice {
-    let subtype = model.subtype.toLowerCase();
+    const subtype = model.subtype.toLowerCase();
     if (subtype === 'iosvl2') {
       return new CiscoDevice(model);
     }
@@ -117,34 +117,36 @@ class InterfaceConnection implements IInterfaceConnection, IPeerConnection {
   peer: IPeerConnection;
 
   get status(): string {
-    if (this.iface.model.status == undefined)
-      return "";
-    else
+    if (this.iface.model.status == undefined) {
+      return '';
+    }
+    else {
       return this.iface.model.status;
+    }
   }
   get protocol(): string {
     return (<any>this.iface.model).protocol;
   }
   get channelGroupProtocol(): string {
-    return this.iface.property(["channelGroup", "protocol"]);
+    return this.iface.property(['channelGroup', 'protocol']);
   }
   get channelGroupMode(): string {
-    return this.iface.property(["channelGroup", "groupMode"]);
+    return this.iface.property(['channelGroup', 'groupMode']);
   }
   get switchportMode(): string {
-    return this.iface.property(["switchport", "mode"]);
+    return this.iface.property(['switchport', 'mode']);
   }
   get switchportAccessVlan(): string {
-    return this.iface.property(["switchport", "accessVlan"]);
+    return this.iface.property(['switchport', 'accessVlan']);
   }
   get switchportTrunkVlan(): string {
-    return this.iface.property(["switchport", "trunkVlan"]);
+    return this.iface.property(['switchport', 'trunkVlan']);
   }
   onPeerStatusChanged(peerStatus: string): void {
     if(this.iface) {
       this.iface.onPeerStatusChanged(peerStatus);
     } else {
-      throw new Error("Connection's interface is not defined");
+      throw new Error(`Connection's interface is not defined`);
     }
   }
 
@@ -166,8 +168,8 @@ class SimConnection {
 
   constructor(src: IEmulatedInterface, dest: IEmulatedInterface) {
     // create the connection object that each interface will use for communication
-    let srcConn = new InterfaceConnection();
-    let destConn = new InterfaceConnection();
+    const srcConn = new InterfaceConnection();
+    const destConn = new InterfaceConnection();
     srcConn.setConnection(src, destConn);
     destConn.setConnection(dest, srcConn);
     this.srcConnection = srcConn;
