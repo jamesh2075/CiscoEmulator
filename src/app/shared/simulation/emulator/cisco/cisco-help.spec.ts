@@ -1,8 +1,8 @@
-import { TerminalCommand } from "../interfaces/terminal-command";
-import { CiscoHelp } from "./cisco-help";
+import { TerminalCommand } from '../interfaces/terminal-command';
+import { CiscoHelp } from './cisco-help';
 
 
-let l2commands: TerminalCommand[] = [
+const l2commands: TerminalCommand[] = [
     { name: 'forecastle', description: `...Are you suggesting that coconuts migrate?` },
     { name: 'foxtrot', description: `Well, she turned me into a newt.` },
     { name: 'forum', description: `It's only a model.` },
@@ -15,7 +15,7 @@ let l2commands: TerminalCommand[] = [
                                 may seek warmer climes in winter, yet these are not strangers to our land.` },
 ];
 
-let l1commands: TerminalCommand[] = [
+const l1commands: TerminalCommand[] = [
     { name: 'alpha', description: `You don't vote for kings.`, children: l2commands },
     { name: 'beta', description: 'She looks like one.' },
     { name: 'charlie', description: 'Bloody Peasant!' },
@@ -27,15 +27,11 @@ let l1commands: TerminalCommand[] = [
     { name: 'delta', description: `I'm not a witch.` },
 ];
 
-
-
-
-
 export function main() {
     describe('Help ? with space', () => {
         it('sorts caps first and excludes Beta', () => {
-            let commandLine: string = '';
-            let result = CiscoHelp.QueryWithSpace(commandLine, l1commands);
+            const commandLine = '';
+            const result = CiscoHelp.QueryWithSpace(commandLine, l1commands);
             expect(result.output).toEqual(`  ALpha    Shut up! Will you shut up?! But you are dressed as one… Well, I got
            better. Why? Burn her anyway! We shall say 'Ni' again to you, if you
            do not appease us.
@@ -49,13 +45,13 @@ export function main() {
     });
     describe('Help ? with no space', () => {
         it('excludes Beta', () => {
-            let commandLine: string = 'b';
-            let result = CiscoHelp.QueryWithoutSpace(commandLine, l1commands);
+            const commandLine = 'b';
+            const result = CiscoHelp.QueryWithoutSpace(commandLine, l1commands);
             expect(result.output).toEqual(`beta`);
         });
         it('arranges columns', () => {
-            let commandLine: string = 'alpha fo';
-            let result = CiscoHelp.QueryWithoutSpace(commandLine, l1commands);
+            const commandLine = 'alpha fo';
+            const result = CiscoHelp.QueryWithoutSpace(commandLine, l1commands);
             expect(result.output).toEqual(`foehn       folklore  foraminiferous  forecastle  
 fortuitism  forum     foss            four        
 foxtrot`);

@@ -121,7 +121,7 @@ export function main() {
       // Bundling is done as local and remote conditions match
  */
 
-  let etherChannelCase3: PathCommand[] = [
+  const etherChannelCase3: PathCommand[] = [
   {
     label: 'Verification',
     devices: ['SW1', 'SW2'],
