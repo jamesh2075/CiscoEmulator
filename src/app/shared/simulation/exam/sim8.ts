@@ -8,7 +8,7 @@ import {
     SimCommandData
 } from '../sim-definition';
 
-let deviceTypes: { [key: string]: SimDeviceType } = {
+const deviceTypes: { [key: string]: SimDeviceType } = {
     'IOSv': {
         commands: {
             'enable': {},
@@ -18,7 +18,7 @@ let deviceTypes: { [key: string]: SimDeviceType } = {
     }
 };
 
-let devices: SimDevice[] = [
+const devices: SimDevice[] = [
     {
         name: 'SPOKE1',
         type: 'SIMPLE',
@@ -238,7 +238,7 @@ let devices: SimDevice[] = [
     }
 ];
 
-let connections: SimConnection[] = [
+const connections: SimConnection[] = [
     {
         dest: {name: 'ISP', id: 3},
         src: {name: 'OTHER', id: 0}
@@ -318,7 +318,7 @@ export let sim8: SimDefinition = {
     deviceTypes: deviceTypes,
     devices: devices,
     connections: connections
-    //tasks: {}
-    //commands: {},
-    //strings: {}
+    // tasks: {}
+    // commands: {},
+    // strings: {}
 };
