@@ -11,7 +11,7 @@ import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../comman
 
 export function main() {
 
-    let interfaceCases: CommandTestCase[] = [
+    const interfaceCases: CommandTestCase[] = [
         {
             commands: [
                 'int p1',
@@ -47,7 +47,7 @@ export function main() {
                 'int gigabitethernet 1',
                 'int gi 1',
                 'int g 1',
-                
+
                 'int port-channel',
                 'int po',
                 'int p',
@@ -104,9 +104,9 @@ export function main() {
 
     ];
 
-    let excludedBaseCases: CommandTestCase[] = 
+    let excludedBaseCases: CommandTestCase[] =
     [
-        //TODO: Add excluded cases
+        // TODO: Add excluded cases
         {
         commands: [
                 'int loopback',
@@ -125,7 +125,7 @@ export function main() {
                 'int gi1/ 0-1/1',
                 'int g 1/ 0-1/1',
                 'int g1/ 0-1/1',
-                
+
                 'interface gigabitethernet1/ 0',
                 'int gigabitethernet1/ 0',
                 'interfacegi1/ 0',
@@ -141,7 +141,7 @@ export function main() {
         },
     ];
 
-    let excludedRangeCases: CommandTestCase[] = 
+    const excludedRangeCases: CommandTestCase[] =
     [
         {
         commands: [
@@ -231,7 +231,7 @@ export function main() {
         },
 
     ];
-    let interfaceRangeCases: CommandTestCase[] = [
+    const interfaceRangeCases: CommandTestCase[] = [
         {
             commands: [
                 'interface range gigabitethernet 1/0-1',
@@ -369,12 +369,12 @@ export function main() {
         }
     ];
 
-    let testCases: CommandTestCase[] = [
+    const testCases: CommandTestCase[] = [
         ...interfaceCases,
         ...interfaceRangeCases
     ];
 
-    let excludedCases: CommandTestCase[] = [
+    const excludedCases: CommandTestCase[] = [
         ...excludedBaseCases,
         ...excludedRangeCases
     ];

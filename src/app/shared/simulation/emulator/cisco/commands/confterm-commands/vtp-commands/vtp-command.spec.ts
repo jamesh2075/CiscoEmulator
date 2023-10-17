@@ -4,7 +4,7 @@ import { CommandState } from '../../../../interfaces/command-state';
 import { StateContainer } from '../../../../emulator-state';
 import { CiscoCommandParser } from '../../../command-parser';
 import { CiscoCommandContext } from '../../../cisco-terminal-command';
-import { NotSupportedCommand } from "../../notsupported";
+import { NotSupportedCommand } from '../../notsupported';
 import { vtpCommand } from './vtp-command';
 import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../../command-tester';
 import { CommandConstants } from '../../../common/cisco-constants';

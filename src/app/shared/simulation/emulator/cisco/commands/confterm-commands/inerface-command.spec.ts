@@ -5,7 +5,7 @@ import { StateContainer } from '../../../emulator-state';
 import { CiscoCommandParser } from '../../command-parser';
 import { CiscoCommandContext } from '../../cisco-terminal-command';
 import { interfaceCommand, interfaceRangeCommand } from './interface-command';
-import { channelGroupCommand } from "../channel-group-command";
+import { channelGroupCommand } from '../channel-group-command';
 
 
 export interface CommandTestCase {
@@ -22,7 +22,7 @@ export function main() {
           enabled: true,
           confTerminal: true,
           confInterface: true,
-          interfaces: ['GigabitEthernet1/0', 'GigabitEthernet1/1'], 
+          interfaces: ['GigabitEthernet1/0', 'GigabitEthernet1/1'],
       }
     }
   ];
@@ -34,7 +34,7 @@ export function main() {
 
 
 
-    for(let item of interfaceRangeCases) {
+    for (let item of interfaceRangeCases) {
         let commandContext: CiscoCommandContext = {
           enabled: true,
           confTerminal: true,
@@ -42,7 +42,7 @@ export function main() {
           // TODO: interfaces = [...]
         };
       let commandLines = (Array.isArray(item.commands)) ? item.commands : [item.commands];
-      for(let cmdLine of commandLines){
+      for (let cmdLine of commandLines){
         it(cmdLine, () => {
           var result = testInvoke(commandContext, channelGroupCommand, cmdLine);
 
@@ -61,14 +61,14 @@ function testInvoke(context: CiscoCommandContext, target: TerminalCommand, comma
   let parsed = CiscoCommandParser.Parse(commandLine, [target]);
 
   // TODO: code duplication (see cisco-terminal.ts)
-  //let cmdState = CommandState.getCommandState();
+  // let cmdState = CommandState.getCommandState();
   let cmdState = new CommandState();
   for (let index = 0; index < parsed.commands.length; index++) {
     let command = parsed.commands[index].command;
     if (command.handler) {
       cmdState.command = parsed.commands[index];
       command.handler(context, cmdState);
-    } else if(command.handler === undefined) {
+    } else if (command.handler === undefined) {
       // TODO: Unsupported command
     }
   }
