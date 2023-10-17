@@ -4,48 +4,7 @@ import {sim8} from './sim8';
 
 export function main() {
 
-    describe('Sim 8', () => {
-
-        beforeEach(() => {
-        });
-
-        // TODO: This needs to use models now
-        xit('SimulationFactory loads the simulation', () => {
-            let simulation = SimulationFactory.load(sim8);
-            expect(simulation.devices.length).toEqual(5);
-        });
-
-        let taskLabel = 'Task A';
-        xit(taskLabel, () => {
-            let simulation = SimulationFactory.load(sim8);
-
-            let task = tasks['Task A'];
-            expect(task).not.toBeNull();
-
-            for (let command of task.commands) {
-                let device = simulation.getDevice(command.device);
-                expect(device).not.toBeNull();
-                let commandHandler = device.getDefaultTerminal();
-                expect(commandHandler).not.toBeNull();
-
-                let commandLine: string;
-                if (Array.isArray(command.command)) {
-                    commandLine = command.command[0];
-                } else {
-                    commandLine = command.command;
-                }
-                let commandResult = commandHandler.invoke(commandLine);
-                console.log(taskLabel + ': ' + command.device + '> ' + commandLine + '\r\n' +
-                    'result code: ' + commandResult.resultCode + '\r\n' +
-                    commandResult.output + '\r\n-------\r\n');
-
-                // TODO: Check the command result
-            }
-        });
-
-    });
-
-    let preludeCommands = [
+    const preludeCommands = [
         'enable',
         'configure terminal',
         'show run'
@@ -66,12 +25,12 @@ export function main() {
     // other: configure terminal
     // other: interface --
 
-    let verifications = {
+    const verifications = {
         'tunnel 10 exists': {},
         'tunnel 10 down': {}
     };
 
-    let tasks = {
+    const tasks = {
         'Task A': {
             anyOrder: true,
             commands: [
@@ -164,4 +123,44 @@ export function main() {
         }
     };
 
+    describe('Sim 8', () => {
+
+        beforeEach(() => {
+        });
+
+        // TODO: This needs to use models now
+        xit('SimulationFactory loads the simulation', () => {
+            const simulation = SimulationFactory.load(sim8);
+            expect(simulation.devices.length).toEqual(5);
+        });
+
+        const taskLabel = 'Task A';
+        xit(taskLabel, () => {
+            const simulation = SimulationFactory.load(sim8);
+
+            const task = tasks['Task A'];
+            expect(task).not.toBeNull();
+
+            for (const command of task.commands) {
+                const device = simulation.getDevice(command.device);
+                expect(device).not.toBeNull();
+                const commandHandler = device.getDefaultTerminal();
+                expect(commandHandler).not.toBeNull();
+
+                let commandLine: string;
+                if (Array.isArray(command.command)) {
+                    commandLine = command.command[0];
+                } else {
+                    commandLine = command.command;
+                }
+                const commandResult = commandHandler.invoke(commandLine);
+                console.log(taskLabel + ': ' + command.device + '> ' + commandLine + '\r\n' +
+                    'result code: ' + commandResult.resultCode + '\r\n' +
+                    commandResult.output + '\r\n-------\r\n');
+
+                // TODO: Check the command result
+            }
+        });
+
+    });
 }
