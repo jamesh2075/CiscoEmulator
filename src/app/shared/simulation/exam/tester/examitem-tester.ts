@@ -1,11 +1,11 @@
 ﻿import { Observable, BehaviorSubject } from 'rxjs';
-import { IEmulatedDevice } from "../../emulator/interfaces/iemulated-device";
+import { IEmulatedDevice } from '../../emulator/interfaces/iemulated-device';
 import { IEmulatedTerminal, CommandResult, CommandResultCode } from '../../emulator/interfaces/iemulated-terminal';
 import { Simulation } from '../../simulation';
 import { SimDefinition, SimTask, SimDevice, SimDeviceType, SimNetworkInterface, SimCommandData, SimConnection } from '../../sim-definition';
 import { SimulationFactory } from '../../simulation.factory';
-import { diff } from "../../emulator/cisco/model/utils/diff";
-import { AsArray, AsSingle } from "../../emulator/util";
+import { diff } from '../../emulator/cisco/model/utils/diff';
+import { AsArray, AsSingle } from '../../emulator/util';
 
 import { ExamItemPaths, PathCommand, CalculatePathOptions } from './examitem-path';
 import { IExamItemStep, IExamItemTask, IExamItemTasks } from './examitem-spec';
@@ -87,7 +87,7 @@ export class ExamItemTester {
     result.stateAfter = sim.getModel();
     result.stateDiff = diff(result.stateBefore, result.stateAfter, true);
 
-    if(scoreKey) {
+    if (scoreKey) {
       result.score = ScoreItem(result.stateAfter, scoreKey);
     }
 
@@ -105,8 +105,8 @@ class CommandInvoker {
     let results: PathCommandResult[] = [];
     let block: PathCommand[] = [];
     let blockIfaces: string;
-    for (let command of commands) {
-      let cmdInterfaces: string = (command.interfaces) ? JSON.stringify(command.interfaces) : null;
+    for (const command of commands) {
+      const cmdInterfaces: string = (command.interfaces) ? JSON.stringify(command.interfaces) : null;
       if (cmdInterfaces !== blockIfaces) {
         if (block.length > 0) {
           // the current command specifies different interfaces, so process all commands in the current block
@@ -121,7 +121,7 @@ class CommandInvoker {
 
     // process the last block of commands
     if (block.length > 0) {
-      let result = this.invokeOnDevices(block[0].interfaces, block);
+      const result = this.invokeOnDevices(block[0].interfaces, block);
       results = [...results, ...result];
     }
     return results;
@@ -129,7 +129,7 @@ class CommandInvoker {
 
   constructor(public sim: Simulation) {
     //this.commands = new BehaviorSubject<PathCommand>({ devices: '', commandLine: '' });
-    for (let device of sim.devices) {
+    for (const device of sim.devices) {
       if (device.isTerminalEnabled()) {
         this.deviceInvokers[device.name.toLowerCase()] = new DeviceInvoker(device);
       }
@@ -137,12 +137,12 @@ class CommandInvoker {
   }
 
   private invokeOnDevices(interfaces: string | string[], commands: PathCommand[]): PathCommandResult[] {
-    let perDevice: { [key: string]: PathCommand[] } = {};
+    const perDevice: { [key: string]: PathCommand[] } = {};
 
-    for (let command of commands) {
-      let devices = AsArray(command.devices);
-      for (let device of devices) {
-        let deviceName = device.toLowerCase();
+    for (const command of commands) {
+      const devices = AsArray(command.devices);
+      for (const device of devices) {
+        const deviceName = device.toLowerCase();
         if (!perDevice[deviceName]) perDevice[deviceName] = [];
         perDevice[deviceName].push(command);
       }
@@ -150,10 +150,10 @@ class CommandInvoker {
 
     let results: PathCommandResult[] = [];
     for (let device in perDevice) {
-      let invoker = this.deviceInvokers[device];
+      const invoker = this.deviceInvokers[device];
       if (!invoker) throw new Error(`Invoker for ${device} not found`);
-      let deviceResults = invoker.invoke(interfaces, perDevice[device].map(value => value.commandLine));
-      let converted = deviceResults.map((value): PathCommandResult => {
+      const deviceResults = invoker.invoke(interfaces, perDevice[device].map(value => value.commandLine));
+      const converted = deviceResults.map((value): PathCommandResult => {
         return {
           device: device,
           interfaces: JSON.stringify(value.interfaces),

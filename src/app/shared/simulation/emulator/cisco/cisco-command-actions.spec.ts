@@ -17,8 +17,8 @@ import {
   NoShutdownActionModel,
   PortChannelActionModel,
 } from './cisco-command-actions';
-import { ExamItemScoreKey } from "../../exam/score/scorekey";
-import { IExamItemTasks } from "../../exam/tester/examitem-spec";
+import { ExamItemScoreKey } from '../../exam/score/scorekey';
+import { IExamItemTasks } from '../../exam/tester/examitem-spec';
 
 export function main() {
   // xdescribe('CiscoCommandActions', () => {
@@ -64,7 +64,7 @@ export function main() {
    1. Create a port channel 1 on SW1 and bundle gi1/0-1 under Port channel 1
       // Bundles as they have same local configuration
       // 1. Status for Gi1/0 and Gi1/1 should be down(D) ready for connection
-         2. Status for port-channel is (SD) as none of the conditions match  (local && remote) 
+         2. Status for port-channel is (SD) as none of the conditions match  (local && remote)
    2. Create a port channel 1 on SW2 and bundle gi1/0-1 under Port channel 1
       // Creates a port channel
       // Bundling cannot be done and displays this message
@@ -75,7 +75,7 @@ export function main() {
  */
 
 
-  let etherChannelCase1: PathCommand[] = [{
+  const etherChannelCase1: PathCommand[] = [{
     label: 'Create channel group',
     devices: 'SW1',
     interfaces: ['gi1/0', 'gi1/1'], // implies 'interface range gi1/0-1'
@@ -92,7 +92,7 @@ export function main() {
   // Basic commands for above case to make bundling happen
   // Change switchport access vlan for interface gi1/0 on SW2 to 10. As all conditions match bundling will happen
 
-  let etherChannelCase2: PathCommand[] = [{
+  const etherChannelCase2: PathCommand[] = [{
     label: 'Create channel group',
     devices: 'SW1',
     interfaces: ['gi1/0', 'gi1/1'], // implies 'interface range gi1/0-1'
@@ -130,7 +130,7 @@ export function main() {
   }, {
     label: 'Create channel group',
     devices: 'SW1',
-    interfaces: ['gi3/0', 'gi3/1'], 
+    interfaces: ['gi3/0', 'gi3/1'],
     commandLine: 'channel-group 2 mode desirable'
   },
   {

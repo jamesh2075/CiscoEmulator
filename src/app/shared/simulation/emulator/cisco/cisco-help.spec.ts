@@ -11,7 +11,8 @@ let l2commands: TerminalCommand[] = [
     { name: 'foraminiferous', description: `Who's that then?` },
     { name: 'foehn', description: `No, no, no! Yes, yes. A bit. But she's got a wart.` },
     { name: 'folklore', description: `Ah, now we see the violence inherent in the system!` },
-    { name: 'four', description: `The swallow may fly south with the sun, and the house martin or the plover may seek warmer climes in winter, yet these are not strangers to our land.` },
+    { name: 'four', description: `The swallow may fly south with the sun, and the house martin or the plover 
+                                may seek warmer climes in winter, yet these are not strangers to our land.` },
 ];
 
 let l1commands: TerminalCommand[] = [
@@ -19,7 +20,8 @@ let l1commands: TerminalCommand[] = [
     { name: 'beta', description: 'She looks like one.' },
     { name: 'charlie', description: 'Bloody Peasant!' },
     { name: 'Alpha', description: 'The nose?' },
-    { name: 'ALpha', description: `Shut up! Will you shut up?! But you are dressed as one… Well, I got better. Why? Burn her anyway! We shall say 'Ni' again to you, if you do not appease us.` },
+    { name: 'ALpha', description: `Shut up! Will you shut up?! But you are dressed as one… Well, I got better. 
+                                Why? Burn her anyway! We shall say 'Ni' again to you, if you do not appease us.` },
     { name: 'Beta', description: 'Burn her!', noHelp: true },
     { name: 'Charlie', description: 'Ah, now we see the violence inherent in the system!' },
     { name: 'delta', description: `I'm not a witch.` },

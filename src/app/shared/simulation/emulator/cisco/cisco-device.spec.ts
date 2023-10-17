@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { CiscoDevice } from './cisco-device';
-import { CiscoValidators } from "./common/cisco-validators";
+import { CiscoValidators } from './common/cisco-validators';
 
 
 export function main() {
