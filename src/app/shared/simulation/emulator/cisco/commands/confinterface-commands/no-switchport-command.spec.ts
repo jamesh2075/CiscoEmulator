@@ -1,9 +1,9 @@
-import { CommandTestCase, CommandTester } from "../command-tester";
-import { noSwitchportCommand } from "./no-switchport-command";
+import { CommandTestCase, CommandTester } from '../command-tester';
+import { noSwitchportCommand } from './no-switchport-command';
 import { switchportDefaultDataModel } from './switchport-command';
 
 export function main() {
-    let testCases: CommandTestCase[] = [
+    const testCases: CommandTestCase[] = [
         {
             commands: 'no sw acc vlan',
             model: { 'switchport': { 'accessVlan': switchportDefaultDataModel.defaultVlan } }
@@ -16,7 +16,7 @@ export function main() {
         }
     ];
 
-    //TODO : Move this tests to active
+    // TODO : Move this tests to active
     xdescribe('no switchport', () => {
         CommandTester.RunTestCases(testCases, noSwitchportCommand);
     });
