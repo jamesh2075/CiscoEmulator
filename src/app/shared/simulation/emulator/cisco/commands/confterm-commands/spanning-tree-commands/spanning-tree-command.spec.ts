@@ -4,15 +4,15 @@ import { CommandState } from '../../../../interfaces/command-state';
 import { StateContainer } from '../../../../emulator-state';
 import { CiscoCommandParser } from '../../../command-parser';
 import { CiscoCommandContext } from '../../../cisco-terminal-command';
-import { NotSupportedCommand } from "../../notsupported";
-import { spanningTreeCommand } from "./spanning-tree-command";
-import { SpanningTreeCommandMessages } from "./spanning-tree-command";
+import { NotSupportedCommand } from '../../notsupported';
+import { spanningTreeCommand } from './spanning-tree-command';
+import { SpanningTreeCommandMessages } from './spanning-tree-command';
 import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../../command-tester';
 
 
 export function main() {
 
-    let testCases: CommandTestCase[] = [
+    const testCases: CommandTestCase[] = [
         {
             commands: 'spanning-tree',
             model: {},
@@ -49,7 +49,8 @@ export function main() {
         // spanning-tree vlan
         // Rejected Commands
         {
-            commands: ['spanning-tree vlan', 'sp v', 'spanning-tree vlan 547567567', 'sp v 547567567', 'spanning-tree vlan abc', 'sp v abc'],
+            commands: ['spanning-tree vlan', 'sp v', 'spanning-tree vlan 547567567',
+                        'sp v 547567567', 'spanning-tree vlan abc', 'sp v abc'],
             model: {},
             output: SpanningTreeCommandMessages.invalidVlanMessage
         },
@@ -58,7 +59,12 @@ export function main() {
         // Accepted Commands
         {
             commands: ['spanning-tree portfast default', 'spa po d'],
-            model: { "spanningtree": { "portfast": { "edge": { "default": false }, "normal": { "default": false }, "network": { "default": false }, "default": true } } }
+            model: { 'spanningtree':
+                        { 'portfast':
+                            { 'edge': { 'default': false },
+                              'normal': { 'default': false },
+                              'network': { 'default': false },
+                              'default': true } } }
         },
 
         ////////////////////
@@ -71,8 +77,8 @@ export function main() {
         },
     ];
 
-    let excludedCases: CommandTestCase[] = [
-        //spanning-tree mode rejected commands
+    const excludedCases: CommandTestCase[] = [
+        // spanning-tree mode rejected commands
         {
             commands: 'sp m test',
             model: {},
