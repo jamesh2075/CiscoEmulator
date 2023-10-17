@@ -1,7 +1,7 @@
 
-import { CommandConstants } from "../common/cisco-constants";
-import { exitCommand } from "./enabled-commands";
-import { CommandTester, CommandTestCase } from "./command-tester";
+import { CommandConstants } from '../common/cisco-constants';
+import { exitCommand } from './enabled-commands';
+import { CommandTester, CommandTestCase } from './command-tester';
 
 
 export function main() {
