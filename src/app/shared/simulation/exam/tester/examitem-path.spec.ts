@@ -44,10 +44,10 @@ export function main() {
     });
     it('Builds command lists for paths', () => {
       let result = paths.GetPathCommandsByTaskPathIndex({});
-      for(let taskId in result) {
+      for (let taskId in result) {
         console.log('Task '+taskId);
         let commands = result[taskId];
-        for(let command of commands) {
+        for (let command of commands) {
           console.log(`\td:${JSON.stringify(command.devices)} i:${JSON.stringify(command.interfaces)} -> ${command.commandLine}`);
         }
       }
