@@ -61,7 +61,8 @@ function testInvoke(context: CiscoCommandContext, target: TerminalCommand, comma
   let parsed = CiscoCommandParser.Parse(commandLine, [target]);
 
   // TODO: code duplication (see cisco-terminal.ts)
-  let cmdState = CommandState.getCommandState();
+  //let cmdState = CommandState.getCommandState();
+  let cmdState = new CommandState();
   for (let index = 0; index < parsed.commands.length; index++) {
     let command = parsed.commands[index].command;
     if (command.handler) {

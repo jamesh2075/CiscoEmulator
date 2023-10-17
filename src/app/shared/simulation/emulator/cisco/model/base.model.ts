@@ -42,7 +42,8 @@ export class BaseModel implements ISerialize, ISnapshot, IDefault {
             if (traverse) {
                 for (let prop in this) {
                     if (this[prop] instanceof Array) {
-                        let list: any[] = this[prop];
+                        let unknown = this[prop] as any;
+                        let list: any[] = unknown as any;
                         for (let i = 0; i < list.length; i++) {
                             if (list[i] instanceof BaseModel) {
                                 list[i].restoreDefaultValues();
@@ -50,7 +51,8 @@ export class BaseModel implements ISerialize, ISnapshot, IDefault {
                         }
                     }
                     else if (this[prop] instanceof BaseModel) {
-                        let item: BaseModel = this[prop] as BaseModel;
+                        let unknown = this[prop] as any;
+                        let item: BaseModel = unknown as BaseModel;
                         item.restoreDefaultValues();
                     }
                 }

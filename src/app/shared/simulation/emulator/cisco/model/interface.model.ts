@@ -13,7 +13,7 @@ export interface IInterface {
 export abstract class Interface extends BaseModel implements IInterface {
 
     protected static CURRENT_ID = 0;
-    _name: string = "";
+    protected _name: string = "";
 
     id: number = 0;
     set name(val:string){

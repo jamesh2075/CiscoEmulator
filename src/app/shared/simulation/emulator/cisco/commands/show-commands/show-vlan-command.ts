@@ -1,4 +1,4 @@
-/// <reference types="mustache" />
+import { Mustache } from "mustache"
 import { TerminalCommand } from "../../../interfaces/terminal-command";
 import { CiscoCommandContext } from "../../cisco-terminal-command";
 import { CommandState } from "../../../interfaces/command-state";

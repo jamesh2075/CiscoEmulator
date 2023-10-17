@@ -215,7 +215,7 @@ export function ExtractSpanningTree(
       return false;
   }
   if (verifyModel.vlan && verifyModel.priority !== undefined) {
-    if (`${verifyModel.vlan} priority ${verifyModel.priority}` !== spanning.vlan)
+    if (`${verifyModel.vlan} priority ${verifyModel.priority}` !== spanning.vlan.name)
       return false;
   }
   if(verifyModel.vlan && verifyModel.no) {

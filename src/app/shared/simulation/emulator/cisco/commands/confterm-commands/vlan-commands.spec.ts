@@ -2,11 +2,11 @@ import { VlanCommands } from './vlan-commands';
 import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../command-tester';
 import { NoCommands } from "../no-commands";
 
-export interface CommandTestCase {
-    commands: string | string[];
-    result?: any;
-    output?: string | string[];
-}
+// export interface CommandTestCase {
+//     commands: string | string[];
+//     result?: any;
+//     output?: string | string[];
+// }
 
 export function main() {
 

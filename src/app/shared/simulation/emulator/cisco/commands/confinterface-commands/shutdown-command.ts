@@ -7,6 +7,26 @@ import { CommandConstants } from "../../common/cisco-constants";
 import { ICiscoInterface } from "../../icisco-device";
 
 export class ShutdownCommand {
+    static shutdown(cmdContext: CiscoCommandContext, cmdState: CommandState) {
+        if (cmdState.command.parameters[0]) {
+            cmdState.output = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
+            return;
+        }
+
+        //Invoke an action to verify status across connections
+        let interfaces = cmdContext.interfaces as ICiscoInterface[];
+        if (cmdContext.actions != undefined)
+            cmdState.addAction(cmdContext.actions.shutdown({ interfaces: interfaces }));
+        cmdState.stopProcessing = true;
+    }
+
+    static NoShutdown(cmdContext: CiscoCommandContext, cmdState: CommandState):any {
+        let interfaces = cmdContext.interfaces as any as ICiscoInterface[];
+        if (cmdContext.actions != undefined)
+            cmdState.addAction(cmdContext.actions.noShutdown({ interfaces: interfaces }));
+        cmdState.stopProcessing = true;
+    }
+
     static noShutdown: TerminalCommand = {
         name: 'shutdown',
         description: '<cr>',
@@ -18,25 +38,4 @@ export class ShutdownCommand {
         description: 'Shutdown the selected interface',
         handler: ShutdownCommand.shutdown
     };
-
-    static shutdown(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        if (cmdState.command.parameters[0]) {
-            cmdState.output = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
-            return;
-        }
-
-        //Invoke an action to verify status across connections
-        let interfaces = cmdContext.interfaces as unknown as ICiscoInterface[];
-        if (cmdContext.actions != undefined)
-            cmdState.addAction(cmdContext.actions.shutdown({ interfaces: interfaces }));
-        cmdState.stopProcessing = true;
-    }
-
-    static NoShutdown(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        let interfaces = cmdContext.interfaces as unknown as ICiscoInterface[];
-        if (cmdContext.actions != undefined)
-            cmdState.addAction(cmdContext.actions.noShutdown({ interfaces: interfaces }));
-        cmdState.stopProcessing = true;
-
-    }
 }
