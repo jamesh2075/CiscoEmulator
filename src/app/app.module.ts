@@ -12,11 +12,13 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { CommandsComponent } from './commands/commands.component';
+import { SourcecodeComponent } from './sourcecode/sourcecode.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CommandsComponent
+    CommandsComponent,
+    SourcecodeComponent
   ],
   imports: [
     BrowserModule,
