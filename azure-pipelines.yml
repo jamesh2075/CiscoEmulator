@@ -35,9 +35,10 @@ stages:
     steps:
     - task: NodeTool@0
       displayName: 'Install Node.js'
+      retryCountOnTaskFailure: 3
       inputs:
         versionSource: 'spec'
-        versionSpec: '14.20.1'
+        versionSpec: '14.18.3'
 
     - script: |
         npm install -g @angular/cli@1.0.0
