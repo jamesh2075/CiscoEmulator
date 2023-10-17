@@ -1,4 +1,4 @@
-/// <reference types="mustache" />
+import { Mustache } from "mustache"
 import { TerminalCommand } from "../../../interfaces/terminal-command";
 import { CiscoCommandContext } from "../../cisco-terminal-command";
 import { CommandState } from "../../../interfaces/command-state";
@@ -29,11 +29,11 @@ export class VlanCommands {
         parameters: [],
         handler: (cmdContext: CiscoCommandContext, cmdState: CommandState) => {
             try {
-                cmdState.properties['vlanIds'] = CiscoFormatters.formatRange(cmdState.command.token);
+                cmdState.properties['vlanIds'] = CiscoFormatters.formatRange(cmdState.command.token as string);
             } catch (e) {
                 switch (e.message) {
                     case CommandConstants.ERROR_MESSAGES.BAD_LIST: {
-                        // cmdState.output = Mustache.render()
+                        cmdState.output = Mustache.render()
                         break;
                     }
                     default: {

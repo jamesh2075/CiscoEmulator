@@ -21,7 +21,7 @@ export class CiscoDevice extends EmulatedDeviceBase {
     protected terminal: CiscoTerminal;
     private _interfaces: { [key: number]: ICiscoInterface } = {};
 
-    private nullTerminal = null as unknown as IEmulatedTerminal;
+    private nullTerminal = null as any as IEmulatedTerminal;
 
     getDefaultTerminal(): IEmulatedTerminal {
         if (!this.isTerminalEnabled()) return this.nullTerminal;
@@ -112,8 +112,8 @@ export class CiscoDevice extends EmulatedDeviceBase {
       super(_model);
     }
 
-    getInterfaces(selector?: InterfaceSelector): ICiscoInterface[] {
-      var nullInterfaces = null as unknown as ICiscoInterface[];
+    getInterfaces(selector?: InterfaceSelector): ICiscoInterface[]|any {
+      var nullInterfaces = null as any as ICiscoInterface[];
       if (selector) {
         let ciscoInterfaces: ICiscoInterface[] = [];
         if (typeof selector.range !== 'undefined') {  //because 0 is a valid range, but it is not truthy
@@ -165,7 +165,7 @@ export class CiscoDevice extends EmulatedDeviceBase {
 
     getInterface(selector: string): ICiscoInterface {
       let ifaceInfo = InterfaceInfo.validateInterfaceId(selector);
-      let result = null as unknown as ICiscoInterface;
+      let result = null as any as ICiscoInterface;
 
       // use the full name as the permanent index
       if (ifaceInfo.isValid) {

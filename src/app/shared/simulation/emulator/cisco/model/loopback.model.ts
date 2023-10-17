@@ -10,7 +10,7 @@ export interface ILoopback extends IInterface {
 
 export class Loopback extends Interface implements ILoopback {
 
-    private _name:string = "";
+    //private _name:string = "";
 
     description: "Loopback";
     status = "up";

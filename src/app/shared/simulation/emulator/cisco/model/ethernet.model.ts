@@ -5,7 +5,6 @@ export interface IEthernet extends IInterface {
 
 export class Ethernet extends Interface implements IEthernet {
 
-    private _name = "";
     set name(val:string) {
         this._name = val;
     }

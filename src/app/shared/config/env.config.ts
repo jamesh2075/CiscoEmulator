@@ -1,4 +1,6 @@
-import { EnvConfig } from '../../../../tools/env/env-config.interface';
+//import { EnvConfig } from '../../../../tools/env/env-config.interface';
+
+class EnvConfig {}
 
 export const Config: EnvConfig = {};
 

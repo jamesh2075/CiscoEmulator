@@ -11,6 +11,8 @@ import { MultiRange } from 'multi-integer-range';
 })
 export class AppComponent {
 
+  public title: string = "";
+
   constructor() {
     console.log('Environment config', Config);
   }
@@ -25,6 +27,7 @@ export class AppComponent {
     //     return a - b
     // });
     // this.title = values.toString();
+    this.title = "Cisco Emulator";
   }
 
   
