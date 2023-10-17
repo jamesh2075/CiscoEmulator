@@ -12,7 +12,7 @@ import { noSpanningTreeCommand } from './no-spanning-tree-command';
 
 export function main() {
 
-    let testCases: CommandTestCase[] = [
+    const testCases: CommandTestCase[] = [
         {
             commands: 'no spanning-tree',
             model: {},
@@ -21,7 +21,7 @@ export function main() {
 
     ];
 
-    let excludedCases: CommandTestCase[] = [
+    const excludedCases: CommandTestCase[] = [
         {
             commands: ['no spanning-tree mode', 'no sp mo'],
             model: { 'spanningtree': { 'mode': 'pvst' } }
