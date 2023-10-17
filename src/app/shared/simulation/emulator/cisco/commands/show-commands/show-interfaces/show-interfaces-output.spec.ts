@@ -4,15 +4,15 @@ import {CommandState} from '../../../../interfaces/command-state';
 import {StateContainer} from '../../../../emulator-state';
 import {CiscoCommandParser} from '../../../command-parser';
 import {CiscoCommandContext} from '../../../cisco-terminal-command';
-import {NotSupportedCommand} from "../../notsupported";
-import {showInterfacesCommand} from "./show-interfaces";
+import {NotSupportedCommand} from '../../notsupported';
+import {showInterfacesCommand} from './show-interfaces';
 import {CommandTester, CommandTestCase, CommandTestCaseResult} from '../../command-tester';
 
 export function main() {
 
-    let testCases: CommandTestCase[] = [];
+    const testCases: CommandTestCase[] = [];
 
-    let excludedCases: CommandTestCase[] = [
+    const excludedCases: CommandTestCase[] = [
         {
             commands: ['show', 's'],
             model: {},
