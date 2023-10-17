@@ -12,20 +12,24 @@ import { noChannelGroupModeCommand, ChannelGroupCommand } from './channel-group-
 
 export function main() {
 
-    let testCases: CommandTestCase[] = [{
+    const testCases: CommandTestCase[] = [{
         // minimum value correct
         commands: 'channel-group   1    mode active',
-        model: { 'channelGroup': { id: 1, mode: ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_ACTIVE, protocol: ChannelGroupCommand.STRINGS.CHANNEL_PROTOCOL_LACP } }
+        model: { 'channelGroup': { id: 1, mode: ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_ACTIVE, 
+                                    protocol: ChannelGroupCommand.STRINGS.CHANNEL_PROTOCOL_LACP } }
     }, {
         commands: 'channel-group 2 mode desirable',
-        model: { 'channelGroup': { id: 2, mode: ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_DESIRABLE, protocol: ChannelGroupCommand.STRINGS.CHANNEL_PROTOCOL_PAgP } }
+        model: { 'channelGroup': { id: 2, mode: ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_DESIRABLE, 
+                                    protocol: ChannelGroupCommand.STRINGS.CHANNEL_PROTOCOL_PAgP } }
     }, {
         commands: 'channel-group 2 mode auto',
-        model: { 'channelGroup': { id: 2, mode: ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_AUTO, protocol: ChannelGroupCommand.STRINGS.CHANNEL_PROTOCOL_PAgP } }
+        model: { 'channelGroup': { id: 2, mode: ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_AUTO, 
+                                    protocol: ChannelGroupCommand.STRINGS.CHANNEL_PROTOCOL_PAgP } }
     }, {
         // maximum value correct
         commands: 'channel-group 255 mode active',
-        model: { 'channelGroup': { id: 255, mode: ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_ACTIVE, protocol: ChannelGroupCommand.STRINGS.CHANNEL_PROTOCOL_LACP } }
+        model: { 'channelGroup': { id: 255, mode: ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_ACTIVE, 
+                                    protocol: ChannelGroupCommand.STRINGS.CHANNEL_PROTOCOL_LACP } }
     },
     {
         commands: ['channel-group 256 mode active', // more than maximum value
@@ -37,8 +41,8 @@ export function main() {
     },];
 
     // Written to handle no channel-group test cases
-    //TODO: Write test which are passing
-    let notestCases: CommandTestCase[] = [{
+    // TODO: Write test which are passing
+    const notestCases: CommandTestCase[] = [{
         // minimum value correct
         commands: 'no channel-group',
         model: {},
@@ -55,7 +59,7 @@ export function main() {
 
 
 
-    let excludedCases = [{
+    const excludedCases = [{
         // incomplete command
         commands: 'channel-group 0 mode',
         output: CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND

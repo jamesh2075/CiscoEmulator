@@ -1,9 +1,9 @@
 import {CommandTester, CommandTestCase, CommandTestCaseResult} from '../command-tester';
-import {channelProtocol} from "./channel-protocol-command";
+import {channelProtocol} from './channel-protocol-command';
 
 export function main() {
 
-    let testCases: CommandTestCase[] = [
+    const testCases: CommandTestCase[] = [
         {
             commands: 'channel-protocol lacp',
             model: {'channel-group': {'protocol': 'lacp'}}
@@ -13,11 +13,11 @@ export function main() {
         }
     ];
 
-    let excludedCases: CommandTestCase[] = [];
+    const excludedCases: CommandTestCase[] = [];
 
-    let noCases: CommandTestCase[] = [];
+    const noCases: CommandTestCase[] = [];
 
-    let exludedNoCases: CommandTestCase[] = [
+    const exludedNoCases: CommandTestCase[] = [
         {
             commands: 'no channel-protocol',
             model: {'channel-group': {'protocol': 'pagp'}}
