@@ -18,7 +18,7 @@ variables:
   environmentName: 'Production'
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  vmImageName: 'windows-latest'
 
 pool:
   vmImage: $(vmImageName)
@@ -34,10 +34,10 @@ stages:
 
     steps:
     - task: NodeTool@0
+      displayName: 'Install Node.js'
       inputs:
         versionSource: 'spec'
         versionSpec: '14.20.1'
-      displayName: 'Install Node.js'
 
     - script: |
         npm install -g @angular/cli@1.0.0
