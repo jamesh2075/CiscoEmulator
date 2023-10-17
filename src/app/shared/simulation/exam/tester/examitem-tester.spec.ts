@@ -7,77 +7,10 @@ import { ExamItemTester } from './examitem-tester';
 import { ExamItemSpec, IExamItemStep, IExamItemTask, IExamItemTasks } from './examitem-spec';
 import { ExamItemPaths, PathCommand, CalculatePathOptions, IPathPart } from './examitem-path';
 
-export function main() {
-
-  // xdescribe('ExamItemTester', () => {
-  //   let paths = new ExamItemPaths(sampleSpec, { includeCommandLineForms: true });
-  // });
-
-  xdescribe('ExamItemTester usage - exam item spec path sample', () => {
-    let paths = new ExamItemPaths(sampleExamItemSpec, { includeCommandLineForms: true });
-
-    it('Invoke path 0', () => {
-      let sim = SimulationFactory.load(SimICND2);
-      let result = ExamItemTester.InvokePath(sim, paths, 0);
-
-      for (let taskId in result.taskResults) {
-        console.log(`Task ${taskId} invoked ${result.taskResults[taskId].commands.length} commands:`);
-        for (let command of result.taskResults[taskId].commands) {
-          console.log(`${command.device} ${command.interfaces} > ${command.commandLine}`);
-          if (command.resultCode !== CommandResultCode.Success) {
-            console.log(`Result code: ${command.resultCode}`);
-          }
-          if (command.output) console.log(command.output);
-        }
-      }
-    });
-
-
-    xit('Invoke All Correct and Distractor Paths', () => {
-      let pathCount = paths.GetPathCount();
-      for(let ordinal=0; ordinal<pathCount; ordinal++) {
-        let sim = SimulationFactory.load(SimICND2);
-        let result = ExamItemTester.InvokePath(sim, paths, ordinal);
-
-        for(let taskId in result.taskResults) {
-          console.log(`${taskId} has ${result.taskResults[taskId].commands.length} command results:`);
-          for (let command of result.taskResults[taskId].commands) {
-            console.log(`${command.device} ${command.interfaces} > ${command.commandLine}`);
-            if (command.resultCode !== CommandResultCode.Success) {
-              console.log(`Result code: ${command.resultCode}`);
-            }
-            if (command.output) console.log(command.output);
-          }
-        }
-      }
-    });
-  });  
-
-  xdescribe('ExamItemTester usage - command list', () => {
-    
-    it('Invoke command list', () => {
-      let sim = SimulationFactory.load(SimICND2);
-      let result = ExamItemTester.InvokeCommands(sim, sampleCommands);
-
-      console.log(`${result.commands.length} command results:`);
-      for (let command of result.commands) {
-        console.log(`${command.device} ${command.interfaces} > ${command.commandLine}`);
-        if (command.resultCode !== CommandResultCode.Success) {
-          console.log(`Result code: ${command.resultCode}`);
-        }
-        if (command.output) console.log(command.output);
-      }
-    });
-
-  });  
-
-}
-
-
 /**
  * A list of simple commands that can be invoked on a simulation via ExamItemTester
  */
-let sampleCommands: PathCommand[] = [{
+const sampleCommands: PathCommand[] = [{
   label: 'Create channel group',
   devices: 'SW1',
   interfaces: ['gi1/0', 'gi1/1'], // implies 'interface range gi1/0-1'
@@ -97,7 +30,7 @@ let sampleCommands: PathCommand[] = [{
 /**
  * An exam item spec, with each task having as set of commands defined as steps
  */
-let sampleExamItemSpec: IExamItemTasks = {
+const sampleExamItemSpec: IExamItemTasks = {
   'A': [{
       label: 'A1',
       devices: 'SW1',
@@ -121,7 +54,7 @@ let sampleExamItemSpec: IExamItemTasks = {
       interfaces: 'Port-channel 1',
       // dependencies: ['A1'],
       selectOneStep: [ // either command can be used, don't invoke both
-        { commandLine: 'switchport access vlan 10', distractors: null }, 
+        { commandLine: 'switchport access vlan 10', distractors: null },
         { commandLine: 'switchport mode access', distractors: null }
       ]
     }
@@ -172,3 +105,80 @@ let sampleExamItemSpec: IExamItemTasks = {
     }
   ]
 };
+
+export function main() {
+
+  // xdescribe('ExamItemTester', () => {
+  //   let paths = new ExamItemPaths(sampleSpec, { includeCommandLineForms: true });
+  // });
+
+  xdescribe('ExamItemTester usage - exam item spec path sample', () => {
+    const paths = new ExamItemPaths(sampleExamItemSpec, { includeCommandLineForms: true });
+
+    it('Invoke path 0', () => {
+      const sim = SimulationFactory.load(SimICND2);
+      const result = ExamItemTester.InvokePath(sim, paths, 0);
+
+      if (result.taskResults) {
+        for (const taskId in result.taskResults) {
+          console.log(`Task ${taskId} invoked ${result.taskResults[taskId].commands.length} commands:`);
+          for (const command of result.taskResults[taskId].commands) {
+            console.log(`${command.device} ${command.interfaces} > ${command.commandLine}`);
+            if (command.resultCode !== CommandResultCode.Success) {
+              console.log(`Result code: ${command.resultCode}`);
+            }
+            if (command.output) {
+              console.log(command.output);
+            }
+          }
+        }
+      }
+    });
+
+
+    xit('Invoke All Correct and Distractor Paths', () => {
+      const pathCount = paths.GetPathCount();
+      for (let ordinal = 0; ordinal < pathCount; ordinal++) {
+        const sim = SimulationFactory.load(SimICND2);
+        const result = ExamItemTester.InvokePath(sim, paths, ordinal);
+
+        if (result.taskResults) {
+          for (const taskId in result.taskResults) {
+            console.log(`${taskId} has ${result.taskResults[taskId].commands.length} command results:`);
+            for (const command of result.taskResults[taskId].commands) {
+              console.log(`${command.device} ${command.interfaces} > ${command.commandLine}`);
+              if (command.resultCode !== CommandResultCode.Success) {
+                console.log(`Result code: ${command.resultCode}`);
+              }
+              if (command.output) {
+                console.log(command.output);
+              }
+            }
+          }
+        }
+      }
+    });
+  });
+
+  xdescribe('ExamItemTester usage - command list', () => {
+
+    it('Invoke command list', () => {
+      const sim = SimulationFactory.load(SimICND2);
+      const result = ExamItemTester.InvokeCommands(sim, sampleCommands);
+
+      console.log(`${result.commands.length} command results:`);
+      for (const command of result.commands) {
+        console.log(`${command.device} ${command.interfaces} > ${command.commandLine}`);
+        if (command.resultCode !== CommandResultCode.Success) {
+          console.log(`Result code: ${command.resultCode}`);
+        }
+        if (command.output) {
+          console.log(command.output);
+        }
+      }
+    });
+
+  });
+
+}
+
