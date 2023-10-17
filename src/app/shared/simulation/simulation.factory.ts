@@ -3,13 +3,13 @@ import {SimDefinition} from './sim-definition';
 
 export class SimulationFactory {
 
+    private static _simulation: Simulation;
+
     static load(data: SimDefinition): Simulation {
-        let simulation = new Simulation();
+        const simulation = new Simulation();
         simulation.setupModel(data);
         return simulation;
     }
-
-    private static _simulation: Simulation;
 
     static getSimulation() {
         if (!SimulationFactory._simulation) {
