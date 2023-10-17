@@ -1,6 +1,6 @@
-import {Simulation} from "../../simulation";
-import {SimulationFactory} from "../../simulation.factory";
-import {SimICND2} from "../../exam/icnd2";
+import {Simulation} from '../../simulation';
+import {SimulationFactory} from '../../simulation.factory';
+import {SimICND2} from '../../exam/icnd2';
 
 export function main() {
 
@@ -8,8 +8,8 @@ export function main() {
         beforeEach((done) => {
         });
         it('autocompletes', () => {
-            let simulation: Simulation = SimulationFactory.load(SimICND2);
-            simulation.getDevice('SW1')
+            const simulation: Simulation = SimulationFactory.load(SimICND2);
+            simulation.getDevice('SW1');
             expect(1).toEqual(1);
         });
 
