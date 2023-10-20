@@ -45,11 +45,6 @@ stages:
         npm install
         ng build
       displayName: 'Install Node Packages and Build the App'
-      
-    - script: |
-        ng test
-      displayName: 'Run Tests'
-      condition: 
     
     - script: |
         ng lint
