@@ -11,24 +11,9 @@ import { MultiRange } from 'multi-integer-range';
 })
 export class AppComponent {
 
-  public title: string = "";
+  public title = "";
 
   constructor() {
     console.log('Environment config', Config);
   }
-
-  ngOnInit() {
-    // let value:string = "[4-8],3";
-
-    // value = value.split('[').join('').split(']').join('');
-    // let multiRange = new MultiRange(value);
-    // let values: number[] = multiRange.toArray();
-    // values = values.sort(function (a, b) {
-    //     return a - b
-    // });
-    // this.title = values.toString();
-    this.title = "Cisco Emulator";
-  }
-
-  
 }

@@ -12,24 +12,26 @@ let PortStatus = {
     FWD: 'FWD',
     LIS: 'LIS',
     LRN: 'LRN'
-}
+};
 
 let PortType = {
     'EDGE': 'Shr Edge',
     'Shr': 'Shr'
-}
+};
 
-//TODO: Verify for port channel in output once it is implemented.
+// TODO: Verify for port channel in output once it is implemented.
 export class BuildSpanningTreeOutput {
     // get status mode protocol text
     static getMode(mode: string): any {
         return vlanMode.filter((modeObj: any) => {
-            if (modeObj.id === mode) return modeObj;
+            if (modeObj.id === mode) {
+                return modeObj;
+            }
         })[0];
     }
-    //debugger;
+    // debugger;
     static getVlanInfo(vlanInfo: any, spanningTreeInfo: any) {
-        let vlanName = (spanningTreeInfo.mode === 'mst') ? 'MST0' : `VLAN000${vlanInfo.id}`
+        let vlanName = (spanningTreeInfo.mode === 'mst') ? 'MST0' : `VLAN000${vlanInfo.id}`;
         let result = '';
 
         result += `${vlanName}
@@ -45,16 +47,14 @@ export class BuildSpanningTreeOutput {
               Aging Time  300 sec \n \n`;
 
         let interfaces = UtilityModel.getInterfaces(vlanInfo.ports, spanningTreeInfo.ports);
-        if (interfaces && interfaces.length > 0)
+        if (interfaces && interfaces.length > 0) {
             result += `${BuildSpanningTreeOutput.getInterfaceInfo(interfaces, spanningTreeInfo.mode)} \n \n`;
-
+        }
         return result;
 
     }
 
-
-
-    static getInterfaceInfo(interfaces: any, mode: any) { //TODO: Find out how virl is dividing the blocks for interfaces
+    static getInterfaceInfo(interfaces: any, mode: any) { // TODO: Find out how virl is dividing the blocks for interfaces
         let result = `Interface           Role  Sts  Cost     Prio.Nbr Type \n------------------- ---- ---- ------- ---------- ---------------------------- \n`;
         interfaces.forEach(function (vlaninterface: any) {
             if (vlaninterface.protocol !== 'down') {
@@ -88,7 +88,9 @@ export class BuildSpanningTreeOutput {
         let activePorts: any[] = [];
         // get all active/up ports
         spanningTreeInfo.ports.forEach((port: any) => {
-            if (port.status === 'up') activePorts.push(port.interface);
+            if (port.status === 'up') {
+                activePorts.push(port.interface);
+            }
         });
 
 
@@ -110,19 +112,23 @@ export class BuildSpanningTreeOutput {
 
     static buildOutput(spanningTreeInfo: any): string {
         let result = '';
-        // If mode is mst we need to show only default Vlan 
+        // If mode is mst we need to show only default Vlan
         let vlans: any[] = [];
 
-        if (spanningTreeInfo.mode === 'mst')
+        if (spanningTreeInfo.mode === 'mst') {
             vlans = BuildSpanningTreeOutput.getMstInfo(spanningTreeInfo);
-        else
+        }
+        else {
             vlans = spanningTreeInfo.vlans.filter((vlan: any) => {
-                if (vlan.spanningEnabled && vlan.status !== "act/unsup") return vlan
+                if (vlan.spanningEnabled && vlan.status !== "act/unsup") {
+                    return vlan;
+                }
             });
+        }
 
         vlans.forEach(function (vlan: any) {
             result += BuildSpanningTreeOutput.getVlanInfo(vlan, spanningTreeInfo);
-        })
+        });
 
         return result;
 
@@ -141,9 +147,10 @@ export class UtilityModel {
         let resultPorts: any[] = [];
         // get ports definition that are matched with  vlan ports
         ports.forEach(function (port: any) {
-            if (interfaceports.includes(port.interface))
+            if (interfaceports.includes(port.interface)) {
                 resultPorts.push(port);
-        })
+            }
+        });
 
         return resultPorts;
     }

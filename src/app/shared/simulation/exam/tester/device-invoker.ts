@@ -1,4 +1,4 @@
-﻿import { IEmulatedDevice } from "../../emulator/interfaces/iemulated-device";
+﻿import { IEmulatedDevice } from '../../emulator/interfaces/iemulated-device';
 import { IEmulatedTerminal, CommandResult, CommandResultCode } from '../../emulator/interfaces/iemulated-terminal';
 import { AsArray, AsSingle } from '../../emulator/util';
 
@@ -8,14 +8,14 @@ export interface InterfaceSelector {
   range?: string; // a range of interfaces to be selected
 }
 
-//export interface DeviceCommand {
+// export interface DeviceCommand {
 //  id: number; // for result tracking
 //  commandLine: string;
-//}
+// }
 
 export interface DeviceInvokeResult {
   interfaces: InterfaceSelector;
-  //command: DeviceCommand;
+  // command: DeviceCommand;
   commandLine: string;
   resultCode?: CommandResultCode;
   output?: string;
@@ -28,11 +28,11 @@ export class DeviceInvoker {
 
   public invoke(interfaces: string | string[], commands: string[]): DeviceInvokeResult[] {
     // to issue the commands for all interfaces, multiple passes may be necessary
-    let selectors = this.getInterfaceSelectors(interfaces);
+    const selectors = this.getInterfaceSelectors(interfaces);
 
     let results: DeviceInvokeResult[] = [];
-    for (let selector of selectors) {
-      let result = this.invokeForInterface(selector, commands);
+    for (const selector of selectors) {
+      const result = this.invokeForInterface(selector, commands);
       results = [...results, ...result];
     }
     return results;
@@ -42,13 +42,13 @@ export class DeviceInvoker {
   }
 
   private invokeForInterface(selector: InterfaceSelector, commands: string[]): DeviceInvokeResult[] {
-    let terminal = this.getTerminal(selector);
+    const terminal = this.getTerminal(selector);
 
-    let results: DeviceInvokeResult[] = [];
-    for (let command of commands) {
-      let invokeResult: DeviceInvokeResult = { interfaces: selector, commandLine: command };
+    const results: DeviceInvokeResult[] = [];
+    for (const command of commands) {
+      const invokeResult: DeviceInvokeResult = { interfaces: selector, commandLine: command };
       try {
-        let cmdResult = terminal.invoke(command);
+        const cmdResult = terminal.invoke(command);
         invokeResult.resultCode = cmdResult.resultCode;
         invokeResult.output = cmdResult.output;
       } catch (e) {
@@ -74,8 +74,8 @@ export class DeviceInvoker {
     }
 
     // get the terminal to the required config state
-    let isEnabled = false; // TODO: get from terminal context
-    let isConfTerm = false; // TODO: get from terminal context
+    const isEnabled = false; // TODO: get from terminal context
+    const isConfTerm = false; // TODO: get from terminal context
     let cmdResult: CommandResult;
     if (!isEnabled) {
       cmdResult = this.terminal.invoke('enable');
@@ -99,9 +99,9 @@ export class DeviceInvoker {
   /**
    * Converts an array of interfaces to one or more selectors, each representing a single
    * interface or an interface range
-   * @param interfaces 
-   * 
-   * Examples: 
+   * @param interfaces
+   *
+   * Examples:
    *  interfaces: ['gi1/0', 'gi1/1', 'gi1/2'] => [{ range: 'gi1/0-2' }]
    *  interfaces: ['gi1/0', 'gi2/1', 'gi1/3'] => [
    *    { single: 'gi1/0' },
@@ -114,7 +114,7 @@ export class DeviceInvoker {
       return [{ range: this.toInterfaceRange(interfaces) }];
     }
 
-    return AsArray(interfaces).map((value: string): InterfaceSelector => { return { single: value }});
+    return AsArray(interfaces).map((value: string): InterfaceSelector => { return { single: value }; });
   }
 
   private toInterfaceRange(interfaces: string | string[]): string {

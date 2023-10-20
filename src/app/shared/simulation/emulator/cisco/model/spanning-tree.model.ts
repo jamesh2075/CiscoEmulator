@@ -1,29 +1,29 @@
-import { BaseModel } from "./base.model";
-import { Type } from "class-transformer";
-import { IVlan } from "./vlan.model";
+import { BaseModel } from './base.model';
+import { Type } from 'class-transformer';
+import { IVlan } from './vlan.model';
 
 
 export interface IPortFastDefault {
-    default: boolean
+    default: boolean;
 }
 
 export interface IPortFastEdge {
-    bpdufilter: IPortFastDefault,
-    bpduguard: IPortFastDefault,
-    default: boolean
+    bpdufilter: IPortFastDefault;
+    bpduguard: IPortFastDefault;
+    default: boolean;
 }
 
 export interface IPortFast {
-    edge: IPortFastEdge,
-    network: IPortFastDefault,
-    normal: IPortFastDefault
+    edge: IPortFastEdge;
+    network: IPortFastDefault;
+    normal: IPortFastDefault;
 }
 
 export interface ISpanningTree {
-    mode: string,
-    defaultPriority: number,
-    portfast: IPortFast,
-    vlan: IVlan
+    mode: string;
+    defaultPriority: number;
+    portfast: IPortFast;
+    vlan: IVlan;
 }
 
 export class PortFastDefault extends BaseModel implements IPortFastDefault {

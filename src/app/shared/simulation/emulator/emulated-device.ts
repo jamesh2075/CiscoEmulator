@@ -47,15 +47,17 @@ export class EmulatedDevice extends EmulatedDeviceBase {
     return false;
   }
   getDefaultTerminal(): IEmulatedTerminal {
-    return null;
+    const unknown: any = null;
+    return unknown;
   }
   createPrivateTerminal(): IEmulatedTerminal {
-    return null;
+    const unknown: any = null;
+    return unknown;
   }
 
   getInterface(selector: string): IEmulatedInterface {
     let model = this.model.interfaces.find((iface) => iface.name === selector);
-    if(!model) {
+    if (!model) {
       return null;
     }
     return this.getOrCreateInterface(model);
@@ -69,7 +71,7 @@ export class EmulatedDevice extends EmulatedDeviceBase {
       // return a non-singleton instance
       return new EmulatedInterface(model);
     }
-    let id = model.id;
+    const id = model.id;
     let result = this._interfaces[id];
     if (!result) {
       result = new EmulatedInterface(model);

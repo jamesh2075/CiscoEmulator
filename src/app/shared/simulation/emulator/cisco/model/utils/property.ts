@@ -1,4 +1,4 @@
-import {isArray, isUndefined} from "./validators";
+import {isArray, isUndefined} from './validators';
 
 /**
  * @usage
@@ -16,20 +16,7 @@ import {isArray, isUndefined} from "./validators";
  */
 
 
-let aryIndexRx = /\[(.*?)\]/g;
-
-function pathToArray(path:any = '', delimiter = '.', data:any = {}):string[] {
-    if (isArray(path)) {
-        return path as Array<string>;
-    }
-    path = path.replace(aryIndexRx, function (m:string, g1:string) {
-        if (g1.indexOf('"') !== -1 || g1.indexOf("'") !== -1) {
-            return delimiter + g1;
-        }
-        return delimiter + property(data).get(g1);
-    });
-    return path.split(delimiter);
-}
+const aryIndexRx = /\[(.*?)\]/g;
 
 export class Property {
 
@@ -39,11 +26,11 @@ export class Property {
     get(path = '', delimiter = '.'): any {
         // a.b['1'].c => a.b.1.c
         path = path.replace(/['"\[\]]/gm, delimiter);
-        path = path.replace(/\.+/gm, ".");
-        let arr = path.split(delimiter || '.'),
-            space = '',
-            i = 0,
-            len = arr.length;
+        path = path.replace(/\.+/gm, '.');
+        const arr = path.split(delimiter || '.');
+        let space = '';
+        let i = 0;
+        const len = arr.length;
 
         let data = this.data;
 
@@ -58,15 +45,15 @@ export class Property {
         return data;
     }
 
-    set(path = '', value:any = null, delimiter = '.') {
+    set(path = '', value: any = null, delimiter = '.') {
         if (isUndefined(path)) {
             throw new Error('property.set() requires "path"');
         }
-        let data = this.data,
-            arr = pathToArray(path, delimiter, data),
-            space = '',
-            i = 0,
-            len = arr.length - 1;
+        let data = this.data;
+        const arr = pathToArray(path, delimiter, data);
+        let space = '';
+        let i = 0;
+        const len = arr.length - 1;
 
         while (i < len) {
             space = arr[i];
@@ -84,15 +71,15 @@ export class Property {
     }
 
 
-    default(path = '', value:any = null, delimiter = '.') {
+    default(path = '', value: any = null, delimiter = '.') {
         if (isUndefined(this.get(path, delimiter))) {
             this.set(path, value, delimiter);
         }
     };
 
     clear() {
-        let d = this.data;
-        for (let e in d) {
+        const d = this.data;
+        for (const e in d) {
             if (d.hasOwnProperty(e)) {
                 delete d[e];
             }
@@ -104,6 +91,19 @@ export class Property {
     };
 }
 
-export let property = (data:any) => {
+export let property = (data: any) => {
     return new Property(data);
 };
+
+function pathToArray(path: any = '', delimiter = '.', data: any = {}): string[] {
+    if (isArray(path)) {
+        return path as Array<string>;
+    }
+    path = path.replace(aryIndexRx, function (m: string, g1: string) {
+        if (g1.indexOf(`'`) !== -1 || g1.indexOf(`'`) !== -1) {
+            return delimiter + g1;
+        }
+        return delimiter + property(data).get(g1);
+    });
+    return path.split(delimiter);
+}

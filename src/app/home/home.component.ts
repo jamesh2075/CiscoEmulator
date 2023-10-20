@@ -6,13 +6,13 @@ import { NameListService } from '../shared/name-list/name-list.service';
  */
 @Component({
   moduleId: module.id,
-  selector: 'sd-home',
+  selector: 'app-sd-home',
   templateUrl: 'home.component.html',
   styleUrls: ['home.component.css'],
 })
 export class HomeComponent implements OnInit {
 
-  newName: string = '';
+  newName = '';
   errorMessage: string;
   names: any[] = [];
 

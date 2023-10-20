@@ -1,5 +1,5 @@
-﻿import { Observable, BehaviorSubject } from 'rxjs';
-import { IEmulatedDevice } from '../../emulator/interfaces/iemulated-device';
+﻿// import { Observable, BehaviorSubject } from 'rxjs/Rx';
+// import { IEmulatedDevice } from '../../emulator/interfaces/iemulated-device';
 import { IEmulatedTerminal, CommandResult, CommandResultCode } from '../../emulator/interfaces/iemulated-terminal';
 import { Simulation } from '../../simulation';
 import { SimDefinition, SimTask, SimDevice, SimDeviceType, SimNetworkInterface, SimCommandData, SimConnection } from '../../sim-definition';
@@ -48,30 +48,30 @@ export class ExamItemPathResult {
 export class ExamItemTester {
 
   ///** Returns a set of identifier strings that should be equivalent to the identifier passed in */
-  //static interfaceIdentifiers(identifier: string): string[] {
+  // static interfaceIdentifiers(identifier: string): string[] {
   //  // TODO: Return aliases for 'identifier'
-    
+
   //  return [identifier]; // Stub implementation
-  //}
+  // }
 
   ///** Returns a set of range selectors (if any) that can be used to select all of the specified interfaces
   // * with the 'interface range xxx' command
   // */
-  //static interfaceRanges(identifiers: string[], includeNameForms?: boolean): string[] {
+  // static interfaceRanges(identifiers: string[], includeNameForms?: boolean): string[] {
   //  // TODO: Return all valid range selectors that select all of the interfaces in 'identifiers'
 
   //  return []; // Stub implementation
-  //}
+  // }
 
   static InvokePath(sim: Simulation, paths: ExamItemPaths, ordinal: number, scoreKey?: ExamItemScoreKey): ExamItemPathResult {
-    let result = new ExamItemPathResult;
+    const result = new ExamItemPathResult;
 
     result.taskPaths = paths.GetTaskPathsByOrdinal(ordinal);
     result.taskCommands = paths.GetPathCommands(result.taskPaths);
 
-    let invoker = new CommandInvoker(sim);
-    for (let taskId in result.taskCommands) {
-      let taskScoreKey: ITaskScoreKey = (scoreKey) ? scoreKey[taskId] : undefined;
+    const invoker = new CommandInvoker(sim);
+    for (const taskId in result.taskCommands) {
+      const taskScoreKey: ITaskScoreKey = (scoreKey) ? scoreKey[taskId] : undefined;
       result.taskResults[taskId] = ExamItemTester.InvokeCommands(sim, result.taskCommands[taskId], taskScoreKey);
     }
 
@@ -79,9 +79,9 @@ export class ExamItemTester {
   }
 
   static InvokeCommands(sim: Simulation, commands: PathCommand[], scoreKey?: ITaskScoreKey): TaskResult {
-    let invoker = new CommandInvoker(sim);
+    const invoker = new CommandInvoker(sim);
 
-    let result = new TaskResult;
+    const result = new TaskResult;
     result.stateBefore = sim.getModel();
     result.commands = invoker.invoke(commands);
     result.stateAfter = sim.getModel();
@@ -96,8 +96,8 @@ export class ExamItemTester {
 }
 
 class CommandInvoker {
-  //private commands: BehaviorSubject<PathCommand>;
-  //private deviceCommands: Observable<PathCommand>;
+  // private commands: BehaviorSubject<PathCommand>;
+  // private deviceCommands: Observable<PathCommand>;
   private deviceInvokers: { [key: string]: DeviceInvoker } = {};
 
   invoke(commands: PathCommand[]): PathCommandResult[] {
@@ -110,7 +110,7 @@ class CommandInvoker {
       if (cmdInterfaces !== blockIfaces) {
         if (block.length > 0) {
           // the current command specifies different interfaces, so process all commands in the current block
-          let result = this.invokeOnDevices(block[0].interfaces, block);
+          const result = this.invokeOnDevices(block[0].interfaces, block);
           results = [...results, ...result];
           block = [];
         }
@@ -128,7 +128,7 @@ class CommandInvoker {
   }
 
   constructor(public sim: Simulation) {
-    //this.commands = new BehaviorSubject<PathCommand>({ devices: '', commandLine: '' });
+    // this.commands = new BehaviorSubject<PathCommand>({ devices: '', commandLine: '' });
     for (const device of sim.devices) {
       if (device.isTerminalEnabled()) {
         this.deviceInvokers[device.name.toLowerCase()] = new DeviceInvoker(device);
@@ -143,15 +143,19 @@ class CommandInvoker {
       const devices = AsArray(command.devices);
       for (const device of devices) {
         const deviceName = device.toLowerCase();
-        if (!perDevice[deviceName]) perDevice[deviceName] = [];
+        if (!perDevice[deviceName]) {
+          perDevice[deviceName] = [];
+        }
         perDevice[deviceName].push(command);
       }
     }
 
     let results: PathCommandResult[] = [];
-    for (let device in perDevice) {
+    for (const device in perDevice) {
       const invoker = this.deviceInvokers[device];
-      if (!invoker) throw new Error(`Invoker for ${device} not found`);
+      if (!invoker) {
+        throw new Error(`Invoker for ${device} not found`);
+      }
       const deviceResults = invoker.invoke(interfaces, perDevice[device].map(value => value.commandLine));
       const converted = deviceResults.map((value): PathCommandResult => {
         return {

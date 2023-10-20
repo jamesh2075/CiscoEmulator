@@ -11,7 +11,7 @@ export enum CommandResultCode {
 export class CommandResult {
     resultCode: CommandResultCode;
     output: string;
-    newCommandLine?: string = '';
+    newCommandLine? = '';
 }
 
 export interface IEmulatedTerminal {

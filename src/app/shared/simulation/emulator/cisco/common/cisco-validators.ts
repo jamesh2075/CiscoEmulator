@@ -18,7 +18,7 @@ export class CiscoValidators {
 
     // check if a string value is in the array of allowed values
     static validateStringInArray(value: string, rangeValues: Array<string>): boolean {
-        let found: boolean = false;
+        let found = false;
 
         for (let i = 0; i < rangeValues.length; ++i) {
             if (value.toLowerCase() === rangeValues[i].toLowerCase()) {
@@ -31,17 +31,17 @@ export class CiscoValidators {
 
     static validateVlan(value: number) {
 
-        let valid: boolean = true;
-        let error: string = undefined;
+        let valid = true;
+        let error = '';
         let vlanNumber: number = undefined;
 
-        //These are all the messages returned depending on the mode, etc.
+        // These are all the messages returned depending on the mode, etc.
         let messages = {
             deleted: '% Default VLAN (' + value + ') may not be deleted.\n',
             outofrange: 'Command rejected: Bad VLAN list\number (' + value + ') out of range}',
             warning: '% Warning: port will be inactive in non-ethernet VLAN',
             invalid: CommandConstants.ERROR_MESSAGES.INVALID_INPUT
-        }
+        };
 
         if (value) {
             vlanNumber = Number(value);
@@ -55,26 +55,26 @@ export class CiscoValidators {
                 }
             } else {
                 valid = false;
-                error = messages.invalid
+                error = messages.invalid;
             }
         } else {
             valid = false;
-            error = messages.invalid
+            error = messages.invalid;
         }
 
         return {
             valid: valid,
             error: error,
             messages
-        }
+        };
     }
 
     // check if source string equals a target string up to a certain number of characters
     static validateIn(source: string, target: string, minimum?: number) {
-        let isValid: boolean = true;
-        let ambiguous: boolean = false;
-        let length: number = 0;
-        for (let index: number = 0; index < source.length; index++) {
+        let isValid = true;
+        let ambiguous = false;
+        let length = 0;
+        for (let index = 0; index < source.length; index++) {
             if (source.substr(index, 1).toLowerCase() !== target.substr(index, 1).toLowerCase()) {
                 isValid = false;
                 break;
@@ -91,7 +91,7 @@ export class CiscoValidators {
         return {
             isValid: isValid,
             ambiguous: ambiguous
-        }
+        };
     }
     static isNumber(token: string): boolean {
         return !isNaN(Number(token));

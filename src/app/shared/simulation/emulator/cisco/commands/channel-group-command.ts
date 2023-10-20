@@ -1,10 +1,10 @@
 import { TerminalCommand } from '../../interfaces/terminal-command';
 import { CommandState } from '../../interfaces/command-state';
 import { CiscoTerminalContext, CiscoCommandContext } from '../cisco-terminal-command';
-import { EventDispatcher } from "event-dispatch";
-import { CommandConstants } from "../common/cisco-constants";
-import { CiscoValidators } from "../common/cisco-validators";
-import { CiscoUtils } from "../common/cisco-utils";
+import { EventDispatcher } from 'event-dispatch';
+import { CommandConstants } from '../common/cisco-constants';
+import { CiscoValidators } from '../common/cisco-validators';
+import { CiscoUtils } from '../common/cisco-utils';
 
 // channel-group (0-255) mode (active|auto|desirable|on|passive)
 // let ChannelGroupModel = {
@@ -38,7 +38,7 @@ export class ShowPortItem implements IShowPortItem {
 }
 
 
-let eventDispatcher = new EventDispatcher();
+const eventDispatcher = new EventDispatcher();
 export class ChannelGroupCommand {
     static STRINGS = {
         CHANNEL_GROUP_MODE_ACTIVE: 'active',
@@ -49,37 +49,36 @@ export class ChannelGroupCommand {
     };
 
     static ChannelGroup(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        let groupNumber = cmdState.properties['groupNumber'];
-        let value = cmdState.properties['groupMode'];
-        let interfaces = cmdState.properties['interfaces'];
+        const groupNumber = cmdState.properties['groupNumber'];
+        const value = cmdState.properties['groupMode'];
+        const interfaces = cmdState.properties['interfaces'];
         if (!groupNumber || !value) {
             cmdState.stopProcessing = true;
             cmdState.output = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
             return cmdState;
         }
-        let valid: boolean = true;
-        let message: string = undefined;
+        let valid = true;
+        let message = '';
         for (let i = 0; i < cmdContext.interfaces.length; ++i) {
-            let interfaceName = cmdContext.interfaces[i].property('name');
-            let shortInterfaceName = cmdContext.interfaces[i].property('shortName');
-            
-            let vrfPort = CiscoUtils.getVrfPort();
+            const interfaceName = cmdContext.interfaces[i].property('name');
+            const shortInterfaceName = cmdContext.interfaces[i].property('shortName');
+            const vrfPort = CiscoUtils.getVrfPort();
             if (vrfPort.fullName.toLowerCase() === interfaceName.toLowerCase()) {
                 valid = false;
                 message = CommandConstants.ERROR_MESSAGES.VRF_PORT;
                 break;
             }
 
-            //JIM'S Code to remove the interface from the vlans
-            let vlans: any[] = cmdContext.device.model.vlans;
-            for (let vlan of vlans){
-                let vPorts: any[] = vlan.ports;
-                let vlanID = vlans.indexOf(vlan);
-                for(let port of vPorts)
+            // Jim Eason's Code to remove the interface from the vlans
+            const vlans: any[] = cmdContext.device.model.vlans;
+            for (const vlan of vlans){
+                const vPorts: any[] = vlan.ports;
+                const vlanID = vlans.indexOf(vlan);
+                for (const port of vPorts)
                 {
-                    if(port === shortInterfaceName){
-                        let index = vPorts.indexOf(port);
-                        cmdContext.device.model.vlans[vlanID].ports.splice(index,1);
+                    if (port === shortInterfaceName) {
+                        const index = vPorts.indexOf(port);
+                        cmdContext.device.model.vlans[vlanID].ports.splice(index, 1);
                     }
                 }
             }
@@ -92,36 +91,38 @@ export class ChannelGroupCommand {
 
         if (valid === true) {
             // TODO: Validate the groupNumber is a valid number
-            // ((object["channel-group"])[groupNumber]).property = value;
-            //let selector = ['channel-group', groupNumber, 'mode'];
-            let selector = ['channelGroup'];
-            let channelGroup: any = {
+            // ((object['channel-group'])[groupNumber]).property = value;
+            // let selector = ['channel-group', groupNumber, 'mode'];
+            const selector = ['channelGroup'];
+            const channelGroup: any = {
                 id: Number(groupNumber),
                 mode: value,
                 protocol: undefined
             };
-            let groupMode = cmdState.properties['groupMode'];
+            const groupMode = cmdState.properties['groupMode'];
             if (groupMode === ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_ACTIVE) {
                 channelGroup.protocol = ChannelGroupCommand.STRINGS.CHANNEL_PROTOCOL_LACP;
             } else if (groupMode === ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_AUTO
                 || groupMode === ChannelGroupCommand.STRINGS.CHANNEL_GROUP_MODE_DESIRABLE) {
                 channelGroup.protocol = ChannelGroupCommand.STRINGS.CHANNEL_PROTOCOL_PAgP;
             }
-            //value = `${groupNumber} mode ${value}`;
+            // value = `${groupNumber} mode ${value}`;
             cmdState.ChangeProperty(selector, channelGroup);
-            //additional information from documentation online:
+            // additional information from documentation online:
             // mode        Specifies the EtherChannel mode of the interface.
             // active      Enables Link Aggregation Control Protocol (LACP) unconditionally.
             // on          Enables EtherChannel only.
-            // auto        Places a port into a passive negotiating state in which the port responds to Port Aggregation Protocol (PAgP) packets that it receives but does not initiate PAgP packet negotiation.
+            // auto        Places a port into a passive negotiating state in which the port responds to Port
+            //             Aggregation Protocol (PAgP) packets that it receives but does not initiate PAgP packet negotiation.
             // non-silent  (Optional) Used with the auto or desirable mode when traffic is expected from the other device.
-            // desirable   Places a port into an active negotiating state in which the port initiates negotiations with other ports by sending PAgP packets.
+            // desirable   Places a port into an active negotiating state in which the port initiates negotiations
+            //             with other ports by sending PAgP packets.
             // passive     Enables LACP only when an LACP device is detected.
 
             // let selector2:string[] = cmdState.getProperty('interfaces');
             // selector2.unshift('Port-channel1');
             // //todo: validate that there is a value in the properties
-            // let value2 = "";
+            // let value2 = '';
 
             // cmdState.ChangeProperty(selector2, value2);
 
@@ -161,22 +162,27 @@ export class ChannelGroupCommand {
         cmdState.properties['groupMode'] = cmdState.command.command.name;
     }
 }
-let channelGroupMode: TerminalCommand = {
+const channelGroupMode: TerminalCommand = {
     name: 'mode',
     description: 'Etherchannel Mode of the interface',
     children: [
-        { name: 'active', description: 'Enable LACP unconditionally', handler: ChannelGroupCommand.ChannelGroupModeParam },
-        { name: 'auto', description: 'Enable PAgP only if a PAgP device is detected', handler: ChannelGroupCommand.ChannelGroupModeParam },
-        { name: 'desirable', description: 'Enable PAgP unconditionally', handler: ChannelGroupCommand.ChannelGroupModeParam },
-        { name: 'on', description: 'Enable Etherchannel only', handler: ChannelGroupCommand.ChannelGroupModeParam },
-        { name: 'passive', description: 'Enable LACP only if a LACP device is detected', handler: ChannelGroupCommand.ChannelGroupModeParam }
+        { name: 'active', description: 'Enable LACP unconditionally',
+                handler: ChannelGroupCommand.ChannelGroupModeParam },
+        { name: 'auto', description: 'Enable PAgP only if a PAgP device is detected',
+                handler: ChannelGroupCommand.ChannelGroupModeParam },
+        { name: 'desirable', description: 'Enable PAgP unconditionally',
+                handler: ChannelGroupCommand.ChannelGroupModeParam },
+        { name: 'on', description: 'Enable Etherchannel only',
+                handler: ChannelGroupCommand.ChannelGroupModeParam },
+        { name: 'passive', description: 'Enable LACP only if a LACP device is detected',
+                handler: ChannelGroupCommand.ChannelGroupModeParam }
     ],
     handler: ChannelGroupCommand.ModeHandler,
     notTerminalFlag: true
 };
 
 
-let channelGroupNumber: TerminalCommand = {
+const channelGroupNumber: TerminalCommand = {
     name: '<1-255>',
     description: 'Channel group number ',
     children: [
@@ -190,7 +196,7 @@ let channelGroupNumber: TerminalCommand = {
 };
 
 
-//channel-group 234 mode active
+// channel-group 234 mode active
 export let channelGroupCommand: TerminalCommand = {
     name: 'channel-group',
     description: 'Etherchannel/port bundling configuration',
@@ -211,18 +217,18 @@ export let channelGroupCommand: TerminalCommand = {
 export class NoChannelGroupCommands {
     static NoChannelGroupHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         cmdState.stopProcessing = true;
-        let groupNumber = cmdState.properties['groupNumber'];
-        let value = cmdState.properties['groupMode'];
+        const groupNumber = cmdState.properties['groupNumber'];
+        const value = cmdState.properties['groupMode'];
         if (!groupNumber ? value : !value) { // XOR Case for number and value to handle outputs as per VIRL
             cmdState.output = CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND;
             cmdState.stopProcessing = true;
             return cmdState;
         }
 
-        let selector = ['channelGroup'];
+        const selector = ['channelGroup'];
         cmdState.ChangeProperty(selector, null);
         return cmdState;
-        //cmdState.DispatchEvent(CommandConstants.EVENTS.CHANNEL_GROUP_CHANGED, { channelGroup: channelGroup });
+        // cmdState.DispatchEvent(CommandConstants.EVENTS.CHANNEL_GROUP_CHANGED, { channelGroup: channelGroup });
     }
 }
 
@@ -235,7 +241,7 @@ export let noChannelGroupModeCommand: TerminalCommand = {
         channelGroupNumber,
         { name: 'auto', description: `Enable LACP auto on this interface` }
     ]
-}
+};
 
 
 // export let noChannelGroupCommand: TerminalCommand = {

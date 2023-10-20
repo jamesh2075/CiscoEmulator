@@ -32,13 +32,13 @@ export class CiscoUtils {
         return {
             fullName: 'GigabitEthernet0/0',
             shortName: 'Gi0/0'
-        }
+        };
     }
 
     static parsePorts(s: string): string {
         let str: string[] = s.split(',');
-        let result: string = '';
-        let count: number = 1;
+        let result = '';
+        let count = 1;
 
         for (let n = 0; n <= str.length - 1; n++) {
             if (count > 4) {
@@ -56,16 +56,16 @@ export class CiscoUtils {
         return result;
     }
 
-    static parsePortChannel(pc: any):any {
+    static parsePortChannel(pc: any): any {
         
-        let info:any = {
-            id:undefined,
+        let info: any = {
+            id: undefined,
             name: undefined,
             protocol: undefined,
-            status:undefined,
+            status: undefined,
             switchports: undefined,
             type: undefined
-        }
+        };
         
 
         return info;

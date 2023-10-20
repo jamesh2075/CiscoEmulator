@@ -12,13 +12,13 @@ export class BuildInterfacesDataOutput {
 
 
         interfaces.forEach(function (port: any) {
-            let name = port.name;
-            let address = (port.address || 'fa16.3e6a.502e');
-            let status = (port.status === 'up') ? port.status : `administratively down`;
-            let duplex = (port.duplex) ? `${port.duplex}-duplex` : `unknown`;
-            let speed = (port.speed) ? `${port.speed}-speed` : `unknown`;
-            let statusText = (port.status === 'up') ? 'connected' : `disabled`;
-            let internetAddress = (!port.internetAddress) ? `Internet address is ${port.internetAddress}/${port.subnet}` : '';
+            const name = port.name;
+            const address = (port.address || 'fa16.3e6a.502e');
+            const status = (port.status === 'up') ? port.status : `administratively down`;
+            const duplex = (port.duplex) ? `${port.duplex}-duplex` : `unknown`;
+            const speed = (port.speed) ? `${port.speed}-speed` : `unknown`;
+            const statusText = (port.status === 'up') ? 'connected' : `disabled`;
+            const internetAddress = (!port.internetAddress) ? `Internet address is ${port.internetAddress}/${port.subnet}` : '';
             if (port.$class === 'GigabitEthernet') {
                 result += `${port.name} is ${status} , line protocol is ${port.protocol} (${statusText}) 
   Hardware is ${port.hardware}, address is ${address} (bia ${address})\n`;
@@ -51,10 +51,9 @@ export class BuildInterfacesDataOutput {
      0 watchdog, 0 multicast, 0 pause input \n`;
                 if (port.protocol === 'down') {
                     result += `     0 packets output, 0 bytes, 0 underruns \n`;
-                }
-                else {
-                    let p = Math.floor(Math.random() * 6000) + 3000;
-                    let b = p * 137;
+                } else {
+                    const p = Math.floor(Math.random() * 6000) + 3000;
+                    const b = p * 137;
                     result += `     ${p} packets output, ${b} bytes, 0 underruns \n`;
                 }
                 result += `     0 output errors, 0 collisions, 2 interface resets
@@ -63,9 +62,7 @@ export class BuildInterfacesDataOutput {
      0 lost carrier, 0 no carrier, 0 pause output
      0 output buffer failures, 0 output buffers swapped out \n`;
 
-            }
-
-            else if (port.$class === 'Port') {
+            } else if (port.$class === 'Port') {
                 result += `${port.name} is up , line protocol is up (connected) 
   Hardware is EthernetChannel, address is 0000.0000.0000 (bia 0000.0000.0000)
   MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec, 
@@ -92,7 +89,7 @@ export class BuildInterfacesDataOutput {
      0 unknown protocol drops
      0 babbles, 0 late collision, 0 deferred
      0 lost carrier, 0 no carrier, 0 pause output
-     0 output buffer failures, 0 output buffers swapped out \n`
+     0 output buffer failures, 0 output buffers swapped out \n`;
             }
             else {
                 loopbackResult += `${port.name} is up, line protocol is up 

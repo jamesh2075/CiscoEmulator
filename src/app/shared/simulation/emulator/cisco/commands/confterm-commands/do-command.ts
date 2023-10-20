@@ -3,7 +3,7 @@ import {CommandState} from '../../../interfaces/command-state';
 import {CiscoTerminalContext, CiscoCommandContext, InterfaceSelector} from '../../cisco-terminal-command';
 import {CiscoCommandParser} from '../../command-parser';
 import {showCommand} from './../../commands/show-commands/show-command';
-import { CommandConstants } from "../../common/cisco-constants";
+import { CommandConstants } from '../../common/cisco-constants';
 
 export class DoCommands {
     static doHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
@@ -21,6 +21,6 @@ export let doCommand: TerminalCommand = {
     ],
     handler: DoCommands.doHandler,
     noHelp: true
-}
+};
 
 

@@ -35,15 +35,15 @@ export abstract class EmulatedInterfaceBase implements IEmulatedInterface {
 
 export class EmulatedInterface extends EmulatedInterfaceBase {
   onPeerStatusChanged(peerStatus: string): void {
-      throw new Error("Method not implemented.");
+      throw new Error('Method not implemented.');
   }
   onStatusChanged(): void {
-      throw new Error("Method not implemented.");
+      throw new Error('Method not implemented.');
   }
   noShutdown(): void {
-      throw new Error("Method not implemented.");
+      throw new Error('Method not implemented.');
   };
   shutdown(): void {
-      throw new Error("Method not implemented.");
+      throw new Error('Method not implemented.');
   };
 }

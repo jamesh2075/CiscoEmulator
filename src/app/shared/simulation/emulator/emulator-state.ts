@@ -19,7 +19,9 @@ export class StateContainer implements IState {
     }
 
     property(selector: string | string[]): any {
-        if (!Array.isArray(selector)) selector = [selector];
+        if (!Array.isArray(selector)) {
+            selector = [selector];
+        }
 
         let obj = this.findPropertyContainer(selector);
 
@@ -38,7 +40,9 @@ export class StateContainer implements IState {
     }
 
     setProperty(selector: string | string[], value: any) {
-        if (!Array.isArray(selector)) selector = [selector];
+        if (!Array.isArray(selector)) {
+            selector = [selector];
+        }
 
         let obj = this.findPropertyContainer(selector);
         // the name of the property we're setting is the last selector
@@ -84,7 +88,9 @@ export class StateContainer implements IState {
 
 export class EmulatorDeviceState extends StateContainer {
     setProperty(selector: string | string[], value: any) {
-        if (!Array.isArray(selector)) selector = [selector];
+        if (!Array.isArray(selector)) {
+            selector = [selector];
+        }
         switch (selector[0].toLowerCase()) {
             // Ignore these properties
             //case 'interfaces': //KB: I'm un ignoring this property

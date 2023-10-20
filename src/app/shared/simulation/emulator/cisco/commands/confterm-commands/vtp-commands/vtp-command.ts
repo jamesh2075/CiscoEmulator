@@ -4,9 +4,9 @@ import { CommandState } from '../../../../interfaces/command-state';
 import { StateContainer } from '../../../../emulator-state';
 import { CiscoCommandParser } from '../../../command-parser';
 import { CiscoCommandContext } from '../../../cisco-terminal-command';
-import { CommandConstants } from "../../../common/cisco-constants";
+import { CommandConstants } from '../../../common/cisco-constants';
 
-let vtpDataModel = {
+const vtpDataModel = {
     vtp: {
         mode: {}
     }
@@ -16,17 +16,17 @@ export class VtpCommands {
 
 
     static vtpHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        let selector: string[] = cmdState.properties['selector'] || [];
+        const selector: string[] = cmdState.properties['selector'] || [];
         selector.unshift('vtp');
-        //todo: validate that there is a value in the properties
-        let value = cmdState.properties['value'];
+        // todo: validate that there is a value in the properties
+        const value = cmdState.properties['value'];
 
         if (value) {
             cmdState.output = `Setting device to VTP ${value} mode for VLANS`;
             cmdState.ChangeProperty(selector, value);
-        }
-        else
+        } else {
             cmdState.output = CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND;
+        }
         return cmdState;
 
     }
@@ -34,13 +34,13 @@ export class VtpCommands {
     static vtpModeValueHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
 
         if (cmdState.command.command.name === 'transparent') {
-            let mode: string = cmdContext.device.property('mode');
+            const mode: string = cmdContext.device.property('mode');
             if (mode === 'transparent') {
-                cmdState.output = "Device mode already VTP Transparent for VLANS.";
+                cmdState.output = 'Device mode already VTP Transparent for VLANS.';
                 cmdState.stopProcessing = true;
                 return;
             }
-        } //else let normal handling continue
+        } // else let normal handling continue
         cmdState.properties['value'] = cmdState.command.command.name;
     }
 
@@ -51,7 +51,7 @@ export class VtpCommands {
 
 }
 
-let vtpMode: TerminalCommand = {
+const vtpMode: TerminalCommand = {
     name: 'mode',
     description: 'Configure VTP device mode',
     children: [
@@ -86,21 +86,19 @@ export let vtpCommand: TerminalCommand = {
 export class NoVtpCommands {
     static NoVtpHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         cmdState.stopProcessing = true;
-        let vtpStatus: string = 'Server';
-        let result: string = '';
+        const vtpStatus = 'Server';
+        let result = '';
 
-        let vtp = cmdContext.device.model['vtp'];
+        const vtp = cmdContext.device.model['vtp'];
 
         if (cmdState.command.token === 'mode' && /^\d+$/.test(cmdState.command.parameters[0])) {
             result = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
-            //return cmdState;           
-        }
-        else if (vtp.mode === vtpStatus) {
+            // return cmdState;
+        } else if (vtp.mode === vtpStatus) {
 
             result = 'Device mode already VTP server for VLAN feature\n';
             result += 'Resetting device to VTP SERVER mode.';
-        }
-        else {
+        } else {
             result = 'Resetting device to VTP SERVER mode.';
             cmdState.ChangeProperty(['vtp', 'mode'], vtpStatus);
         }
@@ -120,4 +118,4 @@ export let noVtpCommand: TerminalCommand = {
         { name: 'server', description: 'setting the device to client mode', handler: NoVtpCommands.NoVtpHandler },
         { name: 'transparent', description: 'Setting device to VTP Transparent mode for VLANS.', handler: NoVtpCommands.NoVtpHandler }
     ]
-}
+};

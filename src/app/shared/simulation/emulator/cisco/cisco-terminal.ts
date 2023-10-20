@@ -9,9 +9,9 @@ import { ParsedCommands, ParsedCommand, ParseCommandResult } from '../interfaces
 import { CiscoCommandParser } from './command-parser';
 import { StateContainer } from '../emulator-state';
 import { NotSupportedCommand } from './commands/notsupported';
-import { EventDispatcher } from "event-dispatch";
+import { EventDispatcher } from 'event-dispatch';
 import { CiscoFormatters } from './common/cisco-formatters';
-import { CommandConstants } from "./common/cisco-constants";
+import { CommandConstants } from './common/cisco-constants';
 import { CiscoHelp } from './cisco-help';
 import { CiscoCommandActions, ICiscoCommandActions } from './cisco-command-actions';
 
@@ -36,8 +36,8 @@ export class CiscoTerminal implements IEmulatedTerminal {
 
     invoke(commandLine: string): CommandResult {
         try {
-            let commands = this.getContextCommands();
-            let parsed = CiscoCommandParser.Parse(commandLine, commands);
+            const commands = this.getContextCommands();
+            const parsed = CiscoCommandParser.Parse(commandLine, commands);
             console.log('CiscoCommandParser.Parse = ' + JSON.stringify(parsed));
 
             switch (parsed.parseResult) {
@@ -46,7 +46,7 @@ export class CiscoTerminal implements IEmulatedTerminal {
                     return this.InternalInvoke(parsed);
                 }
                 case ParseCommandResult.Ambiguous: {
-                    let output = `% Ambiguous command '${commandLine}'`;
+                    const output = `% Ambiguous command '${commandLine}'`;
                     // for (let cmd of parsed.ambiguous) {
                     //   output += cmd.name + '\n';
                     // }
@@ -87,13 +87,13 @@ export class CiscoTerminal implements IEmulatedTerminal {
     }
 
     complete(commandLine: string): CommandResult {
-        let commands = this.getContextCommands();
+        const commands = this.getContextCommands();
         return CiscoHelp.AutoComplete(commandLine, commands);
     }
 
     query(commandLine: string): CommandResult {
-        let index = commandLine.indexOf('?');
-        let allcommands = this.getContextCommands();
+        const index = commandLine.indexOf('?');
+        const allcommands = this.getContextCommands();
         if (index === 0 || commandLine[index - 1] === ' ') {
             commandLine = commandLine.replace(/ ?\?/, '').trim();
             return CiscoHelp.QueryWithSpace(commandLine, allcommands);
@@ -104,19 +104,25 @@ export class CiscoTerminal implements IEmulatedTerminal {
     }
 
     private buildPrompt(context: CiscoTerminalContext): string {
-        let result = this.device.name;
+        const result = this.device.name;
         // TODO: if (context.confInterfaceRange) return result + '(config-if-range)#';
         if (context.interfaceSelector && context.interfaceSelector.range) {
-            if (-1 < context.interfaceSelector.range.indexOf('-')   //TODO: find a better way to resolve this ugly hack
+            if (-1 < context.interfaceSelector.range.indexOf('-')   // TODO: find a better way to resolve this ugly hack
                 || -1 < context.interfaceSelector.range.indexOf(',')) {
                 return result + '(config-if-range)#';
             } else {
                 return result + '(config-if)#';
             }
         }
-        if (context.confVlan) return result + '(config-vlan)#';
-        if (context.confTerminal) return result + '(config)#';
-        if (context.enabled) return result + '#';
+        if (context.confVlan) {
+            return result + '(config-vlan)#';
+        }
+        if (context.confTerminal) {
+            return result + '(config)#';
+        }
+        if (context.enabled) {
+            return result + '#';
+        }
         // TODO: turn this into a stack
         return result + '>';
     }
@@ -130,8 +136,8 @@ export class CiscoTerminal implements IEmulatedTerminal {
     }
 
     private createCommandContext(): CiscoCommandContext {
-      let context = this.getContext();
-      let result = {
+      const context = this.getContext();
+      const result = {
         ...this.terminalContext,
         actions: this.actions,
         device: this.device
@@ -143,26 +149,26 @@ export class CiscoTerminal implements IEmulatedTerminal {
     }
 
     private applyModelChanges(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        let changes = cmdState.changes.concat();
+        const changes = cmdState.changes.concat();
         cmdState.changes.length = 0;
-        for (let change of changes) {
+        for (const change of changes) {
             if (this.terminalContext.confInterface) {
                 // use device.getInterfaces instead of cmdContext.interfaces so we have access to the class members
-                let interfaces = this.device.getInterfaces(this.getContext().interfaceSelector);
-                for (let target of interfaces) {
+                const interfaces = this.device.getInterfaces(this.getContext().interfaceSelector);
+                for (const target of interfaces) {
                     target.setProperty(change.selector, change.value);
                 }
             } else {
-                //TODO: make sure this property gets set at the terminal level (in conf t)
+                // TODO: make sure this property gets set at the terminal level (in conf t)
                 this.device.setProperty(change.selector, change.value);
             }
         }
     }
 
     private applyActions(cmdContext: CiscoCommandContext, cmdState: CommandState): string {
-      let output: string = '';
-      for (let action of cmdState.actions) {
-        let thisOutput = action.do(action.model);
+      let output = '';
+      for (const action of cmdState.actions) {
+        const thisOutput = action.do(action.model);
         if (thisOutput) {
           output += thisOutput;
         }
@@ -176,9 +182,11 @@ export class CiscoTerminal implements IEmulatedTerminal {
      * @param value
      */
     private setContextProperty(selector: string | string[], value: any) {
-        let context = this.terminalContext;
-        let state = new StateContainer(context);
-        if (!Array.isArray(selector)) selector = [selector];
+        const context = this.terminalContext;
+        const state = new StateContainer(context);
+        if (!Array.isArray(selector)) {
+            selector = [selector];
+        }
         switch (selector[0]) {
             case 'interfaceSelector':
                 // a value of null or undefined means we are no longer in interface config mode
@@ -197,18 +205,18 @@ export class CiscoTerminal implements IEmulatedTerminal {
     }
 
     private applyContextChanges(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        let contextChanges = cmdState.contextChanges.concat();
+        const contextChanges = cmdState.contextChanges.concat();
         cmdState.contextChanges.length = 0;
-        for (let change of contextChanges) {
+        for (const change of contextChanges) {
             this.setContextProperty(change.selector, change.value);
         }
     }
 
     private dispatchEvents(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        let events = cmdState.events.concat();
+        const events = cmdState.events.concat();
         cmdState.events.length = 0;
-        for (let event of events) {
-            let data = event.data || {};
+        for (const event of events) {
+            const data = event.data || {};
             data.cmdContext = cmdContext;
             data.cmdState = cmdState;
             this.eventDispatcher.dispatch(event.name, data);
@@ -216,10 +224,10 @@ export class CiscoTerminal implements IEmulatedTerminal {
     }
 
     private InternalInvoke(parsed: ParsedCommands): CommandResult {
-        let cmdContext = this.createCommandContext();
-        let cmdState = new CommandState();
+        const cmdContext = this.createCommandContext();
+        const cmdState = new CommandState();
         for (let index = parsed.commands.length - 1; index >= 0; index--) {
-            let command = parsed.commands[index].command;
+            const command = parsed.commands[index].command;
             let handler = command ? command.handler : undefined;
             if (handler === undefined) {
                 handler = NotSupportedCommand.NotSupported;
@@ -233,7 +241,7 @@ export class CiscoTerminal implements IEmulatedTerminal {
             }
         }
         this.applyModelChanges(cmdContext, cmdState);
-        let actionOutput = this.applyActions(cmdContext, cmdState);
+        const actionOutput = this.applyActions(cmdContext, cmdState);
         this.applyContextChanges(cmdContext, cmdState);
         this.dispatchEvents(cmdContext, cmdState);
 

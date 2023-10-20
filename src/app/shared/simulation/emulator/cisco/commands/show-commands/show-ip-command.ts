@@ -1,11 +1,11 @@
 import * as Mustache from 'mustache';
-import { TerminalCommand } from "../../../interfaces/terminal-command";
+import { TerminalCommand } from '../../../interfaces/terminal-command';
 import { CommandState } from '../../../interfaces/command-state';
 import { CiscoCommandContext } from '../../cisco-terminal-command';
-import { NotSupportedCommand } from "../notsupported";
+import { NotSupportedCommand } from '../notsupported';
 import { CiscoFormatters } from '../../common/cisco-formatters';
 
-let ipInterfaceTemplate: string =
+const ipInterfaceTemplate =
     `{{#interfaces}}{{#decode}}{{name}}{{/decode}} is {{#setStatus}}{{status}}{{/setStatus}}, line protocol is {{status}}
   {{#showIpAddress}}Internet address is {{ipv4}}{{#subnet}}/{{subnet}}{{/subnet}}
   Broadcast address is {{ipv4Mask}}
@@ -27,7 +27,7 @@ let ipInterfaceTemplate: string =
   IP CEF switching is enabled
   IP CEF switching turbo vector
   IP Null turbo vector
-  VPN Routing/Forwarding "Mgmt-intf"
+  VPN Routing/Forwarding 'Mgmt-intf'
   IP multicast fast switching is enabled
   IP multicast distributed fast switching is disabled
   IP route-cache flags are Fast, CEF
@@ -46,8 +46,8 @@ let ipInterfaceTemplate: string =
   IPv4 WCCP Redirect exclude is disabled{{/showIpAddress}}
   {{^showIpAddress}}Inbound  access list is not set{{/showIpAddress}}
 {{/interfaces}}
-`
-let ipInterfaceBriefTemplate = `
+`;
+const ipInterfaceBriefTemplate = `
 Interface              IP-Address\tOK? Method Status\t\t  Protocol
 {{#interfaces}}
 {{#padInterface}}{{#decode}}{{name}}{{/decode}}{{/padInterface}}{{#ipv4}}{{/ipv4}}{{ipv4}}{{^ipv4}}unassigned{{/ipv4}}\tYES {{#setMethod}}{{method}}{{/setMethod}}  {{#setStatus}}{{status}}{{/setStatus}} {{protocol}}
@@ -57,7 +57,7 @@ Interface              IP-Address\tOK? Method Status\t\t  Protocol
 export class ShowIpCommand {
     static command: TerminalCommand =
     {
-        name: "ip",
+        name: 'ip',
         description: 'IP information',
         parameters: [],
         handler: NotSupportedCommand.NotSupported,
@@ -67,8 +67,8 @@ export class ShowIpCommand {
                 description: 'IP interface status and configuration',
                 handler: (cmdContext: CiscoCommandContext, cmdState: CommandState) => {
                     cmdState.stopProcessing = true;
-                    let result = "";
-                    let interfaces = cmdContext.device.model.interfaces;
+                    let result = '';
+                    const interfaces = cmdContext.device.model.interfaces;
                     interfaces.forEach(function (iface: any) {
                         if (iface.name === 'GigabitEthernet0\/0') {
                             result += `${iface.name} is ${iface.status}, line protocl is ${iface.status}
@@ -92,7 +92,7 @@ export class ShowIpCommand {
   IP CEF switching is enabled
   IP CEF switching turbo vector
   IP Null turbo vector
-  VPN Routing/Forwarding "Mgmt-intf"
+  VPN Routing/Forwarding 'Mgmt-intf'
   IP multicast fast switching is enabled
   IP multicast distributed fast switching is disabled
   IP route-cache flags are Fast, CEF
@@ -109,88 +109,45 @@ export class ShowIpCommand {
   IPv4 WCCP Redirect outbound is disabled
   IPv4 WCCP Redirect inbound is disabled
   IPv4 WCCP Redirect exclude is disabled \n`;
-                                    //result += 'Internet address is ${iface.ipv4}\/${iface.subnet} \n';
+                                    // result += 'Internet address is ${iface.ipv4}\/${iface.subnet} \n';
                                     // result += 'Broadcast address is ${iface.ipv4Mask}';
                                     // result += 'Address determined by non-volatile memory';
                                     // result += 'MTU is 1500 bytes';
-                        }
-                        else if (iface.name === 'Loopback0') {
+                        } else if (iface.name === 'Loopback0') {
                             result += `${iface.name} is ${iface.status}, line protocl is ${iface.status}
   Internet protocol processing disabled \n`;
-                        }
-                        else if(iface.status === 'admin down') {
+                        } else if (iface.status === 'admin down') {
                             result += `${iface.name} is administratively down, line protocl is down
   Inbound access list is not set \n`;
-                        }
-                        else {
+                        } else {
                             result += `${iface.name} is ${iface.status}, line protocl is ${iface.status}
   Inbound access list is not set \n`;
                         }
-                    })
+                    });
                     cmdState.output  = result;
-
-
-                    // console.log('I am executing this');
-                    // try {
-                    //     let rendered: string = Mustache.render(ipInterfaceTemplate, {
-                    //         interfaces: cmdContext.device.property('interfaces'),
-                    //         setStatus: function () {
-                    //             return function (text: string, render: any) {
-                    //                 let status = render(text);
-                    //                 if (status === "")
-                    //                     status = render("{{status}}");
-                    //                 if (status.toLocaleLowerCase() === 'down') {
-                    //                     status = 'administratively down';
-                    //                 }
-                    //                 return status;
-                    //             }
-                    //         },
-                    //         decode: function () {
-                    //             return function (text: string, render: any) {
-                    //                 let decodedText = render(text).replace('&#x2F;', '/');
-                    //                 return decodedText;
-                    //             }
-                    //         },
-                    //         showIpAddress: function () {
-                    //             return function (text: string, render: any) {
-                    //                 let data = render('{{ipv4}}');
-                    //                 if (data) {
-                    //                     data = render(text);
-                    //                 }
-                    //                 return data;
-                    //             }
-                    //         },
-                    //     });
-
-                    //     console.log('I am not  executing this');
-                    //     cmdState.output = rendered;
-                    //     cmdState.stopProcessing = true;
-                    // } catch (error) {
-                    //     console.log(error)
-                    // }
-                    // return cmdState;
                 },
                 children: [{
                     name: 'brief',
                     description: 'Brief summary of IP interface status and configuration',
                     handler: (cmdContext: CiscoCommandContext, cmdState: CommandState) => {
-                        let isSw1: boolean = cmdContext.device.name.toUpperCase() === 'SW1';
-                        let isSw2: boolean = !isSw1;
-                        //console.log('I am executing this');
+                        const isSw1: boolean = cmdContext.device.name.toUpperCase() === 'SW1';
+                        const isSw2: boolean = !isSw1;
+                        // console.log('I am executing this');
                         try {
-                            let rendered: string = Mustache.render(ipInterfaceBriefTemplate, {
+                            const rendered: string = Mustache.render(ipInterfaceBriefTemplate, {
                                 interfaces: cmdContext.device.property('interfaces'),
                                 decode: function () {
                                     return function (text: string, render: any) {
-                                        let decodedText = render(text).replace('&#x2F;', '/');
+                                        const decodedText = render(text).replace('&#x2F;', '/');
                                         return decodedText;
-                                    }
+                                    };
                                 },
                                 setStatus: function () {
                                     return function (text: string, render: any) {
                                         let status = render(text);
-                                        if (status === "")
-                                            status = render("{{portstatus}}");
+                                        if (status === '') {
+                                            status = render('{{portstatus}}');
+                                        }
                                         if (status.toLocaleLowerCase() === 'down' || status.toLocaleLowerCase() === 'admin down') {
                                             status = 'administratively down';
                                         }
@@ -200,20 +157,21 @@ export class ShowIpCommand {
                                         }
                                         status = CiscoFormatters.padRight(status, space);
                                         return status;
-                                    }
+                                    };
                                 },
                                 setMethod: function(){
                                     return function (text: string, render: any) {
                                         let method = render(text);
-                                        if (method === "")
+                                        if (method === '') {
                                             method = render ('       ');
+                                        }
                                         let space = '';
                                         while (space.length <= 7) {
                                             space += ' ';
                                         }
                                         method = CiscoFormatters.padRight(method, space);
                                         return method;
-                                    }
+                                    };
                                 },
                                 padInterface: function () {
                                     return function (text: string, render: any) {
@@ -226,7 +184,7 @@ export class ShowIpCommand {
                                         paddedText = CiscoFormatters.padRight(paddedText, space);
 
                                         return paddedText;
-                                    }
+                                    };
                                 }
                             });
 
@@ -234,7 +192,7 @@ export class ShowIpCommand {
                             cmdState.output = rendered;
                             cmdState.stopProcessing = true;
                         } catch (error) {
-                            console.log(error)
+                            console.log(error);
                         }
                         return cmdState;
                     }
@@ -256,7 +214,7 @@ export class ShowIpCommand {
                 //                 result += `  Inbound access list is not set \n`;
                 //             }
                 //         });
-                        
+
                 //         } catch (error) {
                 //                 console.log(error)
                 //         }

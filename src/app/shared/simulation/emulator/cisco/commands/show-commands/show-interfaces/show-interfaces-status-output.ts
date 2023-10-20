@@ -1,4 +1,4 @@
-import { CiscoFormatters } from "../../../common/cisco-formatters";
+import { CiscoFormatters } from '../../../common/cisco-formatters';
 export class BuildOutput {
 
 
@@ -11,23 +11,24 @@ export class BuildOutput {
             if (portInterface.$class !== 'Loopback') {
                 let name = '';
 
-                if (portInterface.type === 'Port')
-                    name = "Po" + portInterface.id;
-                else
+                if (portInterface.type === 'Port') {
+                    name = 'Po' + portInterface.id;
+                } else {
                     name = portInterface.interface;
-
+                }
                 let vlan = '';
 
-                if (portInterface.slot === 0 && portInterface.port === 0)
+                if (portInterface.slot === 0 && portInterface.port === 0) {
                     vlan = 'routed';
-                else if (portInterface.trunkEnabled)
+                } else if (portInterface.trunkEnabled) {
                     vlan = 'trunk';
-                else
+                } else {
                     vlan = portInterface.vlan || 1;
+                }
 
                 let description = portInterface.description || ' ';
-                let status = (portInterface.status === 'up') ? 'connected' : 'disabled';
-                let portType = (portInterface.type === 'Port') ? ' ' : 'unknown';
+                const status = (portInterface.status === 'up') ? 'connected' : 'disabled';
+                const portType = (portInterface.type === 'Port') ? ' ' : 'unknown';
                 result += CiscoFormatters.paddingRight(String(name), ' ', 9);
                 result += ' ';
                 result += CiscoFormatters.paddingRight(String(description), ' ', 18);

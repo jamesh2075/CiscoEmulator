@@ -2,34 +2,35 @@ import { TerminalCommand } from '../../../interfaces/terminal-command';
 import { CommandState } from '../../../interfaces/command-state';
 import { CiscoTerminalContext, CiscoCommandContext, InterfaceSelector } from '../../cisco-terminal-command';
 import { CiscoCommandParser } from '../../command-parser';
-import { UtilityCommands } from "../utility-commands";
-import { CiscoValidators } from "../../common/cisco-validators";
-import { CiscoUtils } from "../../common/cisco-utils";
-import { PortController } from "../../controllers/port-controller";
+import { UtilityCommands } from '../utility-commands';
+import { CiscoValidators } from '../../common/cisco-validators';
+import { CiscoUtils } from '../../common/cisco-utils';
+import { PortController } from '../../controllers/port-controller';
 import { CiscoDevice } from '../../cisco-device';
-import { CommandConstants } from "../../common/cisco-constants";
-import { plainToClass } from "class-transformer";
-import { InterfaceInfo } from "../../common/cisco-interface-info";
+import { CommandConstants } from '../../common/cisco-constants';
+import { plainToClass } from 'class-transformer';
+import { InterfaceInfo } from '../../common/cisco-interface-info';
 
 
 export class NoInterfaceCommands {
 
     static NoInterfaceHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        //if it got here, it's because it was accepted by the parser
-        let token = cmdState.command.token;
+        // if it got here, it's because it was accepted by the parser
+        const token = cmdState.command.token;
         cmdState.properties['number'] = token;
     }
 
     static NoPortChannelNumber(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        //if it got here, it's because it was accepted by the parser
-        if (cmdState.command.token)
-            cmdState.properties['portChannelNumber'] = parseInt(cmdState.command.token);
-        let token = cmdState.command.token;
+        // if it got here, it's because it was accepted by the parser
+        if (cmdState.command.token) {
+            cmdState.properties['portChannelNumber'] = parseInt(cmdState.command.token, 10);
+        }
+        const token = cmdState.command.token;
         // if(Number(token) === 0) {
         // cmdState.output = CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND;
         // cmdState.stopProcessing = true;
         //  } else {
-        //cmdState.properties['number'] = token;
+        // cmdState.properties['number'] = token;
 
         //
     }
@@ -41,14 +42,14 @@ export class NoInterfaceCommands {
             interfaceId += cmdState.properties.portChannelNumber;
         }
 
-        let interfaceInfo = InterfaceInfo.validateInterfaceId(interfaceId);
+        const interfaceInfo = InterfaceInfo.validateInterfaceId(interfaceId);
         if (interfaceInfo.isValid === false) {
             cmdState.output = interfaceInfo.error;
             cmdState.stopProcessing = true;
         }
 
 
-        let portChannelValue = Number(cmdState.properties['portChannelNumber']);
+        const portChannelValue = Number(cmdState.properties['portChannelNumber']);
         cmdState.DispatchEvent(CommandConstants.EVENTS.NO_PORT_CHANNEL, { portChannelValue: interfaceInfo['port'] });
         cmdState.stopProcessing = true;
         return cmdState;
@@ -56,10 +57,10 @@ export class NoInterfaceCommands {
     }
 
     static NoPortChannelAcceptor(token: string): boolean {
-        //TODO: Switch to validateInterfaceId
-        //int range gi1/0, gi1/2: token = 'range'
-        //int range gi1/1: token = range
-        let match = token.match(/p(.*\d)?/);
+        // TODO: Switch to validateInterfaceId
+        // int range gi1/0, gi1/2: token = 'range'
+        // int range gi1/1: token = range
+        const match = token.match(/p(.*\d)?/);
         if (match) {
             return true;
         }
@@ -70,7 +71,7 @@ export class NoInterfaceCommands {
 
 
 
-let interfaceRange: TerminalCommand = {
+const interfaceRange: TerminalCommand = {
     name: 'Interface Range',
     description: 'interface range command'
 };
@@ -79,7 +80,7 @@ export let interfaceRangeCommand: TerminalCommand = {
     name: 'range', description: 'interface range command',
     parameters: [
         // TODO: parameter - (interface range)
-        //'rangeName'
+        // 'rangeName'
     ],
     children: [
         // TODO: this first child needs a handler to deal with no-space commands

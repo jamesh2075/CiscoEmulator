@@ -1,6 +1,6 @@
-import { IInterface, Interface } from "./interface.model";
-import { ISwitchport, Switchport } from "./switchport.model";
-import { Type } from "class-transformer";
+import { IInterface, Interface } from './interface.model';
+import { ISwitchport, Switchport } from './switchport.model';
+import { Type } from 'class-transformer';
 
 export interface IPort extends IInterface {
     type: string;
@@ -18,12 +18,12 @@ export class Port extends Interface implements IPort {
         this.takeSnapshot();
     }
 
-    type: string = "Port"; // TODO: deprecate
-    status: string = "down";
-    protocol: string = "down";
-    switchportMode = "Disabled";
-    method = "unset";
-    hardware = "";
+    type = 'Port'; // TODO: deprecate
+    status = 'down';
+    protocol = 'down';
+    switchportMode = 'Disabled';
+    method = 'unset';
+    hardware = '';
 
     @Type(() => Switchport)
     switchport: Switchport = new Switchport();

@@ -19,7 +19,7 @@ export let isString = function (val: any): boolean {
 };
 
 export let isNumber = function (val: any): boolean {
-    return typeof val === 'number'
+    return typeof val === 'number';
 };
 
 export let isEmpty = function isEmpty(val: any): boolean {
@@ -63,9 +63,7 @@ export let isEqual = function (source: any, target: any) {
         else {
             return false;
         }
-    }
-    // if the source is an Array type
-    else if (source instanceof Array) {
+    } else if (source instanceof Array) { // if the source is an Array type
         // if the target
         if (target instanceof Array) {
             sourceLen = source.length;
@@ -82,30 +80,20 @@ export let isEqual = function (source: any, target: any) {
                 }
                 // if passes all conditions
                 return true;
-            }
-            // the lengths are not the same
-            else {
+            } else { // the lengths are not the same
                 return false;
             }
-        }
-        // the target is not an Array
-        else {
+        } else { // the target is not an Array
             return false;
         }
-    }
-    // if the source is null
-    else if (source === null) {
+    } else if (source === null) { // if the source is null
         // compare with target
         return source === target;
-    }
-    // if the source is an Object type
-    else if (typeof source === 'object') {
+    } else if (typeof source === 'object') { // if the source is an Object type
         // if target is null
         if (target === null) {
             return source === target;
-        }
-        // if the target is an object type
-        else if (typeof target === 'object') {
+        } else if (typeof target === 'object') { // if the target is an object type
             // get the sorted keys of both the source and target
             sourceKeys = Object.keys(source).sort();
             targetKeys = Object.keys(target).sort();

@@ -1,4 +1,4 @@
-import { CiscoFormatters } from "../../../common/cisco-formatters";
+import { CiscoFormatters } from '../../../common/cisco-formatters';
 export class DescriptionOutput {
 
 
@@ -11,14 +11,17 @@ export class DescriptionOutput {
         portInterfaces.forEach(function (portInterface: any) {
             let name = '';
             let protocol = (portInterface.status === 'up') ? 'up' : portInterface.protocol;
-            if (portInterface.type === 'Port')
-                name = "Po" + portInterface.id;
-            else if (portInterface.$class === 'Loopback')
+            if (portInterface.type === 'Port') {
+                name = 'Po' + portInterface.id;
+            }
+            else if (portInterface.$class === 'Loopback') {
                // name = portInterface.name;
-                name = "Lo0";
-            else
+                name = 'Lo0';
+            }
+            else {
                 name = portInterface.interface;
-            let description = portInterface.description || '';
+            }
+            const description = portInterface.description || '';
             // result += `${name}      ${portInterface.status}                   ${protocol}           ${description} \n`;
             if (portInterface.$class !== 'Loopback') {
                 result += CiscoFormatters.paddingRight(String(name), ' ', 11);
@@ -41,6 +44,6 @@ export class DescriptionOutput {
             }
         });
 
-        return result+LoopbackResult;
+        return result + LoopbackResult;
     }
 }

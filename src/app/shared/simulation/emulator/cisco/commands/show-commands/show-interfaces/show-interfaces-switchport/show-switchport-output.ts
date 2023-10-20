@@ -2,7 +2,7 @@ export class BuildInterfacesSwitchportOutput {
 
     // Do operations on basic configuration to get data matching with Virl
 
-    static getOperationalMode(interfaceData: any) { //TODO: Need to refactor this method based on different combinations of OP mode and Admin mode 
+    static getOperationalMode(interfaceData: any) { // TODO: Need to refactor this method based on different combinations of OP mode and Admin mode 
         let opMode: string;
         switch (interfaceData.switchport.adminMode) {
             case 'trunk':
@@ -22,8 +22,8 @@ export class BuildInterfacesSwitchportOutput {
         interfaces.forEach(function (interfaceData: any) {
             if (interfaceData.switchport && interfaceData.switchportMode === 'Enabled') {
                 // TODO: Changed allowed Vlans from all to dynamic on Trunking Vlans Enabled
-                let name = (interfaceData.type === 'Port') ? `Po${interfaceData.id}` : `${interfaceData.shortName}`;
-                let capturedResult: string = '';
+                const name = (interfaceData.type === 'Port') ? `Po${interfaceData.id}` : `${interfaceData.shortName}`;
+                const capturedResult = '';
                 let vlanId: any = (interfaceData.switchportMode === 'Enabled') ? interfaceData.switchport.accessVlan : 0;
                 let vlan: any, vlanName: any = '';
                 if (interfaceData.switchport.accessVlan) {
@@ -33,9 +33,10 @@ export class BuildInterfacesSwitchportOutput {
 
                 // default or inactive based on vlan
                 let trunkVlanName = '';
-                if (interfaceData.switchport.accessVlan !== null)
-                    trunkVlanName = (interfaceData.switchport.trunkVlan === 1) ? '(default)' : `VLAN00${interfaceData.switchport.trunkVlan}`
-                let nativetrunkMode = (interfaceData.switchport.trunkVlan) ? `${interfaceData.switchport.trunkVlan}  ${trunkVlanName}` : `${interfaceData.switchport.trunkVlan} (Inactive)`
+                if (interfaceData.switchport.accessVlan !== null) {
+                    trunkVlanName = (interfaceData.switchport.trunkVlan === 1) ? '(default)' : `VLAN00${interfaceData.switchport.trunkVlan}`;
+                }
+                const nativetrunkMode = (interfaceData.switchport.trunkVlan) ? `${interfaceData.switchport.trunkVlan}  ${trunkVlanName}` : `${interfaceData.switchport.trunkVlan} (Inactive)`;
                 if ((interfaceData.type !== 'Port')) {
                     capturedResult = `Capture Mode Disabled
 Capture VLANs Allowed: ALL`;

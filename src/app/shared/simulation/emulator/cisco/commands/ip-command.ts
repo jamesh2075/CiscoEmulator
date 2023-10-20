@@ -6,13 +6,13 @@ class IpCommand {
     static Ip(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         // TODO: ip
         throw new Error('Not Implemented');
-        //return cmdState;
+        // return cmdState;
     }
 
     static IpAddress(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         // TODO: ip address
         throw new Error('Not Implemented');
-        //return cmdState;
+        // return cmdState;
     }
 }
 

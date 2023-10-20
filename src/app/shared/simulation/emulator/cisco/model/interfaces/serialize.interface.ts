@@ -1,3 +1,3 @@
 export interface ISerialize {
-    serialize(diffOnly: boolean): any
+    serialize(diffOnly: boolean): any;
 }

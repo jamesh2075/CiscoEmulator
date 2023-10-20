@@ -1,8 +1,8 @@
 ﻿import {isArray, isDate, isEmpty, isEqual, isObject} from "./validators";
 
-let SNAPSHOT = '_snapshot';
-let CLASS_TYPE = '$class';
-let DEFAULT_VALUES = '$defaultValues';
+const SNAPSHOT = '_snapshot';
+const CLASS_TYPE = '$class';
+const DEFAULT_VALUES = '$defaultValues';
 
 export let diff = function (target: any, source: any, excludeEmptyObjects = false) {
     let returnVal: any = {}, dateStr;
@@ -14,11 +14,10 @@ export let diff = function (target: any, source: any, excludeEmptyObjects = fals
                     returnVal[name] = target[name];
                 }
             } else if (isObject(target[name]) && !isArray(target[name])) {
-                if(name === DEFAULT_VALUES) {
+                if (name === DEFAULT_VALUES) {
                     returnVal[name] = target[name];
-                }
-                else {
-                    let result = diff(target[name], source[name], excludeEmptyObjects);
+                } else {
+                    const result = diff(target[name], source[name], excludeEmptyObjects);
                     if (!isEmpty(result)) {
                         returnVal[name] = result;
                     }
@@ -26,12 +25,12 @@ export let diff = function (target: any, source: any, excludeEmptyObjects = fals
 
             } else if (isArray(target[name])) {
                 if (!isEmpty(target[name])) {
-                    let list: any[] = returnVal[name] = [];
-                    let arr: any[] = target[name];
+                    const list: any[] = returnVal[name] = [];
+                    const arr: any[] = target[name];
                     for (let i = 0; i < arr.length; i++) {
                         if (arr[i][SNAPSHOT]) {
                             let val = diff(arr[i], arr[i][SNAPSHOT], excludeEmptyObjects);
-                            if(val !== null) {
+                            if (val !== null) {
                                 delete val[SNAPSHOT];
                                 list[i] = val;
                             }
@@ -41,8 +40,7 @@ export let diff = function (target: any, source: any, excludeEmptyObjects = fals
                         }
                     }
                 }
-            }
-            else if (!isEqual(source[name], target[name]) || name === CLASS_TYPE) {
+            } else if (!isEqual(source[name], target[name]) || name === CLASS_TYPE) {
                 returnVal[name] = target[name];
             }
         } else {

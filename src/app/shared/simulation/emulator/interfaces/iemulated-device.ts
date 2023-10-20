@@ -22,15 +22,17 @@ export interface IEmulatedDevice {
 
 export interface IEmulatedInterface {
   readonly model: Readonly<InterfaceModel>;
+  connection?: IInterfaceConnection;
+
   // TODO: Rename to getProperty for consistency
   property(selector: string | string[]): any;
   setProperty(selector: string | string[], value: any): void;
-  connection?: IInterfaceConnection;
+
   /** Called to notify that the remote end of a connection changed its status */
   onPeerStatusChanged(peerStatus: string): void;
   /** Called to notify that this interface's connection status has changed */
   onStatusChanged(): void;
-  
+
   noShutdown(): void;
   shutdown(): void;
 }

@@ -1,12 +1,14 @@
-import {TerminalCommand} from "../../../interfaces/terminal-command";
-import {CiscoCommandContext} from "../../cisco-terminal-command";
-import {CommandState} from "../../../interfaces/command-state";
+import {TerminalCommand} from '../../../interfaces/terminal-command';
+import {CiscoCommandContext} from '../../cisco-terminal-command';
+import {CommandState} from '../../../interfaces/command-state';
 
 class ChannelProtocolCommand {
 
     static Handler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
 
-        // To enable Port Aggretation Control Protocol (PAgP) or Link Aggregation Control Protocol (LACP) on an interface to manage channeling, use thechannel-protocol command in interface configuration mode. Use the no form of this command to deselect the protocol.
+        // To enable Port Aggretation Control Protocol (PAgP) or Link Aggregation Control Protocol (LACP) on an interface
+        // to manage channeling, use thechannel-protocol command in interface configuration mode. Use the no form of this
+        // command to deselect the protocol.
         //     channel-protocol { lacp | pagp }
         //     no channel-protocol
         // Syntax Description
@@ -15,7 +17,7 @@ class ChannelProtocolCommand {
         // Command Default
         //     pagp
 
-        let selector: string[] = ['channel-group', 'protocol'];
+        const selector: string[] = ['channel-group', 'protocol'];
         cmdState.ChangeProperty(selector, cmdState.properties['value']);
     }
 
@@ -24,7 +26,7 @@ class ChannelProtocolCommand {
     }
 
     static NoHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        let selector: string[] = ['channel-group', 'protocol'];
+        const selector: string[] = ['channel-group', 'protocol'];
         cmdState.ChangeProperty(selector, 'PAgP');
     }
 }

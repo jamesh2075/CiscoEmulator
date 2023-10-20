@@ -16,7 +16,7 @@ class ShowCommandVtp {
 
     //This command is affected by 'vtp mode [transparent|server|client]' command
     static ShowVtpStatus(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        let result: string = '';
+        let result = '';
         //get vtp configuration
         let data = cmdContext.device.property('vtp');
         let mode = data.mode;
@@ -24,7 +24,7 @@ class ShowCommandVtp {
         mode = mode[0].toUpperCase() + mode.substring(1);
         let domain: string = cmdContext.device.property(['vtp', 'domain']);
         let deviceId: string = cmdContext.device.property('address');
-        let ip = "0.0.0.0"
+        let ip = "0.0.0.0";
         let interfaces = cmdContext.device.property('interfaces');
         for (let i = 0; i < interfaces.length; ++i) {
             let vtpConfig = cmdContext.device.property('vtpConfig');

@@ -1,5 +1,5 @@
-import { TerminalCommand } from "../../interfaces/terminal-command";
-import { NotSupportedCommand } from "./notsupported";
+import { TerminalCommand } from '../../interfaces/terminal-command';
+import { NotSupportedCommand } from './notsupported';
 
 export let unsupportedDeviceCommands: TerminalCommand[] = [
     { name: 'access-enable', description: 'Create a temporary Access-List entry' },

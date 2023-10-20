@@ -7,12 +7,12 @@ export interface TerminalCommand {
     description: string;
     children?: TerminalCommand[];
     parameters?: ICommandParameter;
-    handler?: { (cmdContext: CiscoCommandContext, cmdState: CommandState): void };
-    validator?: { (token: string): boolean };
+    handler?: (cmdContext: CiscoCommandContext, cmdState: CommandState) => void;
+    validator?: (token: string) => boolean;
     notTerminalFlag?: boolean;
     aliases?: string[];
-    noHelp?: boolean;   //if this is true, then this command won't show up in autocomplete or help (example: do)
-    token?: string; //I could't find a better way to get this information to the cmdState
+    noHelp?: boolean;   // if this is true, then this command won't show up in autocomplete or help (example: do)
+    token?: string; // I could't find a better way to get this information to the cmdState
 
 }
 

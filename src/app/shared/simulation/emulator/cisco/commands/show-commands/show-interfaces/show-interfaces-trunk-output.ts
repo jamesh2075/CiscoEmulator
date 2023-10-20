@@ -1,23 +1,24 @@
-import {VlanCommands} from "../../confterm-commands/vlan-commands";
+import {VlanCommands} from '../../confterm-commands/vlan-commands';
 
 export class InterfacesTrunkOutput {
 
 
     static getInterfacesTrunkOutput(interfaces: any[], vlans: any[]) {
         let result = '';
-        let trunkInterfaces: any[] = [];
+        const trunkInterfaces: any[] = [];
         let found = false;
         console.log(interfaces);
         interfaces.forEach(function (obj: any) {
-            if (obj.trunkEnabled)
-                trunkInterfaces.push(obj)
-        })
+            if (obj.trunkEnabled) {
+                trunkInterfaces.push(obj);
+            }
+        });
 
         // result of mode info
         result += `Port        Mode             Encapsulation  Status        Native vlan \n`;
         trunkInterfaces.forEach(function (trunkInterface: any) {
             result += `${trunkInterface.interface}       on               802.1q         trunking      1 \n`;
-            found = true;            
+            found = true;
         });
 
         // result of trunk info
@@ -29,7 +30,7 @@ export class InterfacesTrunkOutput {
 
         // result for vlan active info
         result += `Port        Vlans allowed and active in management domain \n`;
-        let activeVlans = InterfacesTrunkOutput.getActiveVlans(vlans);
+        const activeVlans = InterfacesTrunkOutput.getActiveVlans(vlans);
         trunkInterfaces.forEach(function (trunkInterface: any) {
             result += `${trunkInterface.interface}        ${activeVlans} \n`;
             found = true;
@@ -37,15 +38,15 @@ export class InterfacesTrunkOutput {
 
         // result for vlan spanning tree info
         result += `Port        Vlans in spanning tree forwarding state and not pruned \n`;
-        let spanningVlans = InterfacesTrunkOutput.getSpanningEnabledVlans(vlans);
+        const spanningVlans = InterfacesTrunkOutput.getSpanningEnabledVlans(vlans);
 
         trunkInterfaces.forEach(function (trunkInterface: any) {
-            let vlantrunk = (trunkInterface.portState === 'FWD') ? spanningVlans : 'none';
+            const vlantrunk = (trunkInterface.portState === 'FWD') ? spanningVlans : 'none';
             result += `${trunkInterface.interface}        ${vlantrunk} \n`;
             found = true;
         });
 
-        if(found === false) {
+        if (found === false) {
             result = '';
         }
 
@@ -54,22 +55,24 @@ export class InterfacesTrunkOutput {
     }
 
     static getActiveVlans(vlans: any) {
-        let activeVlans: any[] = [];
+        const activeVlans: any[] = [];
         vlans.forEach(function (obj: any) {
-            if (obj.status === 'active')
+            if (obj.status === 'active') {
                 activeVlans.push(obj.id);
+            }
         });
 
-        return activeVlans.join(",");
+        return activeVlans.join(',');
     }
 
     static getSpanningEnabledVlans(vlans: any) {
-        let spanningVlans: any[] = [];
+        const spanningVlans: any[] = [];
         vlans.forEach(function (obj: any) {
-            if (obj.spanningEnabled)
+            if (obj.spanningEnabled) {
                 spanningVlans.push(obj.id);
+            }
         });
 
-        return spanningVlans.join(",");
+        return spanningVlans.join(',');
     }
 }
