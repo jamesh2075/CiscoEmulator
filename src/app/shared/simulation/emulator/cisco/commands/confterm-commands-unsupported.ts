@@ -1,4 +1,4 @@
-import { TerminalCommand } from "../../interfaces/terminal-command";
+import { TerminalCommand } from '../../interfaces/terminal-command';
 
 export let unsupportedConftermCommands: TerminalCommand[] = [
     { name: 'aaa', description: 'Authentication, Authorization and Accounting.' },

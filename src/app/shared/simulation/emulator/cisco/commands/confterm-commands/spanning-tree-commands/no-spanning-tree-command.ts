@@ -13,9 +13,8 @@ export class NoSpanningTree {
         let isValid = true;
         if (cmdState.command.parameters && cmdState.command.parameters[0] && cmdState.command.parameters[0].length > 0) {
             cmdState.output = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
-            isValid = false
-        }
-        else if (value === undefined) {
+            isValid = false;
+        } else if (value === undefined) {
             cmdState.output = CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND;
             isValid = false;
         }
@@ -25,8 +24,8 @@ export class NoSpanningTree {
 
     static NoSpanningTreeHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         if (NoSpanningTree.validateCommand(cmdContext, cmdState, cmdState.properties['value'])) {
-            let selector: string[] = cmdState.properties['selector'] || [];
-            //todo: validate that there is a value in the properties
+            const selector: string[] = cmdState.properties['selector'] || [];
+            // todo: validate that there is a value in the properties
             selector.unshift('spanningtree');
             cmdState.ChangeProperty(selector, cmdState.properties['value']);
             console.log(cmdState.properties['selector'], cmdState.properties['value']);
@@ -113,7 +112,7 @@ export class NoSpanningTree {
         }
 
 
-        //Do other functionality here if command is accepted.
+        // Do other functionality here if command is accepted.
 
         return cmdState;
 
@@ -142,11 +141,13 @@ export class NoSpanningTree {
     static noSpanningTreeVlanHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
 
         if (cmdState.properties['vLanNumber']) {
-            let validVlans = CiscoFormatters.formatRange(cmdState.properties['vLanNumber']);
-            if (cmdState.properties['priorityMode'])
-                UtilityModel.updateVlanPriority(cmdContext.device.model.vlans, validVlans, cmdContext.device.property(['spanningtree', 'defaultPriority']));
-            else
+            const validVlans = CiscoFormatters.formatRange(cmdState.properties['vLanNumber']);
+            if (cmdState.properties['priorityMode']) {
+                UtilityModel.updateVlanPriority(cmdContext.device.model.vlans,
+                    validVlans, cmdContext.device.property(['spanningtree', 'defaultPriority']));
+            } else {
                 UtilityModel.updateVlanSpanningTreeProp(cmdContext.device.model.vlans, validVlans, false);
+            }
         }
 
         cmdState.stopProcessing = true;
@@ -156,13 +157,13 @@ export class NoSpanningTree {
 
 }
 
-let noSpanningTreeMode: TerminalCommand = {
+const noSpanningTreeMode: TerminalCommand = {
     name: 'mode',
     description: 'Spanning tree operating mode',
     handler: NoSpanningTree.noSpanningTreeModeHandler
 };
 
-let noBpdufilterCommand: TerminalCommand = {
+const noBpdufilterCommand: TerminalCommand = {
     name: 'bpdufilter',
     description: 'Enable portfast edge bpdu filter on this switch',
     children: [
@@ -175,7 +176,7 @@ let noBpdufilterCommand: TerminalCommand = {
     handler: NoSpanningTree.noBpduFilterHandler
 };
 
-let noBpduguardCommand: TerminalCommand = {
+const noBpduguardCommand: TerminalCommand = {
     name: 'bpduguard',
     description: 'Enable portfast edge bpdu guard on this switch',
     children: [
@@ -188,7 +189,7 @@ let noBpduguardCommand: TerminalCommand = {
     handler: NoSpanningTree.noBpduGuardHandler
 };
 
-let noEdgeCommand: TerminalCommand = {
+const noEdgeCommand: TerminalCommand = {
     name: 'edge',
     description: 'Spanning tree portfast edge options',
     children: [noBpdufilterCommand, noBpduguardCommand,
@@ -201,7 +202,7 @@ let noEdgeCommand: TerminalCommand = {
     handler: NoSpanningTree.noEdgeHandler
 };
 
-let noNetworkCommand: TerminalCommand = {
+const noNetworkCommand: TerminalCommand = {
     name: 'network',
     description: 'Spanning tree portfast network options',
     children: [
@@ -214,7 +215,7 @@ let noNetworkCommand: TerminalCommand = {
     handler: NoSpanningTree.noNetworkHandler
 };
 
-let noNormalCommand: TerminalCommand = {
+const noNormalCommand: TerminalCommand = {
     name: 'normal',
     description: 'Spanning tree portfast normal options',
     children: [
@@ -227,26 +228,26 @@ let noNormalCommand: TerminalCommand = {
     handler: NoSpanningTree.noNormalHandler
 };
 
-let noPortFastCommand: TerminalCommand = {
+const noPortFastCommand: TerminalCommand = {
     name: 'portfast',
     description: 'Spanning tree portfast options',
     children: [noEdgeCommand, noNetworkCommand, noNormalCommand],
     handler: NoSpanningTree.noPortFastHandler
 };
 
-let noVlanPriority: TerminalCommand = {
+const noVlanPriority: TerminalCommand = {
     name: 'priority',
     description: 'Set the bridge priority for the spanning tree',
     handler: NoSpanningTree.noVlanPriorityHandler
 };
 
-let noSpanningTreeRoot: TerminalCommand = {
+const noSpanningTreeRoot: TerminalCommand = {
     name: 'root',
     description: 'Configure switch as root',
     handler: NoSpanningTree.noVlanRootHandler
 };
 
-let noVlanNumber: TerminalCommand = {
+const noVlanNumber: TerminalCommand = {
     name: 'WORD',
     description: 'vlan range, example: 1,3-5,7,9-11',
     children: [noVlanPriority, noSpanningTreeRoot,
@@ -259,7 +260,7 @@ let noVlanNumber: TerminalCommand = {
     validator: function () { return true; }
 };
 
-let noSpanningTreeVlan: TerminalCommand = {
+const noSpanningTreeVlan: TerminalCommand = {
     name: 'vlan',
     description: 'VLAN Switch Spanning Tree',
     children: [noVlanNumber],
@@ -267,7 +268,7 @@ let noSpanningTreeVlan: TerminalCommand = {
 };
 
 export let noSpanningTreeCommand: TerminalCommand = {
-    name: "spanning-tree",
+    name: 'spanning-tree',
     description: 'Spanning Tree Subsystem',
     parameters: [],
     handler: NoSpanningTree.NoSpanningTreeHandler,

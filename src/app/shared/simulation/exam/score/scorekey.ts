@@ -4,12 +4,12 @@ export interface IVerification {
    */
   devices?: string | string[];
   /** If an array, this verification applies to each interface in the array
-   * 
+   *
    * If not defined, any interface specification is inherited from its container
    */
   interfaces?: string | string[];
 
-  verify: {[key:string]:any};
+  verify: {[key: string]: any};
 }
 
 export interface ITaskScoreKey {
@@ -20,4 +20,4 @@ export interface ITaskScoreKey {
   verify: IVerification | IVerification[];
 }
 
-export type ExamItemScoreKey = {[key:string]:ITaskScoreKey};
+export type ExamItemScoreKey = {[key: string]: ITaskScoreKey};

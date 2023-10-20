@@ -9,34 +9,36 @@ export class CiscoCommandParser {
     static Parse(cmdLine: string, allCommands: TerminalCommand[]): ParsedCommands {
         let result = new ParsedCommands();
         if (cmdLine === undefined || cmdLine.trim() === '') {
-            result.parseResult = ParseCommandResult.Success
+            result.parseResult = ParseCommandResult.Success;
             return result;
         }
         cmdLine = cmdLine.trim().replace(/\s\s+/g, ' ');
-        let tokens = cmdLine.split(' ');
+        const tokens = cmdLine.split(' ');
 
-        let thisCommand = tokens[0].toLowerCase();
-        let matching = allCommands.filter((value) => value.name.startsWith(thisCommand));
+        const thisCommand = tokens[0].toLowerCase();
+        const matching = allCommands.filter((value) => value.name.startsWith(thisCommand));
 
         if (matching.length === 1) {
             CiscoCommandParser.ParseInternal(tokens.slice(1), matching[0], result);
-            result.commands[0].token = tokens[0]; //I'm cheating here to get the token on the command, but we're cheating anyway by parsing child commands and top level commands differently anyway
+            // I'm cheating here to get the token on the command,
+            // but we're cheating anyway by parsing child commands and top level commands differently anyway
+            result.commands[0].token = tokens[0];
         } else if (matching.length > 1) {
             // potentially ambiguous command
             result.ambiguous = matching;
             let exactMatch: TerminalCommand[] = matching.filter((value) => {
-                let result = value.name === tokens[0];
-                if (!result && value.aliases) {
-                    result = value.aliases.find((alias) => alias.toLowerCase() ===  tokens[0].toLowerCase()) !== undefined;
+                let r = value.name === tokens[0];
+                if (!r && value.aliases) {
+                    r = value.aliases.find((alias) => alias.toLowerCase() ===  tokens[0].toLowerCase()) !== undefined;
                 }
-                return result;
+                return r;
             });
             if (exactMatch.length === 1) {
                 CiscoCommandParser.ParseInternal(tokens.slice(1), exactMatch[0], result);
                 result.commands[0].token = tokens[0];
-            }
-            else
+            } else {
                 result.parseResult = ParseCommandResult.Ambiguous;
+            }
         } else {
             // invalid command
             result.parseResult = ParseCommandResult.NoCommand;
@@ -54,14 +56,16 @@ export class CiscoCommandParser {
         let rangeCommandIndex = 0;
 
         for (let index = 0; index < tokens.length; index++) {
-            let token = tokens[index];
+            const token = tokens[index];
 
             // a child command takes precedence over a parameter
-            //let defaultAcceptor = ((value:TerminalCommand) => value.name.toLowerCase().startsWith(token.toLowerCase()));
+            // let defaultAcceptor = ((value:TerminalCommand) => value.name.toLowerCase().startsWith(token.toLowerCase()));
 
             let commands: TerminalCommand[] =
                 (command.children) ? command.children.filter(function (value: TerminalCommand) {
-                    if (value.validator) return value.validator(token);
+                    if (value.validator) {
+                        return value.validator(token);
+                    }
                     return value.name.toLowerCase().startsWith(token.toLowerCase());
                 }) : [];
 
@@ -70,14 +74,16 @@ export class CiscoCommandParser {
                 rangeCommandIndex = 0;
                 command = command.children[0];
                 commands = (command.children) ? command.children.filter(function (value: TerminalCommand) {
-                    if (value.validator) return value.validator(token);
+                    if (value.validator) {
+                        return value.validator(token);
+                    }
                     return value.name.toLowerCase().startsWith(token.toLowerCase());
                 }) : [];
             }
 
             // if multiple commands match the token
             if (commands && commands.length > 1) {
-                //TODO: Remove this comment once it is understood or if the code is clear enough
+                // TODO: Remove this comment once it is understood or if the code is clear enough
                 //  Consider for example: ip, ipv4, ipv6
                 //  If there is one command in commands whose name matches exactly with the token then:
                 //    We should allow the parser to choose that command.
@@ -86,7 +92,7 @@ export class CiscoCommandParser {
                 //    If the token is not last on the list, we should *not* include the potentially ambiguous
                 //      commands and assume that the user meant to choose the matching command unambiguously
                 //      and continue parsing.
-                let exactMatch: TerminalCommand[] = commands.filter((value) => {
+                const exactMatch: TerminalCommand[] = commands.filter((value) => {
                     let result = value.name === token;
                     if (!result && value.aliases) {
                         result = value.aliases.find((alias) => alias.toLowerCase() === token.toLowerCase()) !== undefined;
@@ -94,12 +100,13 @@ export class CiscoCommandParser {
                     return result;
                 });
                 if (exactMatch.length === 1) {
-                    if (index === tokens.length - 1) { //this is the last token,
-                        output.ambiguous = commands;  //make sure the potential ambiguous commands are listed in case the user is asking for help
-                        //but continue handling the command
+                    if (index === tokens.length - 1) { // this is the last token,
+                        output.ambiguous = commands;
+                        // make sure the potential ambiguous commands are listed in case the user is asking for help
+                        // but continue handling the command
                         commands = [exactMatch[0]];
                     } else {
-                        //this token is not last on the list, so we should assume that the user unambiguously meant to choose this command
+                        // this token is not last on the list, so we should assume that the user unambiguously meant to choose this command
                         //  and continue parsing
                         commands = [exactMatch[0]];
                     }
@@ -112,7 +119,7 @@ export class CiscoCommandParser {
 
             // a single command matched; this command will handle all remaining tokens
             if (commands && commands.length === 1) {
-                let isRangeCommand = (commands[0].name === 'integerRange');
+                const isRangeCommand = (commands[0].name === 'integerRange');
                 if (isRangeCommand) {
                     rangeCommandIndex++;
                 } else {
@@ -128,16 +135,16 @@ export class CiscoCommandParser {
 
 
             // since the token is not a command, assume it is a parameter
-            let parameterTokens = tokens.slice(index, tokens.length - index); //this token and all the rest after it.
-            let parsedParameters: ParsedParameters = CiscoParameterParser.Parse(tokens, command.parameters);
-            //what do do with the results?
+            const parameterTokens = tokens.slice(index, tokens.length - index); // this token and all the rest after it.
+            const parsedParameters: ParsedParameters = CiscoParameterParser.Parse(tokens, command.parameters);
+            // what do do with the results?
             parsed.properties = parsedParameters.properties;
 
             if (parsed.command.notTerminalFlag) {
                 output.parseResult = ParseCommandResult.Invalid;
                 return;
             }
-            //old way of handling parameters
+            // old way of handling parameters
             parsed.parameters[parameterIndex] = token;
             parameterIndex++;
         }

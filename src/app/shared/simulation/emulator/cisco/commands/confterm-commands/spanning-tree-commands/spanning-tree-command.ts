@@ -9,7 +9,7 @@ import { CiscoValidators } from "../../../common/cisco-validators";
 
 export let spanningTreeDefaultModel = {
     defaultMode: 'pvst'
-}
+};
 
 export class SpanningTreeCommandMessages {
     static invalidVlanPriorityMessage: string = '% Bridge Priority must be in increments of 4096.\n'
@@ -17,10 +17,10 @@ export class SpanningTreeCommandMessages {
     + '0\t4096\t8192\t12288\t16384\t20480\t24576\t28672\n'
     + '32768\t36864\t40960\t45056\t49152\t53248\t57344\t61440\n';
 
-    static invalidVlanMessage: string = '% Command rejected: Bad instance list: A number is out of range (1..4094)';
-    static incompleteCommand: string = '% Incomplete command.';
-    static invalidCommand: string = '% Invalid input detected';
-    static outputMessage: string = ' %Warning: this command enables portfast by default on all interfaces. You should now disable portfast explicitly on switched ports leading to hubs, switches and bridges as they may create temporary bridging loops.';
+    static invalidVlanMessage = '% Command rejected: Bad instance list: A number is out of range (1..4094)';
+    static incompleteCommand = '% Incomplete command.';
+    static invalidCommand = '% Invalid input detected';
+    static outputMessage = ' %Warning: this command enables portfast by default on all interfaces. You should now disable portfast explicitly on switched ports leading to hubs, switches and bridges as they may create temporary bridging loops.';
 }
 
 class SpanningTreeCommands {
@@ -31,17 +31,20 @@ class SpanningTreeCommands {
         let value = cmdState.properties['value'];
 
         //Check for priority number and add it to value.
-        if (cmdState.properties['vlanPriorityNumber'])
+        if (cmdState.properties['vlanPriorityNumber']) {
             value += ` priority ${cmdState.properties['vlanPriorityNumber']}`;
+        }
 
-        if (cmdState.properties['vlanRoot'])
+        if (cmdState.properties['vlanRoot']) {
             value += ` root ${cmdState.properties['vlanRoot']}`;
+        }
 
         if (cmdState.properties['vLanNumber']) {
-            let validVlans = CiscoFormatters.formatRange(cmdState.properties['vLanNumber']);
+            const validVlans = CiscoFormatters.formatRange(cmdState.properties['vLanNumber']);
             UtilityModel.updateVlanSpanningTreeProp(cmdContext.device.model.vlans, validVlans, true);
-            if (cmdState.properties['vlanPriorityNumber'])
+            if (cmdState.properties['vlanPriorityNumber']) {
                 UtilityModel.updateVlanPriority(cmdContext.device.model.vlans, validVlans, cmdState.properties['vlanPriorityNumber']);
+            }
         }
 
         if (cmdState.properties['isValid'] === false) {

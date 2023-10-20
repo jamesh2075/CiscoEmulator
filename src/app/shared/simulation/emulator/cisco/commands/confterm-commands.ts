@@ -6,11 +6,11 @@ import { CiscoCommandParser } from '../command-parser';
 import { interfaceCommand, interfaceRangeCommand } from './confterm-commands/interface-command';
 import { vtpCommand } from '../commands/confterm-commands/vtp-commands/vtp-command';
 import { spanningTreeCommand } from './confterm-commands/spanning-tree-commands/spanning-tree-command';
-import { VlanCommands } from "./confterm-commands/vlan-commands";
-import { NoCommands } from "../commands/no-commands";
-import { doCommand } from "./confterm-commands/do-command";
-import { unsupportedConftermCommands } from "./confterm-commands-unsupported";
-import { CommandConstants } from "../common/cisco-constants";
+import { VlanCommands } from './confterm-commands/vlan-commands';
+import { NoCommands } from '../commands/no-commands';
+import { doCommand } from './confterm-commands/do-command';
+import { unsupportedConftermCommands } from './confterm-commands-unsupported';
+import { CommandConstants } from '../common/cisco-constants';
 
 class ConfigureTerminalCommands {
 
@@ -25,13 +25,13 @@ class ConfigureTerminalCommands {
     static AccessList(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         // TODO: access-list
         throw new Error('Not Implemented');
-        //return cmdState;
+        // return cmdState;
     }
 
     static Ip(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         // TODO: ip
         throw new Error('Not Implemented');
-        //return cmdState;
+        // return cmdState;
     }
     static End(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         if (cmdState.parameters[0]) {
@@ -46,8 +46,7 @@ class ConfigureTerminalCommands {
             cmdState.stopProcessing = true;
             cmdState.output = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
             return cmdState;
-        }
-        else {
+        } else {
             cmdState.output = CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND;
         }
         return cmdState;
@@ -55,7 +54,7 @@ class ConfigureTerminalCommands {
 }
 
 // ********** Configure Terminal
-let accessList: TerminalCommand = {
+const accessList: TerminalCommand = {
     name: 'access-list', description: 'Add an access list entry',
     children: [
         // TODO: 'source'
@@ -75,30 +74,30 @@ let accessList: TerminalCommand = {
     handler: ConfigureTerminalCommands.AccessList
 };
 
-let ipGlobalCommand: TerminalCommand = {
+const ipGlobalCommand: TerminalCommand = {
     name: 'ip',
     description: 'Global IP configuration subcommands',
     handler: ConfigureTerminalCommands.Ip
 };
 
-let exitCommand: TerminalCommand = {
+const exitCommand: TerminalCommand = {
     name: 'exit',
     description: 'Exit from the Exec',
     handler: ConfigureTerminalCommands.Exit
 };
 
-let connectCommand: TerminalCommand = {
+const connectCommand: TerminalCommand = {
     name: 'connect',
     description: 'cross-connect two interfaces',
     parameters: [],
     handler: NotSupportedCommand.NotSupported
 };
-let endCommand: TerminalCommand = {
+const endCommand: TerminalCommand = {
     name: 'end',
     description: 'Exit from configure mode',
     handler: ConfigureTerminalCommands.End
 };
-let shellCommand: TerminalCommand = {
+const shellCommand: TerminalCommand = {
     name: 'shell',
     aliases: ['sh'],
     description: 'Configure shell command',
@@ -114,7 +113,7 @@ let shellCommand: TerminalCommand = {
 export let configureTerminalCommands: TerminalCommand[] = [
     interfaceCommand,
     // current matching logic doesn't favor an exact match, so 'interface' ambiguously matches interface & interfaceRange
-    //interfaceRangeCommand,
+    // interfaceRangeCommand,
     accessList,
     ipGlobalCommand,
     exitCommand,
@@ -126,5 +125,6 @@ export let configureTerminalCommands: TerminalCommand[] = [
     doCommand,
     endCommand,
     shellCommand,
-    ...unsupportedConftermCommands  //NOTE TO DEVELOPERS: if you add another command, make sure to remove it from the unsupported commands list
+    ...unsupportedConftermCommands
+    // NOTE TO DEVELOPERS: if you add another command, make sure to remove it from the unsupported commands list
 ];

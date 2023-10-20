@@ -1,41 +1,41 @@
-import { CiscoUtils } from "./cisco-utils";
-import { CiscoValidators } from "./cisco-validators";
-import { CommandConstants } from "./cisco-constants";
+import { CiscoUtils } from './cisco-utils';
+import { CiscoValidators } from './cisco-validators';
+import { CommandConstants } from './cisco-constants';
 
 
 
 export interface IInterfaceInfo {
-    isValid: boolean,
-    type: string,
-    shortName: string,
-    longName: string,
-    fullName: string,
-    inputToken: string,
-    inputTokenName: string,
-    inputTokenNumber: string,
-    slot: number,
-    isRange: boolean,
-    port: number,
-    startPort: number,
-    endPort: number,
-    errorMessage: string
+    isValid: boolean;
+    type: string;
+    shortName: string;
+    longName: string;
+    fullName: string;
+    inputToken: string;
+    inputTokenName: string;
+    inputTokenNumber: string;
+    slot: number;
+    isRange: boolean;
+    port: number;
+    startPort: number;
+    endPort: number;
+    errorMessage: string;
 }
 
 export class InterfaceInfo implements IInterfaceInfo {
-    isValid: boolean = true;
-    type: string = undefined;
-    shortName: string = undefined;
-    longName: string = undefined;
-    fullName: string = undefined;
-    inputToken: string = undefined;
-    inputTokenName: string = undefined;
-    inputTokenNumber: string = undefined;
-    slot: number = undefined;
-    isRange: boolean = false;
-    port: number = undefined;
-    startPort: number = undefined;
-    endPort: number = undefined;
-    errorMessage: string = undefined;
+    isValid = true;
+    type = '';
+    shortName = '';
+    longName = '';
+    fullName = '';
+    inputToken = '';
+    inputTokenName = '';
+    inputTokenNumber = '';
+    slot: number;
+    isRange = false;
+    port: number;
+    startPort: number;
+    endPort: number;
+    errorMessage = '';
 
     // check if a string is valid interface name or abbreviation
     // For the interface command, any valid interface can be used 
@@ -45,14 +45,14 @@ export class InterfaceInfo implements IInterfaceInfo {
     static validateInterfaceId(token: string) {
 
 
-        let shortName: string = undefined;
-        let longName: string = undefined;
-        let fullName: string = undefined;
-        let numberToken: string = undefined;
-        let isValid: boolean = true;
-        let error: string = undefined;
+        let shortName = '';
+        let longName = '';
+        let fullName = '';
+        let numberToken = '';
+        let isValid = true;
+        let error = '';
 
-        let data = undefined;
+        let data: any = undefined;
         let found = false;
 
         if (token !== undefined) {
@@ -62,19 +62,18 @@ export class InterfaceInfo implements IInterfaceInfo {
                 shortName = data.shortName;
                 longName = data.longName;
 
-                //Validate interface name
+                // Validate interface name
                 if (!shortName) {
                     isValid = false;
                     error = CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND;
                 }
 
                 if (data.longName) {
-                    if (longName && longName.toLowerCase() === "gigabitethernet" && data.slot === undefined) {
+                    if (longName && longName.toLowerCase() === 'gigabitethernet' && data.slot === undefined) {
                         isValid = false;
                         error = CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND;
                     }
-                }
-                else {
+                } else {
                     isValid = false;
                     error = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
                 }
@@ -83,7 +82,7 @@ export class InterfaceInfo implements IInterfaceInfo {
                     error = CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND;
                 }
 
-                //Exceptional rules
+                // Exceptional rules
                 if (isValid === false) {
                     if (data.startPort > data.endPort) {
                         error = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
@@ -96,15 +95,14 @@ export class InterfaceInfo implements IInterfaceInfo {
                 }
 
                 if (data.port !== undefined) {
-                    if (longName !== undefined && longName.toLowerCase() === "gigabitethernet" && data.port < 0 || data.port > 3) {
+                    if (longName !== undefined && longName.toLowerCase() === 'gigabitethernet' && data.port < 0 || data.port > 3) {
                         isValid = false;
                         error = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
-                    } else if (longName !== undefined && longName.toLowerCase() === "port-channel" && data.port < 1 || data.port > 64) {
+                    } else if (longName !== undefined && longName.toLowerCase() === 'port-channel' && data.port < 1 || data.port > 64) {
                         isValid = false;
                         if (data.port === 0) {
                             error = CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND;
-                        }
-                        else {
+                        } else {
                             error = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
                         }
                     }
@@ -124,8 +122,7 @@ export class InterfaceInfo implements IInterfaceInfo {
                     if (data.isRange === true) {
                         numberToken = data.slot + '/' + data.startPort + '-' + data.endPort;
                         fullName = longName + numberToken;
-                    }
-                    else {
+                    } else {
                         if (longName.toLowerCase() === 'gigabitethernet') {
                             numberToken = data.slot + '/' + data.port;
                             fullName = longName + numberToken;
@@ -136,8 +133,7 @@ export class InterfaceInfo implements IInterfaceInfo {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 isValid = data.isValid;
                 error = data.errorMessage;
             }
@@ -156,27 +152,27 @@ export class InterfaceInfo implements IInterfaceInfo {
             startPort: data.startPort,
             endPort: data.endPort,
             error: error
-        }
+        };
     }
 
-    //Parses interface name
-    //Returns:  name (without slot/port)
+    // Parses interface name
+    // Returns:  name (without slot/port)
     //          slot
     //          port
     static getInterfaceInfo(interfaceId: string) {
 
-        let interfaceInfo = new InterfaceInfo();
+        const interfaceInfo = new InterfaceInfo();
         interfaceInfo.inputToken = interfaceId;
 
-        let interfaceNames = [
+        const interfaceNames = [
             { longName: 'gigabitethernet', shortName: 'g', type: 'GigabitEthernet' },
             { longName: 'port-channel', shortName: 'p', type: 'Port-channel' },
             { longName: 'loopback', shortName: 'l', type: 'Loopback' }
-        ]
+        ];
 
         let slicePosition: number = interfaceId.length;
-        for (let index: number = 0; index < interfaceId.length; index++) {
-            let character: string = interfaceId.substr(index, 1);
+        for (let index = 0; index < interfaceId.length; index++) {
+            const character: string = interfaceId.substr(index, 1);
             if (!isNaN(Number(character))) {
                 slicePosition = index;
                 break;
@@ -186,21 +182,23 @@ export class InterfaceInfo implements IInterfaceInfo {
         if (slicePosition > 0) {
             interfaceInfo.inputTokenName = interfaceId.substr(0, slicePosition);
             interfaceInfo.inputTokenNumber = interfaceId.substr(slicePosition);
-            let slotCheck: string = undefined;
-            let portCheck: string = undefined;
-            let slashPosition = interfaceInfo.inputTokenNumber.indexOf("/");
+            let slotCheck = '';
+            let portCheck = '';
+            const slashPosition = interfaceInfo.inputTokenNumber.indexOf('/');
             if (slashPosition !== -1) {
                 slotCheck = interfaceInfo.inputTokenNumber.substr(0, slashPosition);
                 portCheck = interfaceInfo.inputTokenNumber.substr(slashPosition + 1);
-                if (interfaceInfo.inputTokenNumber === "") interfaceInfo.inputTokenNumber = undefined;
-                let tokens = new Array();
-                tokens[0] = "";
-                tokens[1] = "";
+                // if (interfaceInfo.inputTokenNumber === '') {
+                //     interfaceInfo.inputTokenNumber = undefined;
+                // }
+                const tokens = new Array();
+                tokens[0] = '';
+                tokens[1] = '';
                 let t = 0;
-                let bolFoundDash: boolean = false;
+                let bolFoundDash = false;
                 if (isNaN(Number(portCheck))) {
                     for (let index = 0; index < portCheck.length; index++) {
-                        let character: string = portCheck[index];
+                        const character: string = portCheck[index];
                         if (isNaN(Number(character))) {
                             if (t === 0) {
                                 if (index === 0) {
@@ -228,19 +226,19 @@ export class InterfaceInfo implements IInterfaceInfo {
                             tokens[t] += character;
                         }
                     }
-                    if (tokens[0] && tokens[0] !== "" && !isNaN(Number(tokens[0]))) {
+                    if (tokens[0] && tokens[0] !== '' && !isNaN(Number(tokens[0]))) {
                         interfaceInfo.startPort = Number(tokens[0]);
                     }
                     if (bolFoundDash) {
-                        if (tokens[1] === undefined || tokens[1] === "" || isNaN(Number(tokens[1]))) {
+                        if (tokens[1] === undefined || tokens[1] === '' || isNaN(Number(tokens[1]))) {
                             interfaceInfo.isValid = false;
                             interfaceInfo.errorMessage = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
-                        } else if (tokens[1] && tokens[1] !== "" && !isNaN(Number(tokens[1]))) {
+                        } else if (tokens[1] && tokens[1] !== '' && !isNaN(Number(tokens[1]))) {
                             interfaceInfo.endPort = Number(tokens[1]);
                         }
                     }
                 } else {
-                    if (portCheck === undefined || portCheck === "") {
+                    if (portCheck === undefined || portCheck === '') {
                         interfaceInfo.isValid = false;
                         interfaceInfo.errorMessage = CommandConstants.ERROR_MESSAGES.INCOMPLETE_COMMAND;
                     } else {
@@ -252,7 +250,7 @@ export class InterfaceInfo implements IInterfaceInfo {
                 }
 
             } else {
-                //If there is no slash then the number is a port 
+                // If there is no slash then the number is a port 
                 if (interfaceInfo.inputTokenNumber && !isNaN(Number(interfaceInfo.inputTokenNumber))) {
                     interfaceInfo.port = Number(interfaceInfo.inputTokenNumber);
                 }
@@ -265,11 +263,11 @@ export class InterfaceInfo implements IInterfaceInfo {
 
 
         let checkName = interfaceInfo.inputTokenName;
-        let longName = undefined;
-        let shortName = undefined;
+        let longName = '';
+        let shortName = '';
         let type = undefined;
         let foundInterfaceName = false;
-        for (let index: number = 0; index < interfaceNames.length; index++) {
+        for (let index = 0; index < interfaceNames.length; index++) {
             longName = interfaceNames[index].longName;
             shortName = interfaceNames[index].shortName;
             type = interfaceNames[index].type;

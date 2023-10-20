@@ -4,23 +4,23 @@ import { CommandState } from '../../../interfaces/command-state';
 import { CiscoCommandContext } from '../../cisco-terminal-command';
 import { PortController } from '../../controllers/port-controller';
 import { NotSupportedCommand } from '../notsupported';
-import { CiscoValidators } from "../../common/cisco-validators"
-import { CommandConstants } from "../../common/cisco-constants";
-import { Interface } from "../../model/interface.model";
-import { Port } from "../../model/port.model";
-import { GigabitEthernet } from "../../model/gigabitethernet.model";
-import { CiscoFormatters } from "../../common/cisco-formatters";
+import { CiscoValidators } from '../../common/cisco-validators';
+import { CommandConstants } from '../../common/cisco-constants';
+import { Interface } from '../../model/interface.model';
+import { Port } from '../../model/port.model';
+import { GigabitEthernet } from '../../model/gigabitethernet.model';
+import { CiscoFormatters } from '../../common/cisco-formatters';
 
-import { ShowChannelGroupItem } from "../channel-group-command";
+import { ShowChannelGroupItem } from '../channel-group-command';
 
 
 class ShowEtherChannel {
 
     static showEtherchannel(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        let result: string = '';
-        let interfacesData = cmdContext.device.property('interfaces');
+        let result = '';
+        const interfacesData = cmdContext.device.property('interfaces');
 
-        //Common part. This text will be shown always when "show ethernet" is executed
+        // Common part. This text will be shown always when 'show ethernet' is executed
         result = '\t\tChannel-group listing:\n';
         result += '\t\t---------------------\n';
 
@@ -31,18 +31,18 @@ class ShowEtherChannel {
         // Port-channels: 1 Max Port-channels = 4
         // Protocol:    {existInPo}
         // Minimum Links: 0
-        let groups = new Array();
+        const groups = new Array();
         let groupCount = 0;
         let groupNumber = 0;
-        let totalPorts = new Array();
+        const totalPorts = new Array();
         let ports = 0;
-        for (let c = 0; c < interfacesData.length; ++c) {
-            let interfaceChannelGroup = interfacesData[c]['channelGroup'];
+        for (const c = 0; c < interfacesData.length; ++c) {
+            const interfaceChannelGroup = interfacesData[c]['channelGroup'];
             if (interfaceChannelGroup) {
-                let id = interfaceChannelGroup.id;
+                const id = interfaceChannelGroup.id;
                 if (id) {
                     if (groupNumber !== id) {
-                        let cg = new ShowChannelGroupItem();
+                        const cg = new ShowChannelGroupItem();
                         cg.id = id;
                         cg.mode = interfaceChannelGroup.mode;
                         cg.protocol = interfaceChannelGroup.protocol;
@@ -81,7 +81,7 @@ class ShowEtherChannel {
     static showEtherchannelSummary(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         let result = '';
 
-        let portInterfaces: ICiscoInterface[] = PortController.getPortInterfaces(cmdContext.device.getInterfaces()) || [];
+        const portInterfaces: ICiscoInterface[] = PortController.getPortInterfaces(cmdContext.device.getInterfaces()) || [];
 
         result += `Flags:  D - down        P - bundled in port-channel
         I - stand-alone s - suspended
@@ -104,13 +104,15 @@ class ShowEtherChannel {
 Group  Port-channel  Protocol    Ports
 ------+-------------+-----------+----------------------------------------------- \n`;
 
-        for (let portInterface of portInterfaces) {
-            let memberInterfaces = PortController.getMemberInterfaces(cmdContext.device.getInterfaces(), portInterface.property('id'))
-            result += `${portInterfaces.indexOf(portInterface)}      ${portInterface.property('name')}${(portInterface.property('etherflag'))}`;
-            if (memberInterfaces && memberInterfaces.length > 0)
-                for (let memberInterface of memberInterfaces) {
+        for (const portInterface of portInterfaces) {
+            const memberInterfaces = PortController.getMemberInterfaces(cmdContext.device.getInterfaces(), portInterface.property('id'));
+            result +=
+                `${portInterfaces.indexOf(portInterface)}      ${portInterface.property('name')}${(portInterface.property('etherflag'))}`;
+            if (memberInterfaces && memberInterfaces.length > 0) {
+                for (const memberInterface of memberInterfaces) {
                     result += `       ${memberInterface.property('name')}${(portInterface.property('etherflag'))}`;
                 }
+            }
             result += `\n`;
         }
 
@@ -122,7 +124,7 @@ Group  Port-channel  Protocol    Ports
 
 }
 
-let showEtherchannelSummaryCommand: TerminalCommand = {
+const showEtherchannelSummaryCommand: TerminalCommand = {
     name: 'summary',
     description: 'One-line summary per channel-group',
     children: [],
@@ -130,7 +132,7 @@ let showEtherchannelSummaryCommand: TerminalCommand = {
     validator: () => {
         return true;
     }
-}
+};
 
 
 export let showEtherchannelCommand: TerminalCommand = {
@@ -154,4 +156,4 @@ export let showEtherchannelCommand: TerminalCommand = {
         showEtherchannelSummaryCommand
     ],
     handler: ShowEtherChannel.showEtherchannel
-}
+};

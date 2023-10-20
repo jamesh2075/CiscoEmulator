@@ -1,5 +1,5 @@
 ﻿import { ExamItemScoreKey, ITaskScoreKey, IVerification } from './scorekey';
-import { AsArray, AsSingle } from "../../emulator/util";
+import { AsArray, AsSingle } from '../../emulator/util';
 import {
   ExtractFunction,
   ExtractSwitchport,
@@ -51,11 +51,10 @@ export class Verifier {
     // 'channel-protocol pagp': ExtractChannelProtocolPagp,
     // 'channel-protocol lacp': ExtractChannelProtocolLacp,
     'channel-protocol': ExtractChannelProtocol,
-    'no spanning-tree vlan 40': 
-    (dataModel, device, iface) =>
-      ExtractSpanningTree(dataModel, device, iface, { vlan: 40, no: true }), // 'no spanning-tree vlan 40'=> device.vlans.filter((x)=>x.id == 40)[0].spanningEnabled == false
-    'spanning-tree mode rapid-pvst':
-    (dataModel, device, iface) =>
+    'no spanning-tree vlan 40': (dataModel, device, iface) =>
+      ExtractSpanningTree(dataModel, device, iface, { vlan: 40, no: true }),
+      // 'no spanning-tree vlan 40'=> device.vlans.filter((x)=>x.id == 40)[0].spanningEnabled == false
+    'spanning-tree mode rapid-pvst': (dataModel, device, iface) =>
       ExtractSpanningTree(dataModel, device, iface, { mode: 'rapid-pvst' }),
     'spanning-tree vlan 10 priority 0':
     (dataModel, device, iface) =>
@@ -64,17 +63,19 @@ export class Verifier {
   };
 
   Verify(dataModel: any, verifications: IVerification): VerifyResult[] {
-    let devices = AsArray(verifications.devices);
-    let interfaces = AsArray(verifications.interfaces);
-    if (interfaces.length === 0) interfaces.push(null); // must have at least one value to iterate
+    const devices = AsArray(verifications.devices);
+    const interfaces = AsArray(verifications.interfaces);
+    if (interfaces.length === 0) {
+      interfaces.push(null); // must have at least one value to iterate
+    }
 
-    let results: VerifyResult[] = [];
+    const results: VerifyResult[] = [];
 
-    for (let device of devices) {
+    for (const device of devices) {
       for (let iface of interfaces) {
         iface = this.getInterfaceName(iface);
-        for (let key in verifications.verify) {
-          let result = new VerifyResult;
+        for (const key in verifications.verify) {
+          const result = new VerifyResult;
           result.name = key;
           result.device = device;
           result.iface = iface;
@@ -90,7 +91,7 @@ export class Verifier {
   }
 
   private getVerifyValue(dataModel: any, device: string, netInterface: string, name: string): any {
-    let extractor = this.extractors[name];
+    const extractor = this.extractors[name];
     if (extractor) {
       return extractor(dataModel, device, netInterface);
     } else {
@@ -99,7 +100,9 @@ export class Verifier {
   }
 
   private getInterfaceName(name: string): string {
-    if (!name) return null;
+    if (!name) {
+      return null;
+    }
 
     let result: string = null;
 
@@ -113,12 +116,12 @@ export class Verifier {
       throw new Error('Invalid interface id ' + name);
     }
 
-    let numStart = name.search(/\d/);
+    const numStart = name.search(/\d/);
     if (numStart > 0) {
       result += name.slice(numStart).trim();
     }
 
-    //result = result.split('/').join('_'); // converts "GigabitEthernet0/1" to "GigabitEthernet0_1"
+    // result = result.split('/').join('_'); // converts "GigabitEthernet0/1" to "GigabitEthernet0_1"
     return result;
   }
 

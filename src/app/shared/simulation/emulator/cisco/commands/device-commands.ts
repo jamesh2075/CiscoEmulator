@@ -4,8 +4,8 @@ import { CiscoTerminalContext, CiscoCommandContext } from '../cisco-terminal-com
 import { NotSupportedCommand } from './notsupported';
 import { showCommand } from './../commands/show-commands/show-command';
 import { doCommand } from '../commands/confterm-commands/do-command';
-import { unsupportedDeviceCommands } from "./device-commands-unsupported";
-import { CommandConstants } from "../common/cisco-constants";
+import { unsupportedDeviceCommands } from './device-commands-unsupported';
+import { CommandConstants } from '../common/cisco-constants';
 
 class DeviceCommands {
     static Enable(cmdContext: CiscoCommandContext, cmdState: CommandState) {
@@ -20,18 +20,18 @@ class DeviceCommands {
     }
 }
 
-let enableCommand: TerminalCommand = {
+const enableCommand: TerminalCommand = {
     name: 'enable',
     description: 'Turn on privileged commands',
     handler: DeviceCommands.Enable
 };
 
 
-let pingCommand: TerminalCommand = {
+const pingCommand: TerminalCommand = {
     name: 'ping',
     description: 'Send echo messages',
     parameters: [
-        //'(word)': {}
+        // '(word)': {}
     ],
 
     children: [
@@ -51,13 +51,13 @@ let pingCommand: TerminalCommand = {
     handler: NotSupportedCommand.NotImplemented
 };
 
-let accessEnable: TerminalCommand = {
+const accessEnable: TerminalCommand = {
     name: 'access-enable',
     description: 'Create a temporary Access-List entry',
     parameters: [],
     handler: NotSupportedCommand.NotSupported
 };
-let accessPing: TerminalCommand = {
+const accessPing: TerminalCommand = {
     name: 'access-ping',
     description: 'Send echo messages',
     parameters: [],
@@ -70,5 +70,5 @@ export let deviceCommands: TerminalCommand[] = [
     pingCommand,
     showCommand,
     doCommand,
-    ...unsupportedDeviceCommands    //NOTE: if you add support for a command, make sure to take it out of the unsupported list.
+    ...unsupportedDeviceCommands    // NOTE: if you add support for a command, make sure to take it out of the unsupported list.
 ];

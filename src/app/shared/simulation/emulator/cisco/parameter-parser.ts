@@ -4,8 +4,9 @@ import {ParsedParameters, ParsedParameter} from '../interfaces/parsed-parameters
 
 class ParametersParseException extends Error {
 }
-//Parameter Parser
+// Parameter Parser
 interface PropertyBag {
+    noImplementation: any;
 }
 
 export class CiscoParameterParser {
@@ -19,28 +20,28 @@ export class CiscoParameterParser {
     //  a structured object representing the data on the command line
     static Parse(tokens: string[], params: ICommandParameter): ParsedParameters {
         if (params !== undefined) {
-            let parser = new CiscoParameterParser(tokens);
+            const parser = new CiscoParameterParser(tokens);
             params = CiscoParameterParser.ConvertToClass(params);
             return parser.doParse(params);
         } else {
-            let result = new ParsedParameters;
+            const result = new ParsedParameters;
             result.parseResult = ParseCommandResult.Unknown;
             return result;
         }
     }
 
     private static ConvertToClass(params: any): ICommandParameter {
-        if (params.parameters) { //it's a list
-            let result: ParameterList = new ParameterList;
+        if (params.parameters) { // it's a list
+            const result: ParameterList = new ParameterList;
             result.required = params.required ? params.required : false;
             result.sequential = params.sequential ? params.sequential : false;
             result.parameters = [];
-            for (let i: number = 0; i < params.parameters.length; ++i) {
+            for (let i = 0; i < params.parameters.length; ++i) {
                 result.parameters.push(CiscoParameterParser.ConvertToClass(params.parameters[i]));
             }
             return result;
         } else {
-            let result: Parameter = new Parameter;
+            const result: Parameter = new Parameter;
             result.name = params.name;
             result.propertyName = params.propertyName;
             result.type = params.type;
@@ -49,7 +50,7 @@ export class CiscoParameterParser {
         }
     }
 
-    //What I learned in school, is you first create a grammar where each production has max of 2 non-terminal symbols
+    // What I learned in school, is you first create a grammar where each production has max of 2 non-terminal symbols
     // Then all you have to do is write a function for each production
     // might be overkill, but it'll get me to where I'm going
 
@@ -83,7 +84,7 @@ export class CiscoParameterParser {
     }
 
     List(params: ParameterList) {
-        //decide which production to call:
+        // decide which production to call:
         if (params.required) {
             this.RList(params);
         } else {
@@ -101,7 +102,7 @@ export class CiscoParameterParser {
                 this.result.parseResult = ParseCommandResult.Invalid;
                 throw new ParametersParseException('Missing required token');
             }
-            let plist: ICommandParameter[] = (params.parameters) ?
+            const plist: ICommandParameter[] = (params.parameters) ?
                 params.parameters.filter((value) => this.ValidToken(this.tokens[0], value)) : [];
             if (plist && 1 < plist.length) {
                 this.result.parseResult = ParseCommandResult.Ambiguous;
@@ -110,7 +111,7 @@ export class CiscoParameterParser {
             } else if (plist && plist.length === 1) {
                 this.IParam(plist[0]);
             } else if (plist && plist.length === 0) {
-                //this was a required parameter, and the token did not match
+                // this was a required parameter, and the token did not match
                 this.result.parseResult = ParseCommandResult.Invalid;
                 throw new ParametersParseException(`Invalid token '${this.tokens[0]}' did not match required parameter`);
             }
@@ -118,17 +119,20 @@ export class CiscoParameterParser {
     }
 
     OList(params: ParameterList) {
-        if (this.tokens.length === 0) return; //since this is optional, it's okay if there are no more tokens
+        if (this.tokens.length === 0) {
+            // since this is optional, it's okay if there are no more tokens
+            return;
+         }
         if (params.sequential) {
-            //check to see if the first parameter is valid
+            // check to see if the first parameter is valid
             if (this.ValidToken(this.tokens[0], params.parameters[0])) {
                 for (let index = 0; index < params.parameters.length; ++index) {
                     this.IParam(params.parameters[index]);  // parse each parameter in the list
                 }
             }
-            //else: this list is optional AND sequential, and the first token didn't match, so we ignore and return
+            // else: this list is optional AND sequential, and the first token didn't match, so we ignore and return
         } else {
-            let plist: ICommandParameter[] = (params.parameters) ?
+            const plist: ICommandParameter[] = (params.parameters) ?
                 params.parameters.filter((value) => this.ValidToken(this.tokens[0], value)) : [];
             if (plist && 1 < plist.length) {
                 this.result.parseResult = ParseCommandResult.Ambiguous;
@@ -137,42 +141,43 @@ export class CiscoParameterParser {
             } else if (plist && plist.length === 1) {
                 this.IParam(plist[0]);
             }
-            //else if the plist.length === 0, that's okay since this list is optional, so we ignore and return
+            // else if the plist.length === 0, that's okay since this list is optional, so we ignore and return
         }
     }
 
     IParam(iparam: ICommandParameter) {
         if (iparam instanceof Parameter) {
-            this.Param(<Parameter>iparam);   //should throw an invalid input error if it's not valid
+            this.Param(<Parameter>iparam);   // should throw an invalid input error if it's not valid
         } else if (iparam instanceof ParameterList) {
-            this.List(<ParameterList>iparam);    //should throw an invalid input error if it's not valid
+            this.List(<ParameterList>iparam);    // should throw an invalid input error if it's not valid
         }
     }
 
     Param(param: Parameter): ParsedParameter {
-        //decide which production to call
+        // decide which production to call
         if (this.tokens.length === 0) {
             this.result.parseResult = ParseCommandResult.Invalid;
             throw new ParametersParseException('Param expected a token');
         }
-        let parsed: ParsedParameter = new ParsedParameter;
+        const parsed: ParsedParameter = new ParsedParameter;
         let prop: string;
-        parsed.token = '';  //empty string
-        if (param.name) { //first token is a name
+        parsed.token = '';  // empty string
+        if (param.name) { // first token is a name
             prop = param.name;
             if (!prop.toLowerCase().startsWith(this.tokens[0].toLowerCase())) {
                 this.result.parseResult = ParseCommandResult.Invalid;
-                throw new ParametersParseException(`Name does not match, expected '${prop}' to start with '${this.tokens[0]}'`)
+                throw new ParametersParseException(`Name does not match, expected '${prop}' to start with '${this.tokens[0]}'`);
             }
             // we have succesfully parsed tokens[0]
             parsed.token += this.tokens[0];
             this.tokens.shift();
-        } else if (param.propertyName)
+        } else if (param.propertyName) {
             prop = param.propertyName;
-        else
+        }
+        else {
             throw new ParametersParseException(`Invalid Parameter, requires name or propertyName: ${JSON.stringify(param)}`);
-
-        let value: any = true;   //default
+        }
+        let value: any = true;   // default
         if (param.type) {
             if (this.tokens.length === 0) {
                 this.result.parseResult = ParseCommandResult.Invalid;
@@ -180,8 +185,9 @@ export class CiscoParameterParser {
             }
             if (param.type(this.tokens[0])) {
                 value = this.tokens.shift();
-                if (0 < parsed.token.length)
+                if (0 < parsed.token.length) {
                     parsed.token += ' ';
+                }
                 parsed.token += value;
             }
         }
@@ -193,7 +199,7 @@ export class CiscoParameterParser {
     }
 
     Finish() {
-        let result: ParsedParameters = new ParsedParameters;
+        const result: ParsedParameters = new ParsedParameters;
         if (this.tokens.length !== 0) {
             this.result = new ParsedParameters;
             this.result.parseResult = ParseCommandResult.Invalid;
@@ -205,23 +211,26 @@ export class CiscoParameterParser {
 
     private ValidToken(token: string, iparam: ICommandParameter): boolean {
         if (iparam instanceof Parameter) {
-            let param: Parameter = <Parameter>iparam;
-            if (param.name)
+            const param: Parameter = <Parameter>iparam;
+            if (param.name) {
                 return param.name.toLowerCase().startsWith(token.toLowerCase());
-            if (param.type)
+            }
+            if (param.type) {
                 return param.type(token);
+            }
         } else if (iparam instanceof ParameterList) {
-            let plist: ParameterList = <ParameterList>iparam;
+            const plist: ParameterList = <ParameterList>iparam;
             if (plist.sequential) {
                 return this.ValidToken(token, plist.parameters[0]);
             } else {
-                for (let index: number = 0; index < plist.parameters.length; ++index) {
-                    if (this.ValidToken(token, plist.parameters[index]))
+                for (let index = 0; index < plist.parameters.length; ++index) {
+                    if (this.ValidToken(token, plist.parameters[index])) {
                         return true;
+                    }
                 }
             }
         }
-        return false;   //default
+        return false;   // default
     }
 
 }

@@ -18,49 +18,49 @@ export interface SimNetworkInterface {
 
 // switchport properties
 export interface IAdminVlan {
-    privatehost ?: string,
-    mapping ?: string,
-    privatetrunkVlan ?: string,
-    privatetrunkVlantag ?: string,
-    privatetrunkEncapsulation ?: string
+    privatehost ?: string;
+    mapping ?: string;
+    privatetrunkVlan ?: string;
+    privatetrunkVlantag ?: string;
+    privatetrunkEncapsulation ?: string;
 }
 export interface ISwitchPort {
-    adminMode ?: string,
-    opMode ?: string,
-    adminTrunkEncapsulation ?: string,
-    opTrunkEncapsulation ?: string,
-    trunkNegotiation ?: string
-    accessVlan ?: number
-    trunkVlan ?: number,
-    adminVlanTag ?: string,
-    voiceVlan ?: string,
-    adminPrivateVlan ?: IAdminVlan,
-    opPrivateVlan ?: string,
-    trunkingVlans ?: string
+    adminMode ?: string;
+    opMode ?: string;
+    adminTrunkEncapsulation ?: string;
+    opTrunkEncapsulation ?: string;
+    trunkNegotiation ?: string;
+    accessVlan ?: number;
+    trunkVlan ?: number;
+    adminVlanTag ?: string;
+    voiceVlan ?: string;
+    adminPrivateVlan ?: IAdminVlan;
+    opPrivateVlan ?: string;
+    trunkingVlans ?: string;
 }
 
 
 export interface IInterface {
-    id?: number,
-    name: string,
-    interface?: string,
-    role?: string,
-    status?: string,
-    cost?: number,
-    priorNo?: string,
-    hardware?: string,
-    protocol ?: string,
-    type?: string,
-    vlan ?: number,
-    switchportMode ?: string,
-    switchport ?: ISwitchPort,
+    id?: number;
+    name: string;
+    interface?: string;
+    role?: string;
+    status?: string;
+    cost?: number;
+    priorNo?: string;
+    hardware?: string;
+    protocol ?: string;
+    type?: string;
+    vlan ?: number;
+    switchportMode ?: string;
+    switchport ?: ISwitchPort;
     channelGroup?: {
         id: number,
         mode: string,
         protocol: string
-    }
-    // 'media-type': 'rj45',
-    // 'negotiation': 'auto',
+    };
+    // 'media-type': 'rj45';
+    // 'negotiation': 'auto';
 }
 
 
@@ -68,14 +68,14 @@ export interface SimDevice {
     name: string;
     type: string; // corresponds to "type" in VIRL
     subtype?: string;
-    address?: string,
+    address?: string;
     ipv4?: string;
     interfaces?: any[]; // IInterface[]
     noTerminal?: boolean; // true if this device does not support a terminal
     vlan?: any;
     vlans?: Partial<IVlan>[];
     vtp?: any;
-    vtpConfig?: string; //determines the interface where is set the ip address for 'Local updater ID' in 'show vtp status'
+    vtpConfig?: string; // determines the interface where is set the ip address for 'Local updater ID' in 'show vtp status'
 }
 
 export interface SimConnectionEndpoint {

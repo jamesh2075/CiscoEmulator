@@ -40,7 +40,7 @@ export let unsupportedShowInterfacesCommands: TerminalCommand[] = [
   {name: 'flowcontrol', description: 'Show interface flowcontrol information'},
   {name: 'history', description: 'Show interface history'},
   {name: 'irb', description: 'Show interface routing/bridging info'},
-  {name: 'mac-accounting',description: 'Show interface MAC accounting info'},
+  {name: 'mac-accounting', description: 'Show interface MAC accounting info'},
   {name: 'mpls-exp', description: 'Show interface MPLS experimental accounting info'},
   {name: 'mtu', description: 'Show interface mtu'},
   {name: 'precedence', description: 'Show interface precedence accounting info'},
@@ -55,5 +55,5 @@ export let unsupportedShowInterfacesCommands: TerminalCommand[] = [
   {name: 'voaFilterIn', description: 'VOA-Filter-In interface'},
   {name: 'voaFilterOut', description: 'VOA-Filter-Out interface'},
   {name: 'voaIn', description: 'VOA-In interface'},
-  {name: 'voaOut', description: 'VOA-Out interface'} 
+  {name: 'voaOut', description: 'VOA-Out interface'}
 ];

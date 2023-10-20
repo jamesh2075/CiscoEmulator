@@ -2,10 +2,10 @@
 import { CommandState } from '../../interfaces/command-state';
 import { CiscoTerminalContext, CiscoCommandContext } from '../cisco-terminal-command';
 import { showCommand } from './show-commands/show-command';
-import { NoCommands } from "./no-commands";
-import { unsupportedEnableCommands } from "./enabled-commands-unsupported";
-import { NotSupportedCommand } from "./notsupported";
-import { CommandConstants } from "../common/cisco-constants";
+import { NoCommands } from './no-commands';
+import { unsupportedEnableCommands } from './enabled-commands-unsupported';
+import { NotSupportedCommand } from './notsupported';
+import { CommandConstants } from '../common/cisco-constants';
 
 export class EnabledCommands {
 
@@ -13,7 +13,7 @@ export class EnabledCommands {
         cmdState.ChangeContextProperty('confTerminal', true);
 
         cmdState.output = 'Enter configuration commands, one per line.  End with CNTL/Z.';
-        cmdState.stopProcessing = true;  //TODO: we need a better way than "stop processing";
+        cmdState.stopProcessing = true;  // TODO: we need a better way than 'stop processing';
         return cmdState;
     }
 
@@ -37,20 +37,18 @@ export class EnabledCommands {
     static Vtp(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         // TODO: No
         // convert each output state change to default/no value
-        //throw new Error('Not Implemented');
+        // throw new Error('Not Implemented');
         cmdState.output = '% Incomplete Command';
         return cmdState;
     }
     static End(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        
             cmdState.stopProcessing = true;
-            cmdState.output = "Translating 'end'  \n% Unknown command or computer name, or unable to find computer address";
+            cmdState.output = `Translating 'end'  \n% Unknown command or computer name, or unable to find computer address`;
             return;
-        
     }
 }
 
-let configureCommand: TerminalCommand = {
+const configureCommand: TerminalCommand = {
     name: 'configure',
     description: 'Enter configuration mode',
     children: [
@@ -64,7 +62,7 @@ let configureCommand: TerminalCommand = {
     ]
 };
 
-let disableCommand: TerminalCommand = {
+const disableCommand: TerminalCommand = {
     name: 'disable',
     description: 'Turn off privileged commands',
     handler: EnabledCommands.Disable
@@ -76,13 +74,13 @@ export let exitCommand: TerminalCommand = {
     handler: EnabledCommands.Exit
 };
 
-let logoutCommand: TerminalCommand = {
+const logoutCommand: TerminalCommand = {
     name: 'logout',
     description: 'Exit from the Exec',
     handler: EnabledCommands.Logout
 };
 
-let vtpCommand: TerminalCommand = {
+const vtpCommand: TerminalCommand = {
     name: 'vtp',
     description: 'Ignores VLAN updates from other switches',
     parameters: [
@@ -91,10 +89,10 @@ let vtpCommand: TerminalCommand = {
     ],
     handler: EnabledCommands.Vtp
 };
-let endCommand: TerminalCommand = {
-    name:'end', 
+const endCommand: TerminalCommand = {
+    name: 'end',
     description: 'Exit from configure mode',
-    handler: EnabledCommands.End 
+    handler: EnabledCommands.End
 };
 
 export let enabledCommands: TerminalCommand[] = [

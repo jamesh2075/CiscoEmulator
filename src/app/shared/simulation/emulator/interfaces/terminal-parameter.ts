@@ -5,11 +5,12 @@ export interface ICommandParameter {
 }
 
 
-export interface IParameterValueType { (token: string): boolean
-}
+// export interface IParameterValueType { (token: string): boolean
+// }
+export type IParameterValueType = (token: string) => boolean;
 export class ParameterValueType {
     static string(token: string): boolean {
-        return true
+        return true;
     };
 
     static number(token: string): boolean {
@@ -27,17 +28,17 @@ export class ParameterValueType {
     static boundedNumber(min: number, max: number): IParameterValueType {
         return (function (token: string): boolean {
             if (ParameterValueType.number(token)) {
-                let value = parseInt(token);
+                const value = parseInt(token, 10);
                 return min <= value && value <= max;
             }
-            return false;   //default
+            return false;   // default
         });
     }
 }
 
 export class ParameterList implements ICommandParameter {
-    sequential?: boolean = false;
-    required?: boolean = false;
+    sequential? = false;
+    required? = false;
     parameters: ICommandParameter[] = [];
 
     constructor() {
@@ -45,11 +46,11 @@ export class ParameterList implements ICommandParameter {
 }
 
 export class Parameter implements ICommandParameter {
-    //MUST have a propertyName or name
+    // MUST have a propertyName or name
     propertyName?: string;       // what the parser will put in the property bag as the property name
     name?: string;              // name is what the parser uses, is also the default propertyName if propertyName is undefined
     type?: IParameterValueType; // assumes none if not explicitly declared
-    description?: string = '';
+    description? = '';
 
     constructor() {
     }

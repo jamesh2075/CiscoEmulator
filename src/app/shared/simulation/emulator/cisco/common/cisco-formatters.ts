@@ -24,7 +24,7 @@ export class CiscoFormatters {
             let multiRange = new MultiRange(value);
             let values: number[] = multiRange.toArray();
             values.sort(function (a, b) {
-                return a - b
+                return a - b;
             });
             return values;
         } catch (e) {
@@ -48,8 +48,9 @@ export class CiscoFormatters {
                 var values = new MultiRange(value);
                 return values.append(addvalue).toString();
             }
-            else
+            else {
                 return '';
+            }
         } catch (e) {
             return '';
         }
@@ -70,8 +71,9 @@ export class CiscoFormatters {
                 var values = new MultiRange(value);
                 return values.subtract(removevalue).toString();
             }
-            else
+            else {
                 return '';
+            }
         } catch (e) {
             return '';
         }
@@ -86,7 +88,7 @@ export class CiscoFormatters {
      * @returns {string}
      */
     static padLeft(str: string, padding: string): string {
-        return padding.substring(0, padding.length - str.length) + str
+        return padding.substring(0, padding.length - str.length) + str;
     }
 
     /**
@@ -97,7 +99,7 @@ export class CiscoFormatters {
      * @returns {string}
      */
     static padRight(str: string, padding: string): string {
-        return str + padding.substring(0, padding.length - str.length)
+        return str + padding.substring(0, padding.length - str.length);
     }
 
     /**
@@ -109,8 +111,9 @@ export class CiscoFormatters {
      */
     static padRightLength(str: string, padding: string, length: number): string {
         let result = str;
-        while (result.length < length)
+        while (result.length < length) {
             result += padding;
+        }
         return result;
     }
 
@@ -123,8 +126,9 @@ export class CiscoFormatters {
      */
     static padLeftLength(str: string, padding: string, length: number): string {
         let result = str;
-        while (result.length < length)
+        while (result.length < length) {
             result = padding + result;
+        }
         return result;
     }
 
@@ -162,7 +166,7 @@ export class CiscoFormatters {
         while (result.length < length) {
             result = `${padding}${result}`;
         }
-        return result
+        return result;
     }
 
     static formatDate(date: Date): string {
@@ -195,27 +199,30 @@ export class CiscoFormatters {
     // For example:
     //    Set of Numbers = 1,2,3,10,11,15
     //    After normalization: 1-3,10-11,15
-    static normalizeNumberSet(numbers:number[]):string {
+    static normalizeNumberSet(numbers: number[]): string {
         let normalized = '';
-        let sortedNumbers = numbers.sort((a,b) => a - b);
+        let sortedNumbers = numbers.sort((a, b) => a - b);
         let previousNumber = 0;
         sortedNumbers.forEach((number) => {
-            if (normalized === '')
+            if (normalized === '') {
                 normalized = number.toString();
-            else if (number - previousNumber > 1)
-                normalized += `${normalized.charAt(normalized.length-1) === '-' ? previousNumber : ""},${number}`;
-            else if (number - previousNumber === 1 && normalized.charAt(normalized.length-1) !== '-') {
+            }
+            else if (number - previousNumber > 1) {
+                normalized += `${normalized.charAt(normalized.length - 1) === '-' ? previousNumber : ""},${number}`;
+            }
+            else if (number - previousNumber === 1 && normalized.charAt(normalized.length - 1) !== '-') {
                 normalized += '-';
             }
             previousNumber = number;
         });
-        if (normalized.charAt(normalized.length-1) === '-')
+        if (normalized.charAt(normalized.length - 1) === '-') {
             normalized += sortedNumbers[sortedNumbers.length - 1].toString();
+        }
         return normalized;
     }
 
-    static denormalizeNumberSet(value:string):number[] {
-        let numbers:number[] = [];
+    static denormalizeNumberSet(value: string): number[] {
+        let numbers: number[] = [];
         let nonsequentialNumbers = value.split(',');
         nonsequentialNumbers.forEach((numberSet) => {
             let range = numberSet.split('-');

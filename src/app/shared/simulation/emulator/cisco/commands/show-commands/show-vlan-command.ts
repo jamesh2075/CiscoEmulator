@@ -1,13 +1,13 @@
-import { Mustache } from "mustache"
-import { TerminalCommand } from "../../../interfaces/terminal-command";
-import { CiscoCommandContext } from "../../cisco-terminal-command";
-import { CommandState } from "../../../interfaces/command-state";
-import { CiscoFormatters } from "../../common/cisco-formatters";
-import { CiscoValidators } from "../../common/cisco-validators";
-import { CiscoUtils } from "../../common/cisco-utils";
-import { IVlan, Vlan } from "../../model/vlan.model";
-import { Device } from "../../model/device.model";
-import { GigabitEthernet } from "../../model/gigabitethernet.model";
+import { Mustache } from 'mustache';
+import { TerminalCommand } from '../../../interfaces/terminal-command';
+import { CiscoCommandContext } from '../../cisco-terminal-command';
+import { CommandState } from '../../../interfaces/command-state';
+import { CiscoFormatters } from '../../common/cisco-formatters';
+import { CiscoValidators } from '../../common/cisco-validators';
+import { CiscoUtils } from '../../common/cisco-utils';
+import { IVlan, Vlan } from '../../model/vlan.model';
+import { Device } from '../../model/device.model';
+import { GigabitEthernet } from '../../model/gigabitethernet.model';
 
 export class ShowVlanCommand {
     static ShowVlan(cmdContext: CiscoCommandContext, cmdState: CommandState) {
@@ -55,30 +55,30 @@ export class ShowVlanCommand {
             result += ' ';
             result += CiscoFormatters.paddingRight(String(vlans[n].SAID), ' ', 10);
             result += ' ';
-            let vMTU: string = (vlans[n].MTU.length === 0) ? "1500" : vlans[n].MTU;
+            let vMTU: string = (vlans[n].MTU.length === 0) ? '1500' : vlans[n].MTU;
             result += CiscoFormatters.paddingRight(vMTU, ' ', 5);
             result += ' ';
-            let vParent: string = (vlans[n].Parent.length === 0) ? "-" : vlans[n].Parent;
+            let vParent: string = (vlans[n].Parent.length === 0) ? '-' : vlans[n].Parent;
             result += CiscoFormatters.paddingRight(vParent, ' ', 6);
             result += ' ';
             let vRingNo: string = String(vlans[n].RingNo);
-            vRingNo = (vRingNo === "0") ? "-" : String(vlans[n].RingNo);
+            vRingNo = (vRingNo === '0') ? '-' : String(vlans[n].RingNo);
             result += CiscoFormatters.paddingRight(vRingNo, ' ', 6);
             result += ' ';
             let vBridgeNo: string = String(vlans[n].BridgeNo);
-            vBridgeNo = (vBridgeNo === '0') ? "-" : String(vlans[n].BridgeNo);
+            vBridgeNo = (vBridgeNo === '0') ? '-' : String(vlans[n].BridgeNo);
             result += CiscoFormatters.paddingRight(vBridgeNo, ' ', 8);
             result += ' ';
-            let vStp: any = (vlans[n].Stp.length === 0) ? "-" : vlans[n].Stp;
+            let vStp: any = (vlans[n].Stp.length === 0) ? '-' : vlans[n].Stp;
             result += CiscoFormatters.paddingRight(String(vStp), ' ', 4);
             result += ' ';
-            let vBrdgMode: any = (vlans[n].BrdgMode.length === 0) ? "-" : vlans[n].BrdgMode;
+            let vBrdgMode: any = (vlans[n].BrdgMode.length === 0) ? '-' : vlans[n].BrdgMode;
             result += CiscoFormatters.paddingRight(String(vBrdgMode), ' ', 8);
             result += ' ';
-            let vTrans1: any = (vlans[n].Trans1.length === 0) ? "0" : vlans[n].Trans1;
+            let vTrans1: any = (vlans[n].Trans1.length === 0) ? '0' : vlans[n].Trans1;
             result += CiscoFormatters.paddingRight(String(vTrans1), ' ', 6);
             result += ' ';
-            let vTrans2: any = (vlans[n].Trans2.length === 0) ? "0" : vlans[n].Trans2;
+            let vTrans2: any = (vlans[n].Trans2.length === 0) ? '0' : vlans[n].Trans2;
             result += CiscoFormatters.paddingRight(String(vTrans2), ' ', 6);
             result += '\n';
         }
@@ -91,13 +91,13 @@ export class ShowVlanCommand {
     }
 
     static ShowVlanRange(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        let result: string = '';
+        let result = '';
         cmdState.stopProcessing = true;
 
         if (cmdState.command.token.replace(/[-,\s\d]/g, '')) {
             result = 'Command rejected: Bad VLAN list - character #1 is a non-numeric\n';
             result += 'character (\'' + cmdState.command.token + '\').\n';
-            result += 'Invalid vlan list.'
+            result += 'Invalid vlan list.';
         }
         else if (!CiscoValidators.validateRange(cmdState.command.token, 1, 4094)) { // if not in valid range
             result = 'Command rejected: Bad VLAN list (EOL) delimits a VLAN\n';
@@ -136,30 +136,30 @@ export class ShowVlanCommand {
                     result += ' ';
                     result += CiscoFormatters.paddingRight(String(vlan.SAID), ' ', 10);
                     result += ' ';
-                    let vMTU: string = (vlan.MTU.length === 0) ? "1500" : vlan.MTU;
+                    let vMTU: string = (vlan.MTU.length === 0) ? '1500' : vlan.MTU;
                     result += CiscoFormatters.paddingRight(vMTU, ' ', 5);
                     result += ' ';
-                    let vParent: string = (vlan.Parent.length === 0) ? "-" : vlan.Parent;
+                    let vParent: string = (vlan.Parent.length === 0) ? '-' : vlan.Parent;
                     result += CiscoFormatters.paddingRight(vParent, ' ', 6);
                     result += ' ';
                     let vRingNo: string = String(vlan.RingNo);
-                    vRingNo = (vRingNo === "0") ? "-" : String(vlan.RingNo);
+                    vRingNo = (vRingNo === '0') ? '-' : String(vlan.RingNo);
                     result += CiscoFormatters.paddingRight(vRingNo, ' ', 6);
                     result += ' ';
                     let vBridgeNo: string = String(vlan.BridgeNo);
-                    vBridgeNo = (vBridgeNo === '0') ? "-" : String(vlan.BridgeNo);
+                    vBridgeNo = (vBridgeNo === '0') ? '-' : String(vlan.BridgeNo);
                     result += CiscoFormatters.paddingRight(vBridgeNo, ' ', 8);
                     result += ' ';
-                    let vStp: any = (vlan.Stp.length === 0) ? "-" : vlan.Stp;
+                    let vStp: any = (vlan.Stp.length === 0) ? '-' : vlan.Stp;
                     result += CiscoFormatters.paddingRight(String(vStp), ' ', 4);
                     result += ' ';
-                    let vBrdgMode: any = (vlan.BrdgMode.length === 0) ? "-" : vlan.BrdgMode;
+                    let vBrdgMode: any = (vlan.BrdgMode.length === 0) ? '-' : vlan.BrdgMode;
                     result += CiscoFormatters.paddingRight(String(vBrdgMode), ' ', 8);
                     result += ' ';
-                    let vTrans1: any = (vlan.Trans1.length === 0) ? "0" : vlan.Trans1;
+                    let vTrans1: any = (vlan.Trans1.length === 0) ? '0' : vlan.Trans1;
                     result += CiscoFormatters.paddingRight(String(vTrans1), ' ', 6);
                     result += ' ';
-                    let vTrans2: any = (vlan.Trans2.length === 0) ? "0" : vlan.Trans2;
+                    let vTrans2: any = (vlan.Trans2.length === 0) ? '0' : vlan.Trans2;
                     result += CiscoFormatters.paddingRight(String(vTrans2), ' ', 6);
                     result += '\n';
                     // result += CiscoFormatters.paddingRight(String(vlan.id), ' ', 5);
@@ -198,7 +198,7 @@ let showVlansRange: TerminalCommand = {
     }
 };
 
-let showVlanById: TerminalCommand = {
+const showVlanById: TerminalCommand = {
     name: 'id',
     description: 'VTP VLAN status',
     parameters: [],

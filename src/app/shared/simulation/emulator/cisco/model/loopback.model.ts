@@ -19,7 +19,7 @@ export class Loopback extends Interface implements ILoopback {
     method = 'unset';
     hardware = "Loopback";
 
-    set name(val:string) {
+    set name(val: string) {
         //this.switchportMode ?: string;        
         this._name = val;
     }

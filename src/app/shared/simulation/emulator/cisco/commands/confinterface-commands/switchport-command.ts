@@ -12,7 +12,7 @@ import { Device } from "../../model/device.model";
 import { GigabitEthernet } from "../../model/gigabitethernet.model";
 import { Port } from "../../model/port.model";
 
-//TODO: Read all these properties from default model
+// TODO: Read all these properties from default model
 export let switchportDefaultDataModel = {
     switchport: {
         adminMode: 'dynamic auto',
@@ -80,7 +80,7 @@ class Switchport {
     }
 
     static switchportModeHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        //TODO: check to see if selector prop already exists
+        // TODO: check to see if selector prop already exists
         //  if so, unshift 'mode' onto it
         if (cmdState.properties['modeValue']) {
             let currentEncapsulation: string;
@@ -119,8 +119,9 @@ class Switchport {
             let isNewVlan = SwitchportUtility.switchportAddVlan(cmdContext.device.model.vlans, cmdState.properties['vlanNumber']);
             cmdState.properties['selector'] = ['voiceVlan'];
             cmdState.properties['value'] = cmdState.properties['vlanNumber'];
-            if (isNewVlan) // Display message if creating a new Vlan
+            if (isNewVlan) { // Display message if creating a new Vlan
                 cmdState.output = `% Voice VLAN does not exist. Creating vlan ${cmdState.properties['vlanNumber']}`;
+            }
         }
 
         return cmdState;
@@ -136,7 +137,7 @@ class Switchport {
         cmdState.stopProcessing = true;
     }
     static switchportAccessHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        //TODO: check to see if selector prop already exists
+        // TODO: check to see if selector prop already exists
         //  if so, unshift 'mode' onto it
         if (cmdState.properties['vlanNumber']) {
             let allowedVlans: any[] = CiscoFormatters.formatRange(cmdState.properties['vlanNumber']);
@@ -237,7 +238,7 @@ Command rejected: Voice Vlan cannot be configured on this interface \n`;
     }
 
     static switchportTrunkHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        //TODO: check to see if selector prop already exists
+        // TODO: check to see if selector prop already exists
         //  if so, unshift 'trunk' onto it
         if (cmdState.command.parameters && cmdState.command.parameters[0] && cmdState.command.parameters[0].length > 0) {
             cmdState.output = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
@@ -349,32 +350,38 @@ export class SwitchportUtility {
 
     // set trunking disabled for an interface when we execute a except command
     static disableTrunkForVlan(vlans: IVlan[], vlanValues: any[]) {
-        if (vlans && vlans.length > 0)
+        if (vlans && vlans.length > 0) {
             vlans.forEach(function (vlanObj: IVlan) {
-                if (vlanValues.indexOf(vlanObj.id) > -1)
+                if (vlanValues.indexOf(vlanObj.id) > -1) {
                     vlanObj.trunkingEnabled = false;
-                else
+                }
+                else {
                     vlanObj.trunkingEnabled = true;
-            })
+                }
+            });
+        }
     }
 
     // enable trunk mode for vlans
     static EnableTrunkForVlan(vlans: IVlan[], vlanValues: any[]) {
-        if (vlans && vlans.length > 0)
+        if (vlans && vlans.length > 0) {
             for (let vlanObj of vlans) {
-                if (vlanValues.indexOf(vlanObj.id) > -1)
+                if (vlanValues.indexOf(vlanObj.id) > -1) {
                     vlanObj.trunkingEnabled = true;
+                }
             }
+        }
     }
 
     // create a new vlan if it doesn't exist  // TODO: Move this code to controller
-    //Add interfaces into the vlan ports list
+    // Add interfaces into the vlan ports list
     static switchportAddVlan(vlans: IVlan[], vlanNo: string) {
         let accessVlan: any, isNewVlan = false;
         if (vlans && vlans.length > 0) {
             for (let vlanObj of vlans) {
-                if (vlanNo && vlanObj.id === parseInt(vlanNo))
+                if (vlanNo && vlanObj.id === parseInt(vlanNo)) {
                     accessVlan = vlanObj;
+                }
             }
         }
         if (!accessVlan) {
@@ -391,7 +398,7 @@ let accessVlanNumber: TerminalCommand = {
     description: 'Set VLAN when interface is in access mode',
     handler: Switchport.vlanNumber,
     validator: (function (token: string) {
-        //TODO: Vlan Range from [1- 4094]. Right now it only supports a single number
+        // TODO: Vlan Range from [1- 4094]. Right now it only supports a single number
         // between 1 and 4094. But it should support a range of numbers, such as 1-3.
         return CiscoValidators.validateRange(token.trim(), CommandConstants.VLAN.min, CommandConstants.VLAN.max);
     })
@@ -402,7 +409,7 @@ let voiceVlanNumber: TerminalCommand = {
     description: 'Vlan for voice traffic',
     handler: Switchport.vlanNumber,
     validator: (function (token: string) {
-        //TODO: Vlan Range from [1- 4094]. Right now it only supports a single number
+        // TODO: Vlan Range from [1- 4094]. Right now it only supports a single number
         // between 1 and 4094. But it should support a range of numbers, such as 1-3.
         return CiscoValidators.validateRange(token.trim(), CommandConstants.VLAN.min, CommandConstants.VLAN.max);
     })
@@ -422,7 +429,7 @@ let disallowedVlanNumber: TerminalCommand = {
     description: 'VLAN IDs of disallowed VLANS when this port is in trunking mode',
     handler: Switchport.vlanNumber,
     validator: (function (token: string) {
-        //TODO: Vlan Range from [1- 4094]. Right now it only supports a single number
+        // TODO: Vlan Range from [1- 4094]. Right now it only supports a single number
         // between 1 and 4094. But it should support a range of numbers, such as 1-3.
         return CiscoValidators.validateRange(token.trim(), CommandConstants.VLAN.min, CommandConstants.VLAN.max);
     })
@@ -433,7 +440,7 @@ let allowedVlanNumber: TerminalCommand = {
     description: 'VLANs IDs of the allowed VLANs when this port is in trunking mode',
     handler: Switchport.vlanNumber,
     validator: (function (token: string) {
-        //TODO: Vlan Range from [1- 4094]. Right now it only supports a single number
+        // TODO: Vlan Range from [1- 4094]. Right now it only supports a single number
         // between 1 and 4094. But it should support a range of numbers, such as 1-3.
         return CiscoValidators.validateRange(token.trim(), CommandConstants.VLAN.min, CommandConstants.VLAN.max);
     })

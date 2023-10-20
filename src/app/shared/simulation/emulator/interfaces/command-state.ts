@@ -20,9 +20,9 @@ export class CommandState {
   contextChanges: PropertyChange[] = [];
   actions: ICommandAction[] = [];
   events: { name: string, data?: any }[] = [];
-  output: string = '';
+  output = '';
   // TODO: action: ():string;
-  stopProcessing: boolean = false;
+  stopProcessing = false;
 
   constructor() {
   }

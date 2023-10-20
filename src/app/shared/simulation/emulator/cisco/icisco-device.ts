@@ -5,7 +5,7 @@ export interface ICiscoDevice extends IEmulatedDevice {
   getInterfaces(selector?: InterfaceSelector): ICiscoInterface[];
 }
 export type LinkStatus =
-  "up" | "down" | "admin down";
+  'up' | 'down' | 'admin down';
 
 export interface ICiscoInterface extends IEmulatedInterface {  
 }

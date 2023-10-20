@@ -1,5 +1,5 @@
 import {TerminalCommand} from './terminal-command';
-import {ICommandParameter} from "./terminal-parameter";
+import {ICommandParameter} from './terminal-parameter';
 
 export enum ParseCommandResult {
     Unknown = 0,

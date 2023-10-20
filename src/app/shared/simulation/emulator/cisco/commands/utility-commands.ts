@@ -1,5 +1,5 @@
-import {CiscoCommandContext} from "../cisco-terminal-command";
-import {CommandState} from "../../interfaces/command-state";
+import {CiscoCommandContext} from '../cisco-terminal-command';
+import {CommandState} from '../../interfaces/command-state';
 
 export class UtilityCommands {
 

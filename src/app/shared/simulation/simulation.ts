@@ -19,13 +19,13 @@ export interface ISimulation {
 export class Simulation implements ISimulation {
     private __state: StateContainer;
     private connections: SimConnection[] = [];
-    private topology:Topology = new Topology();
+    private topology: Topology = new Topology();
 
   public devices: IEmulatedDevice[] = [];
 
   private model: SimulationModel|any = null;
 
-    getModel():Topology {
+    getModel(): Topology {
         return this.topology;
     }
 
@@ -45,7 +45,7 @@ export class Simulation implements ISimulation {
         return device;
       }
     }
-    const nullDevice:any = null;
+    const nullDevice: any = null;
     return nullDevice;
   }
 
@@ -117,12 +117,10 @@ class InterfaceConnection implements IInterfaceConnection, IPeerConnection {
   peer: IPeerConnection;
 
   get status(): string {
-    if (this.iface.model.status == undefined) {
+    if (this.iface.model.status === undefined) {
       return '';
     }
-    else {
-      return this.iface.model.status;
-    }
+    return this.iface.model.status;
   }
   get protocol(): string {
     return (<any>this.iface.model).protocol;
@@ -143,7 +141,7 @@ class InterfaceConnection implements IInterfaceConnection, IPeerConnection {
     return this.iface.property(['switchport', 'trunkVlan']);
   }
   onPeerStatusChanged(peerStatus: string): void {
-    if(this.iface) {
+    if (this.iface) {
       this.iface.onPeerStatusChanged(peerStatus);
     } else {
       throw new Error(`Connection's interface is not defined`);

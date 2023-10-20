@@ -17,11 +17,11 @@ export interface DeviceModel {
     name: string;
     subtype: string;
     interfaces: InterfaceModel[];
-    address?: string,
+    address?: string;
     ipv4?: string;
     vlan?: any;
     vtp?: any;
-    vlans?: IVlan[],
+    vlans?: IVlan[];
     noTerminal?: boolean; // true if this device does not support a terminal
 }
 

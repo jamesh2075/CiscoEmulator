@@ -1,7 +1,7 @@
-﻿import { ITopology } from "../../emulator/cisco/model/topology.model";
-import { IInterface } from "../../emulator/cisco/model/interface.model";
-import { IDevice } from "../../emulator/cisco/model/device.model";
-import { IGigabitEthernet } from "../../emulator/cisco/model/gigabitethernet.model";
+﻿import { ITopology } from '../../emulator/cisco/model/topology.model';
+import { IInterface } from '../../emulator/cisco/model/interface.model';
+import { IDevice } from '../../emulator/cisco/model/device.model';
+import { IGigabitEthernet } from '../../emulator/cisco/model/gigabitethernet.model';
 
 export type ExtractFunction = (
   dataModel: any,
@@ -16,8 +16,8 @@ export interface SwitchportTrunkModel {
 }
 
 function getInterface(topology: ITopology, device: string, iface: string): IInterface {
-  let name = iface; //.replace('_', `/`);
-  let oDevice = getDevice(topology, device);
+  const name = iface; // .replace('_', `/`);
+  const oDevice = getDevice(topology, device);
   return oDevice.interfaces.find((value) => value.name === name);
 }
 
@@ -48,9 +48,9 @@ export class ExtractSwitchport {
     iface: string,
     verifyModel?: any): any {
 
-    let oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
-    let switchport = oInterface.switchport;
-    return switchport.accessVlan;
+      const oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
+      const switchport = oInterface.switchport;
+      return switchport.accessVlan;
     // switchport access vlan 10 => interface.switchport.accessVlan == 10
   }
   static ModeAccess(
@@ -59,11 +59,11 @@ export class ExtractSwitchport {
     iface: string,
     verifyModel?: any): any {
 
-    let oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
-    let switchport = oInterface.switchport;
-    return (switchport.adminMode === 'static access') ? true : false;
-    // 'switchport mode access' => interface.switchport.adminMode == 'static access'
-    // 'switchport mode trunk' => interfaces.switchport.adminMode == 'trunk'
+      const oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
+      const switchport = oInterface.switchport;
+      return (switchport.adminMode === 'static access') ? true : false;
+      // 'switchport mode access' => interface.switchport.adminMode == 'static access'
+      // 'switchport mode trunk' => interfaces.switchport.adminMode == 'trunk'
   }
   static ModeTrunk(
     dataModel: any,
@@ -71,40 +71,40 @@ export class ExtractSwitchport {
     iface: string,
     verifyModel?: any): any {
 
-    let oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
-    let switchport = oInterface.switchport;
-    return (switchport.adminMode === 'trunk') ? true : false;
-    // 'switchport mode access' => interface.switchport.adminMode == 'static access'
-    // 'switchport mode trunk' => interfaces.switchport.adminMode == 'trunk'
+      const oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
+      const switchport = oInterface.switchport;
+      return (switchport.adminMode === 'trunk') ? true : false;
+      // 'switchport mode access' => interface.switchport.adminMode == 'static access'
+      // 'switchport mode trunk' => interfaces.switchport.adminMode == 'trunk'
   }
   static Trunk(
     dataModel: any,
     device: string,
     iface: string,
     verifyModel: SwitchportTrunkModel): any {
-    let oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
-    let switchport = oInterface.switchport;
-    if (verifyModel.encapsulation) {
-      if (verifyModel.encapsulation !== switchport.adminPrivateVlan.trunkEncapsulation) {
-        return false;
+      const oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
+      const switchport = oInterface.switchport;
+      if (verifyModel.encapsulation) {
+        if (verifyModel.encapsulation !== switchport.adminPrivateVlan.trunkEncapsulation) {
+          return false;
+        }
       }
-    }
-    if (verifyModel.vlan) {
-      if (verifyModel.vlan !== switchport.trunkingVlans) {
-        return false;
+      if (verifyModel.vlan) {
+        if (verifyModel.vlan !== switchport.trunkingVlans) {
+          return false;
+        }
       }
-    }
-    return true;
+      return true;
   }
   static NoNegotiate(
     dataModel: any,
     device: string,
     iface: string,
     verifyModel?: any): any {
-    let oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
-    let switchport = oInterface.switchport;
-    // 'switchport nonegotiate' => interface.switchport.trunkNegotiation == 'Off'
-    return switchport.trunkNegotiation === 'Off';
+      const oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
+      const switchport = oInterface.switchport;
+      // 'switchport nonegotiate' => interface.switchport.trunkNegotiation == 'Off'
+      return switchport.trunkNegotiation === 'Off';
   }
 }
 
@@ -113,12 +113,12 @@ export function ExtractChannelProtocol(
   device: string,
   iface: string,
   verifyModel?: any): any {
-  let oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
-  let channelGroup = oInterface.channelGroup;
-  // 'channel-protocol lacp' => interface.channelGroup.protocol === 'lacp'
-  // 'channel-protocol pagp' => interface.channelGroup.protocol === 'pagp'
-  return channelGroup.protocol;
-  // return 'ExtractChannelProtocolPagp not implemented';
+    const oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
+    const channelGroup = oInterface.channelGroup;
+    // 'channel-protocol lacp' => interface.channelGroup.protocol === 'lacp'
+    // 'channel-protocol pagp' => interface.channelGroup.protocol === 'pagp'
+    return channelGroup.protocol;
+    // return 'ExtractChannelProtocolPagp not implemented';
 }
 export interface ExctractVTPModel {
   domain?: string;
@@ -126,17 +126,19 @@ export interface ExctractVTPModel {
 }
 export function ExtractVTP(dataModel: any, device: string,
   iface: string, verifyModel: ExctractVTPModel): any {
-  let oDevice = getDevice(dataModel as ITopology, device);
-  let vtp = oDevice.vtp;
-  if (verifyModel.domain) {
-    if (vtp.domain !== verifyModel.domain)
-      return false;
-  }
-  if (verifyModel.mode) {
-    if (vtp.mode !== verifyModel.mode)
-      return false;
-  }
-  return true;
+    const oDevice = getDevice(dataModel as ITopology, device);
+    const vtp = oDevice.vtp;
+    if (verifyModel.domain) {
+      if (vtp.domain !== verifyModel.domain) {
+        return false;
+      }
+    }
+    if (verifyModel.mode) {
+      if (vtp.mode !== verifyModel.mode) {
+        return false;
+      }
+    }
+    return true;
 }
 
 export interface ExtractChannelGroupModel {
@@ -148,19 +150,19 @@ export function ExtractChannelGroup(
   device: string,
   iface: string,
   verifyModel?: ExtractChannelGroupModel): any {
-  let oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
-  let channelGroup = oInterface.channelGroup;
-  if (verifyModel.group) {
-    if (channelGroup.id !== verifyModel.group) {
-      return false;
+    const oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
+    const channelGroup = oInterface.channelGroup;
+    if (verifyModel.group) {
+      if (channelGroup.id !== verifyModel.group) {
+        return false;
+      }
     }
-  }
-  if (verifyModel.mode) {
-    if (channelGroup.mode !== verifyModel.mode) {
-      return false;
+    if (verifyModel.mode) {
+      if (channelGroup.mode !== verifyModel.mode) {
+        return false;
+      }
     }
-  }
-  return true;
+    return true;
   // 'channel-group 1 mode active' => interface.channelGroup.id == 1 && interface.channelGroup.mode == 'active'
   // 'channel-group 2 mode auto' => interface.channelGroup.id == 2 && interface.channelGroup.mode === 'auto'
   // 'channel-group 2 mode desirable' =>interface.channelGroup.id == 2 && interface.channelGroup.mode === 'desirable'
@@ -171,8 +173,8 @@ export function ExtractShutdown(
   device: string,
   iface: string,
   verifyModel?: any): any {
-  let oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
-  return oInterface.status === 'admin down';
+    const oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
+    return oInterface.status === 'admin down';
   // 'shutdown' => interface.status !== 'up'
   // return 'ExtractShutdown not implemented';
 }
@@ -181,8 +183,8 @@ export function ExtractNoShutdown(
   device: string,
   iface: string,
   verifyModel?: any): any {
-  let oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
-  return oInterface.status !== 'admin down';
+    const oInterface = getInterface(dataModel as ITopology, device, iface) as IGigabitEthernet;
+    return oInterface.status !== 'admin down';
 }
 
 export function ExtractStatus(
@@ -190,7 +192,7 @@ export function ExtractStatus(
   device: string,
   iface: string,
   verifyModel?: any): any {
-  let oInterface = getInterface(dataModel as ITopology, device, iface);
+  const oInterface = getInterface(dataModel as ITopology, device, iface);
   return oInterface.status;
 }
 
@@ -208,20 +210,23 @@ export function ExtractSpanningTree(
   // 'spanning-tree mode rapid-pvst' => device['spanning-tree'].mode == 'rapid-pvst'
   // 'spanning-tree vlan 10 priority 0'=> device['spanning-tree'].vlan == '10 priority 0'
   // 'no spanning-tree vlan 40'=> device.vlans.filter((x)=>x.id == 40)[0].spanningEnabled == false
-  let oDevice = getDevice(dataModel, device);
-  let spanning = oDevice.spanningtree;
+  const oDevice = getDevice(dataModel, device);
+  const spanning = oDevice.spanningtree;
   if (verifyModel.mode) {
-    if (verifyModel.mode !== spanning.mode)
+    if (verifyModel.mode !== spanning.mode) {
       return false;
+    }
   }
   if (verifyModel.vlan && verifyModel.priority !== undefined) {
-    if (`${verifyModel.vlan} priority ${verifyModel.priority}` !== spanning.vlan.name)
+    if (`${verifyModel.vlan} priority ${verifyModel.priority}` !== spanning.vlan.name) {
       return false;
+    }
   }
-  if(verifyModel.vlan && verifyModel.no) {
-    let vlan = oDevice.vlans.filter((x:any) => x.id === verifyModel.vlan)[0];
-    if(vlan.spanningEnabled !== false)
+  if (verifyModel.vlan && verifyModel.no) {
+    const vlan = oDevice.vlans.filter((x: any) => x.id === verifyModel.vlan)[0];
+    if (vlan.spanningEnabled !== false) {
       return false;
+    }
   }
 
   return true;

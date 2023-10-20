@@ -38,9 +38,9 @@ class ShowSpanningTreeCommand {
                 let validVlans = CiscoFormatters.formatRange(cmdState.properties['vlanNumber']);
                 vlans = ShowSpanningTreeUtilityModel.getVlanById(cmdContext.device.model.vlans, validVlans);
             }
-            else
+            else {
                 vlans = cmdContext.device.model.vlans;
-
+            }
             if (vlans && vlans.length > 0) {
                 let spanningTreeInfo = Object.assign({  // TODO: need to change this to deep clone
                     mode: mode || spanningTreeDefaultModel.defaultMode,

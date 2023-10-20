@@ -7,12 +7,12 @@ import { BuildInterfacesDataOutput } from './show-interfaces-output';
 import { BuildOutput as InterfacesStatusOutput } from './show-interfaces-status-output';
 import { DescriptionOutput } from './show-interfaces-description-output';
 import { InterfacesTrunkOutput } from './show-interfaces-trunk-output';
-import { CommandConstants } from "../../../common/cisco-constants";
-import { InterfaceInfo } from "../../../common/cisco-interface-info";
-import { InterfaceCommands } from "./../../confterm-commands/interface-command";
-import { BuildInterfacesSwitchportOutput } from "./show-interfaces-switchport/show-switchport-output";
+import { CommandConstants } from '../../../common/cisco-constants';
+import { InterfaceInfo } from '../../../common/cisco-interface-info';
+import { InterfaceCommands } from './../../confterm-commands/interface-command';
+import { BuildInterfacesSwitchportOutput } from './show-interfaces-switchport/show-switchport-output';
 import { NotSupportedCommand } from '../../../commands/notsupported';
-import { unsupportedShowInterfacesCommands } from "../show-interfaces/show-interfaces-commands-unsupported";
+import { unsupportedShowInterfacesCommands } from '../show-interfaces/show-interfaces-commands-unsupported';
 
 
 class ShowInterfacesCommands {
@@ -26,14 +26,14 @@ class ShowInterfacesCommands {
     }
 
     static showTrunkHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        //let interfaces = cmdState.getProperty(['interfaces']);
+        // let interfaces = cmdState.getProperty(['interfaces']);
         cmdState.output = InterfacesTrunkOutput.getInterfacesTrunkOutput(cmdContext.device.model.interfaces, cmdContext.device.model.vlans);
         cmdState.stopProcessing = true;
         return cmdState;
     }
 
     static descriptionHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        //let interfaces = cmdState.getProperty(['interfaces']);
+        // let interfaces = cmdState.getProperty(['interfaces']);
         cmdState.output = DescriptionOutput.getInterfacesDescriptionOutput(cmdContext.device.model.interfaces);
         cmdState.stopProcessing = true;
         return cmdState;
@@ -45,7 +45,7 @@ class ShowInterfacesCommands {
             cmdState.stopProcessing = true;
             return cmdState;
         }
-        cmdState.properties["switchportInterface"] = 'switchport';
+        cmdState.properties['switchportInterface'] = 'switchport';
         return cmdState;
     }
     static GERangeAcceptor(token: string): boolean {
@@ -107,7 +107,7 @@ class ShowInterfacesCommands {
             outputInterfaces = cmdContext.device.model.interfaces;
         }
         if (outputInterfaces.length > 0) {
-            cmdState.output = (cmdState.properties["switchportInterface"]) ? BuildInterfacesSwitchportOutput.buildSwitchportInterfacesOutput(outputInterfaces, cmdContext.device.model.vlans)
+            cmdState.output = (cmdState.properties['switchportInterface']) ? BuildInterfacesSwitchportOutput.buildSwitchportInterfacesOutput(outputInterfaces, cmdContext.device.model.vlans)
                 : BuildInterfacesDataOutput.getOutput(outputInterfaces);
         }
         else {
@@ -188,7 +188,7 @@ let portChannel: TerminalCommand = {
 
 };
 /**
- * 
+ *
  */export let showInterfacesCommand: TerminalCommand =
     {
         name: 'interfaces',

@@ -1,4 +1,4 @@
-import {BaseModel} from "./base.model";
+import {BaseModel} from './base.model';
 
 export interface IInterface {
     id: number;
@@ -13,10 +13,10 @@ export interface IInterface {
 export abstract class Interface extends BaseModel implements IInterface {
 
     protected static CURRENT_ID = 0;
-    protected _name: string = "";
+    protected _name = '';
 
-    id: number = 0;
-    set name(val:string){
+    id = 0;
+    set name(val: string){
         this._name = val;
     }
     get name(): string {
@@ -24,9 +24,9 @@ export abstract class Interface extends BaseModel implements IInterface {
     }
 
     get interface(): string {
-        return ""
+        return '';
     }
 
-    status = "";
-    description = "";
+    status = '';
+    description = '';
 }

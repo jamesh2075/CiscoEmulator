@@ -5,14 +5,14 @@ import { ipCommand } from './ip-command';
 import { showCommand } from './show-commands/show-command';
 import { channelGroupCommand, noChannelGroupModeCommand } from './channel-group-command';
 import { switchportCommand } from './confinterface-commands/switchport-command';
-import { ShutdownCommand } from "./confinterface-commands/shutdown-command";
+import { ShutdownCommand } from './confinterface-commands/shutdown-command';
 import { channelProtocol, noChannelProtocol } from './confinterface-commands/channel-protocol-command';
-import { doCommand } from "./confterm-commands/do-command";
-import { interfaceCommand } from "./confterm-commands/interface-command";
+import { doCommand } from './confterm-commands/do-command';
+import { interfaceCommand } from './confterm-commands/interface-command';
 import { noSwitchportCommand } from './confinterface-commands/no-switchport-command';
-import { noSpanningTreeCommand } from "./confterm-commands/spanning-tree-commands/no-spanning-tree-command";
-import { unsupportedConfInterfaceCommands } from "./confinterface-commands-unsupported";
-import { NointerfaceCommand } from "./confterm-commands/no-interface-command";
+import { noSpanningTreeCommand } from './confterm-commands/spanning-tree-commands/no-spanning-tree-command';
+import { unsupportedConfInterfaceCommands } from './confinterface-commands-unsupported';
+import { NointerfaceCommand } from './confterm-commands/no-interface-command';
 
 class ConfigureInterfaceCommands {
 
@@ -49,8 +49,8 @@ class ConfigureInterfaceCommands {
     static No(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         // TODO: No
         // convert each output state change to default/no value
-        //CHECK to see is NO Command is vlan:
-        let cmd: any[] = cmdState.command.parameters;
+        // CHECK to see is NO Command is vlan:
+        const cmd: any[] = cmdState.command.parameters;
         if (cmd[0] === 'vlan' && /^\d+$/.test(cmd[1])) {
             cmdState.stopProcessing = true;
             cmdState.output = '%Default VLAN ' + cmd[1] + ' may not be deleted.';
@@ -62,17 +62,17 @@ class ConfigureInterfaceCommands {
     static Vtp(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         // TODO: No
         // convert each output state change to default/no value
-        //throw new Error('Not Implemented');
+        // throw new Error('Not Implemented');
         cmdState.output = '% Incomplete Command';
         return cmdState;
     }
-    //static End(cmdContext: CiscoCommandContext, cmdState: CommandState) {
+    // static End(cmdContext: CiscoCommandContext, cmdState: CommandState) {
     // if(cmdState.parameters[0]) {
     //   cmdState.stopProcessing = true;
     // cmdState.output = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
-    //}
-    //cmdState.ChangeContextProperty('confTerminal', false);
-    //}
+    // }
+    // cmdState.ChangeContextProperty('confTerminal', false);
+    // }
     static End(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         cmdState.ChangeContextProperty('interfaceSelector', undefined);
         cmdState.ChangeContextProperty('confTerminal', false);
@@ -81,13 +81,13 @@ class ConfigureInterfaceCommands {
 
 }
 
-let exitCommand: TerminalCommand = {
+const exitCommand: TerminalCommand = {
     name: 'exit',
     description: 'Exit from the Exec',
     handler: ConfigureInterfaceCommands.Exit
 };
 
-let tunnel: TerminalCommand = {
+const tunnel: TerminalCommand = {
     name: 'tunnel',
     description: 'Tunnel interface',
     children: [{
@@ -108,26 +108,26 @@ let tunnel: TerminalCommand = {
     handler: ConfigureInterfaceCommands.Tunnel
 };
 
-let keepalive: TerminalCommand = {
+const keepalive: TerminalCommand = {
     name: 'keepalive',
     description: 'Enable keepalive',
     handler: ConfigureInterfaceCommands.KeepAlive
 };
 
-let shutdown: TerminalCommand = {
+const shutdown: TerminalCommand = {
     name: 'shutdown',
     description: 'Shitdown the selected interface',
     handler: ConfigureInterfaceCommands.ShutDown
 };
 
-// TODO: vtp 
+// TODO: vtp
 // TODO: spanning-tree
 
 // vvv-- Used by scoring --vvv
 // TODO: channel-protocol
 // ^^^-- Used by scoring --^^^
 
-let negatableCommands: TerminalCommand[] = [
+const negatableCommands: TerminalCommand[] = [
     noChannelGroupModeCommand,
     ipCommand,
     tunnel,
@@ -138,14 +138,14 @@ let negatableCommands: TerminalCommand[] = [
     noSpanningTreeCommand,
     NointerfaceCommand
 ];
-let noCommand: TerminalCommand = {
+const noCommand: TerminalCommand = {
     name: 'no',
     description: 'Negate a command or set its defaults',
     children: negatableCommands,
     handler: ConfigureInterfaceCommands.No
 };
 
-let vtpCommand: TerminalCommand = {
+const vtpCommand: TerminalCommand = {
     name: 'vtp',
     description: 'Ignores VLAN updates from other switches',
     parameters: [
@@ -154,7 +154,7 @@ let vtpCommand: TerminalCommand = {
     ],
     handler: ConfigureInterfaceCommands.Vtp
 };
-let endCommand: TerminalCommand = {
+const endCommand: TerminalCommand = {
     name: 'end',
     description: 'Exit from configure mode',
     handler: ConfigureInterfaceCommands.End
@@ -163,7 +163,7 @@ export let configureInterfaceCommands: TerminalCommand[] = [
     channelGroupCommand,
     channelProtocol,
     ipCommand,
-    interfaceCommand, //this command is legal in this context.
+    interfaceCommand, // this command is legal in this context.
     tunnel,
     switchportCommand,
     keepalive,
