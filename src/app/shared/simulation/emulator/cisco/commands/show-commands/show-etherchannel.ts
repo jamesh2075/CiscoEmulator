@@ -36,7 +36,7 @@ class ShowEtherChannel {
         let groupNumber = 0;
         const totalPorts = new Array();
         let ports = 0;
-        for (const c = 0; c < interfacesData.length; ++c) {
+        for (let c = 0; c < interfacesData.length; ++c) {
             const interfaceChannelGroup = interfacesData[c]['channelGroup'];
             if (interfaceChannelGroup) {
                 const id = interfaceChannelGroup.id;

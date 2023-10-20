@@ -231,7 +231,7 @@ export class ShowRunningCommand {
                     },
                     showVlans: function () {
                         return (text: string, render: any) => {
-                            const data = '';
+                            let data = '';
                             const device = <CiscoDevice>cmdContext.device;
                             let vtpMode = property(device.model).get('vtp.mode');
                             if (vtpMode) {
@@ -241,7 +241,7 @@ export class ShowRunningCommand {
                                         vlan.name.toLowerCase() !== 'default' && 
                                         vlan.status.toLowerCase() === 'active').sort((a, b) => a.id - b.id);
 
-                                    const vlanIdsWithDefaultName: number[] = [];
+                                    let vlanIdsWithDefaultName: number[] = [];
                                     for (let index = 0; index < vlans.length; index++) {
                                         let vlan = vlans[index];
                                         if (vlan.name === 'VLAN' + CiscoFormatters.padLeft(vlan.id.toString(), '0000')) {

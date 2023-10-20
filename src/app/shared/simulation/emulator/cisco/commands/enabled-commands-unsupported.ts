@@ -30,7 +30,7 @@ export let unsupportedEnableCommands: TerminalCommand[] = [
         {name: 'connect', description: 'Open a terminal connection'},
         {name: 'copy', description: 'Copy from one file to another'},
         {name: 'crypto', description: 'Encryption related commands.'},
-        {name: 'debug', description: 'Debugging functions (see also 'undebug')'},
+        {name: 'debug', description: `Debugging functions (see also 'undebug')`},
         {name: 'delete', description: 'Delete a file'},
         {name: 'dir', description: 'List files on a filesystem'},
         {
@@ -125,7 +125,7 @@ export let unsupportedEnableCommands: TerminalCommand[] = [
         {name: 'udptn', description: 'Open an udptn connection'},
         {
             name: 'undebug',
-            description: 'Disable debugging functions (see also 'debug')'
+            description: `Disable debugging functions (see also 'debug')`
         },
         {name: 'upgrade', description: 'Upgrade commands'},
         {name: 'verify', description: 'Verify a file'},

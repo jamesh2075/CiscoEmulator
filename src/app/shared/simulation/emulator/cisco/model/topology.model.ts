@@ -48,7 +48,7 @@ export class Topology extends BaseModel implements ITopology, ISerialize {
         let data: any;
         if (source instanceof Array) {
             data = {};
-            for (const i = 0; i < source.length; i++) {
+            for (let i = 0; i < source.length; i++) {
                 const name = (source[i].name || i).toString().split('/').join('_');
                 data[name] = this.iterate(source[i]);
             }

@@ -3,7 +3,7 @@ import {isArray, isDate, isEmpty, isEqual, isObject, isString, isUndefined} from
 export function main() {
 
     describe('val is declared but not defined', () => {
-        const val: any;
+        const val: any = undefined;
         it('isUndefined() should be true', () => {
             expect(isUndefined(val)).toBeTruthy();
         });

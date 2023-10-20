@@ -168,8 +168,8 @@ export class ExamItemPaths {
     }
 
     const result: number[][] = [];
-    for (const firstIndex = 0; firstIndex < first.length; firstIndex++) {
-      for (const secondIndex = 0; secondIndex < second.length; secondIndex++) {
+    for (let firstIndex = 0; firstIndex < first.length; firstIndex++) {
+      for (let secondIndex = 0; secondIndex < second.length; secondIndex++) {
         const combined: number[] = [ ...first[firstIndex], ...second[secondIndex] ];
         result.push(combined);
       }
@@ -186,12 +186,12 @@ export class ExamItemPaths {
     const paths: IPathPart[] = ((Array.isArray(pathParts)) ? pathParts : [pathParts]) as IPathPart[];
 
     // starting from the last step, expand the choices for the step,
-    for (const pathIndex = paths.length - 1; pathIndex >= 0; pathIndex--) {
+    for (let pathIndex = paths.length - 1; pathIndex >= 0; pathIndex--) {
       const path = paths[pathIndex];
       const pathResult: number[][] = [];
 
       if (path.correct) {
-        for (const index = 0; index < path.correct.length; index++) {
+        for (let index = 0; index < path.correct.length; index++) {
           const item = path.correct[index];
           const itemPaths = this.ExpandChoices(item.pathPart);
           if (!itemPaths.length) {
@@ -208,7 +208,7 @@ export class ExamItemPaths {
         }
       }
       if (path.incorrect) {
-        for (const index = 0; index < path.incorrect.length; index++) {
+        for (let index = 0; index < path.incorrect.length; index++) {
           const item = path.incorrect[index];
           const choiceIndex = (index + 1) * (-1);
           const itemPaths = this.ExpandChoices(item.pathPart);

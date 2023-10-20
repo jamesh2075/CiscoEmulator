@@ -23,7 +23,7 @@ export class BuildInterfacesSwitchportOutput {
             if (interfaceData.switchport && interfaceData.switchportMode === 'Enabled') {
                 // TODO: Changed allowed Vlans from all to dynamic on Trunking Vlans Enabled
                 const name = (interfaceData.type === 'Port') ? `Po${interfaceData.id}` : `${interfaceData.shortName}`;
-                const capturedResult = '';
+                let capturedResult = '';
                 let vlanId: any = (interfaceData.switchportMode === 'Enabled') ? interfaceData.switchport.accessVlan : 0;
                 let vlan: any, vlanName: any = '';
                 if (interfaceData.switchport.accessVlan) {

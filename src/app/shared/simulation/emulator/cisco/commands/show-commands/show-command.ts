@@ -30,7 +30,7 @@ class ShowCommand {
     }
 
     static ShowInterface(cmdContext: CiscoCommandContext, cmdState: CommandState) {
-        const result = '';
+        let result = '';
         const data: any = [];
         if (cmdContext.device === undefined) {
             return;

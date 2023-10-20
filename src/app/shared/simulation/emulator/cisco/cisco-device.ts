@@ -198,7 +198,7 @@ export class CiscoDevice extends EmulatedDeviceBase {
         return new CiscoInterface(model);
       }
       const id = model.id;
-      const result = this._interfaces[id];
+      let result = this._interfaces[id];
       if (!result) {
         result = new CiscoInterface(model);
         this._interfaces[id] = result;

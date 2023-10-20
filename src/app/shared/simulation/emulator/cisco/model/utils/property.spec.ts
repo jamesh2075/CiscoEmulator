@@ -41,7 +41,7 @@ export function main() {
 
         describe('property(' + json + ')', () => {
             it('.get("arr[\'2\'].name") to be "My Name"', () => {
-                const val = prop.get('arr['2'].name');
+                const val = prop.get(`arr['2'].name`);
                 expect(val).toBe('My Name');
             });
         });

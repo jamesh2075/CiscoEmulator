@@ -2,7 +2,6 @@ import {CiscoCommandContext} from '../cisco-terminal-command';
 import {CommandState} from '../../interfaces/command-state';
 import {CommandConstants} from '../common/cisco-constants';
 export interface ICommandHandler {
-    noImplementation: any;
 }
 
 export class CommandHandler implements ICommandHandler {
