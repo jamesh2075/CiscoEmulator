@@ -3,8 +3,7 @@ import { CommandConstants } from '../common/cisco-constants';
 import { exitCommand } from './enabled-commands';
 import { CommandTester, CommandTestCase } from './command-tester';
 
-
-export function main() {
+//export function main() {
 
     const exitCases: CommandTestCase[] = [
         {
@@ -24,7 +23,7 @@ export function main() {
             context: CommandTester.createCommandContext(undefined, true, false, false)
         },
     ];
-
+ 
 
     // xdescribe('[] (under development, known to fail)', () => {
     //     CommandTester.RunTestCases(excludedCases, );
@@ -33,5 +32,5 @@ export function main() {
     describe('exit', () => {
         CommandTester.RunTestCases(exitCases, exitCommand);
     });
-}
+//}
 

@@ -6,7 +6,8 @@ import {
 
 import { AboutModule } from './about.module';
 
-export function main() {
+//export function main() {
+
    describe('About component', () => {
     // Setting module for testing
     // Disable old forms
@@ -30,7 +31,7 @@ export function main() {
           });
         }));
     });
-}
+//}
 
 @Component({
   selector: 'app-test-cmp',

@@ -8,7 +8,7 @@ import {NotSupportedCommand} from '../../notsupported';
 import {showInterfacesCommand} from './show-interfaces';
 import {CommandTester, CommandTestCase, CommandTestCaseResult} from '../../command-tester';
 
-export function main() {
+//export function main() {
 
     const testCases: CommandTestCase[] = [];
 
@@ -40,4 +40,4 @@ export function main() {
     describe('show interfaces', () => {
         CommandTester.RunTestCases(testCases, showInterfacesCommand);
     });
-}
+//}

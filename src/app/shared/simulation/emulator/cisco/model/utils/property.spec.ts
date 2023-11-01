@@ -1,6 +1,6 @@
 import {property} from './property';
 
-export function main() {
+//export function main() {
 
     describe('property()', () => {
 
@@ -68,4 +68,4 @@ export function main() {
         });
     });
 
-}
+//}

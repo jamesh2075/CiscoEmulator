@@ -10,7 +10,7 @@ import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../../com
 import { CommandConstants } from '../../../common/cisco-constants';
 
 
-export function main() {
+//export function main() {
 
     const testCases: CommandTestCase[] = [
         {
@@ -56,4 +56,4 @@ export function main() {
     describe('vtp', () => {
         CommandTester.RunTestCases(testCases, vtpCommand);
     });
-}
+//}

@@ -255,7 +255,7 @@ class ParameterParserTest {
 }
 
 
-export function main() {
+//export function main() {
     describe('parameter-parser', () => {
 
         beforeEach(() => {
@@ -263,5 +263,5 @@ export function main() {
         ParameterParserTest.testSpanningTree();
 
     });
-}
+//}
 

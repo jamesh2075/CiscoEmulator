@@ -1,3 +1,5 @@
+import { IVlan } from "../../../../model/vlan.model";
+
 export class BuildInterfacesSwitchportOutput {
 
     // Do operations on basic configuration to get data matching with Virl
@@ -16,7 +18,7 @@ export class BuildInterfacesSwitchportOutput {
     }
 
     // build output for show interfaces status as per Virl
-    static buildSwitchportOutput(interfaces: any[], vlans?: any[]) {
+    static buildSwitchportOutput(interfaces: any[], vlans?: IVlan[]) {
         let result = '';
 
         interfaces.forEach(function (interfaceData: any) {
@@ -80,7 +82,7 @@ Switchport: ${interfaceData.switchportMode}\n`;
     }
 
     // Call this method and pass interface info to get switchport output
-    static buildSwitchportInterfacesOutput(interfaces: any[], vlan?: any[]) {
+    static buildSwitchportInterfacesOutput(interfaces: any[], vlan?: IVlan[]) {
         return BuildInterfacesSwitchportOutput.buildSwitchportOutput(interfaces, vlan);
     }
 

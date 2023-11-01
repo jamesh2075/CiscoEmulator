@@ -1,5 +1,5 @@
 ﻿import { CommandTestCase, CommandTester } from '../command-tester';
-import { ShutdownCommand } from './shutdown-command';
+import { shutdownCommand, noShutdownCommand } from './shutdown-command';
 import {
   CiscoAction,
   CiscoCommandAction,
@@ -15,7 +15,7 @@ import { SimulationFactory } from '../../../../simulation.factory';
 import { SimICND2 } from '../../../../exam/icnd2';
 import { ExamItemTester } from '../../../../exam/tester/examitem-tester';
 
-export function main() {
+//export function main() {
   const noShutdownTasks: IExamItemTasks = {
     'A': {
       devices: 'SW1',
@@ -104,8 +104,8 @@ export function main() {
     }
   ];
 
-  xdescribe('no shutdown', () => {
-    CommandTester.RunTestCases(testCases, ShutdownCommand.shutdownCommand);
+  xdescribe('shutdown', () => {
+    CommandTester.RunTestCases(testCases, shutdownCommand);
   });
   describe('system test: no shutdown', () => {
     it('correctly updates status according to connected peer state', () => {
@@ -129,7 +129,7 @@ export function main() {
       }
     });
   });
-  xdescribe('shutdown', () => {
-    CommandTester.RunTestCases(noTestCases, ShutdownCommand.noShutdown);
+  xdescribe('no shutdown', () => {
+    CommandTester.RunTestCases(noTestCases, noShutdownCommand);
   });
-}
+//}

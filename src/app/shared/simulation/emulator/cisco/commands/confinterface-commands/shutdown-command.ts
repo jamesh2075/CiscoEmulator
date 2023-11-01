@@ -6,11 +6,8 @@ import { CiscoUtils } from '../../common/cisco-utils';
 import { CommandConstants } from '../../common/cisco-constants';
 import { ICiscoInterface } from '../../icisco-device';
 
-export class ShutdownCommand {
-    static noShutdown: TerminalCommand;
-    static shutdownCommand: TerminalCommand;
-
-    static shutdown(cmdContext: CiscoCommandContext, cmdState: CommandState) {
+export class ShutdownCommands {
+    static ShutdownHandler(cmdContext: CiscoCommandContext, cmdState: CommandState) {
         if (cmdState.command.parameters[0]) {
             cmdState.output = CommandConstants.ERROR_MESSAGES.INVALID_INPUT;
             return;
@@ -24,23 +21,23 @@ export class ShutdownCommand {
         cmdState.stopProcessing = true;
     }
 
-    static NoShutdown(cmdContext: CiscoCommandContext, cmdState: CommandState): any {
+    static NoShutdownHandler(cmdContext: CiscoCommandContext, cmdState: CommandState): any {
         const interfaces = cmdContext.interfaces as any as ICiscoInterface[];
         if (cmdContext.actions !== undefined) {
             cmdState.addAction(cmdContext.actions.noShutdown({ interfaces: interfaces }));
         }
         cmdState.stopProcessing = true;
     }
-
-    noShutdown = {
-        name: 'shutdown',
-        description: '<cr>',
-        handler: ShutdownCommand.NoShutdown
-    };
-
-    shutdownCommand = {
-        name: 'shutdown',
-        description: 'Shutdown the selected interface',
-        handler: ShutdownCommand.shutdown
-    };
 }
+
+export let noShutdownCommand:TerminalCommand = {
+    name: 'shutdown',
+    description: '<cr>',
+    handler: ShutdownCommands.NoShutdownHandler
+};
+
+export let shutdownCommand:TerminalCommand = {
+    name: 'shutdown',
+    description: 'Shutdown the selected interface',
+    handler: ShutdownCommands.ShutdownHandler
+};

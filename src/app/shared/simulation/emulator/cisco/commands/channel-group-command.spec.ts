@@ -10,7 +10,7 @@ import { CommandConstants } from '../common/cisco-constants';
 import { CommandTester, CommandTestCase, CommandTestCaseResult } from './command-tester';
 import { noChannelGroupModeCommand, ChannelGroupCommand } from './channel-group-command';
 
-export function main() {
+//export function main() {
 
     const testCases: CommandTestCase[] = [{
         // minimum value correct
@@ -78,4 +78,4 @@ export function main() {
     xdescribe('[no channel-group] (under development)', () => {
         CommandTester.RunTestCases(notestCases, noChannelGroupModeCommand);
     });
-}
+//}

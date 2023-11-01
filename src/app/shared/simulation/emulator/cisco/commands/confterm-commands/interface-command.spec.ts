@@ -9,7 +9,7 @@ import { CommandConstants } from '../../common/cisco-constants';
 import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../command-tester';
 
 
-export function main() {
+//export function main() {
 
     const interfaceCases: CommandTestCase[] = [
         {
@@ -386,5 +386,5 @@ export function main() {
     describe('interface', () => {
         CommandTester.RunTestCases(testCases, interfaceCommand);
     });
-}
+//}
 

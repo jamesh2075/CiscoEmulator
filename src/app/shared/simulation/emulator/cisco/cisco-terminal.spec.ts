@@ -2,7 +2,7 @@ import {Simulation} from '../../simulation';
 import {SimulationFactory} from '../../simulation.factory';
 import {SimICND2} from '../../exam/icnd2';
 
-export function main() {
+//export function main() {
 
     xdescribe('autocomplete unit test', () => {
         beforeEach((done) => {
@@ -15,4 +15,4 @@ export function main() {
 
     });
 
-}
+//}

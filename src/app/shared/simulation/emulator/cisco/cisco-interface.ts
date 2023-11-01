@@ -50,15 +50,13 @@ export class CiscoInterface extends EmulatedInterfaceBase implements ICiscoInter
     if (this.model.status === 'admin down') {
       if (peerStatus === 'admin down') {
         newStatus = 'down';
-      }
-      if (peerStatus === 'down') {
+      } else if (peerStatus === 'down') {
+        newStatus = 'up';
+      } else {
         newStatus = 'up';
       }
-    } else if (this.model.status === 'admin down') {
-    } else if (this.model.status === 'down') {
-        if (peerStatus === 'down') {
-          newStatus = 'up';
-        }
+    } else {
+      newStatus = 'up';
     }
 
     this.changeStatus(newStatus);
@@ -70,8 +68,7 @@ export class CiscoInterface extends EmulatedInterfaceBase implements ICiscoInter
     }
     let peerStatus = this.connection.peer.status;
     let newStatus: string = "";
-    if (this.model.status === 'admin down') {
-    } else if (this.model.status === 'down') {
+    if (this.model.status === 'down') {
         if (peerStatus === 'admin down') {
           newStatus = 'admin down';
         }

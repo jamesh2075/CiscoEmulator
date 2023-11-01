@@ -1,7 +1,7 @@
 import { CommandTester, CommandTestCase } from '../commands/command-tester';
 import { CiscoFormatters } from './cisco-formatters';
 
-export function main() {
+//export function main() {
     describe('normalizeNumberSet()', () => {
         describe('normalizeNumberSet([1,2,3,10,11,15])', () => {
             const target = '1-3,10-11,15';
@@ -53,5 +53,5 @@ export function main() {
             });
         });
     });
-}
+//}
 

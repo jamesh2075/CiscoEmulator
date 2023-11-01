@@ -1,5 +1,5 @@
 import {diff} from './diff';
-export function main() {
+//export function main() {
 
     describe('diff()', () => {
         describe('diff({a: 1}, {a: 1})', () => {
@@ -125,4 +125,4 @@ export function main() {
             });
         });
     });
-}
+//}

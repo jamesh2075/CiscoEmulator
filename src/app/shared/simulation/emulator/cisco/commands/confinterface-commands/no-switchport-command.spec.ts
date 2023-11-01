@@ -2,7 +2,7 @@ import { CommandTestCase, CommandTester } from '../command-tester';
 import { noSwitchportCommand } from './no-switchport-command';
 import { switchportDefaultDataModel } from './switchport-command';
 
-export function main() {
+//export function main() {
     const testCases: CommandTestCase[] = [
         {
             commands: 'no sw acc vlan',
@@ -20,4 +20,4 @@ export function main() {
     xdescribe('no switchport', () => {
         CommandTester.RunTestCases(testCases, noSwitchportCommand);
     });
-}
+//}

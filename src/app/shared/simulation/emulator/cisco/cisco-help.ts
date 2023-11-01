@@ -238,6 +238,7 @@ export class CiscoHelp {
         } else {
             output = '  <cr>';
         }
+        console.log("HELLO " + output);
         return {
             resultCode: CommandResultCode.Success,
             output: output,

@@ -8,7 +8,7 @@ import { ExamItemPaths, PathCommand, CalculatePathOptions, IPathPart } from './e
 import { icnd2SimSpec } from '../icnd2-simspec';
 import { icnd2ScoreKey } from '../icnd2-scorekey';
 
-export function main() {
+//export function main() {
 
   xdescribe('ExamItemPaths', () => {
     const paths = new ExamItemPaths(icnd2SimSpec, { includeCommandLineForms: true });
@@ -56,4 +56,4 @@ export function main() {
     });
   });
 
-}
+//}

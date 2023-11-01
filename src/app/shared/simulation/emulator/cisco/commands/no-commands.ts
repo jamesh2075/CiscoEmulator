@@ -3,7 +3,7 @@ import { TerminalCommand } from '../../interfaces/terminal-command';
 import { CiscoCommandContext } from '../cisco-terminal-command';
 import { CommandState } from '../../interfaces/command-state';
 import { VlanCommands } from './confterm-commands/vlan-commands';
-import { ShutdownCommand } from './confinterface-commands/shutdown-command';
+import { noShutdownCommand } from './confinterface-commands/shutdown-command';
 import { noSpanningTreeCommand } from './confterm-commands/spanning-tree-commands/no-spanning-tree-command';
 import { noVtpCommand } from './confterm-commands/vtp-commands/vtp-command';
 
@@ -228,7 +228,7 @@ export class NoCommands {
         name: 'no',
         description: 'Negate a command or set its defaults',
         children: [
-            ShutdownCommand.noShutdown
+            noShutdownCommand
         ]
     };
 }

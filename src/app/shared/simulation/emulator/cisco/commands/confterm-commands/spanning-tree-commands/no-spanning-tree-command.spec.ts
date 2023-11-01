@@ -10,7 +10,7 @@ import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../../com
 import { noSpanningTreeCommand } from './no-spanning-tree-command';
 
 
-export function main() {
+//export function main() {
 
     const testCases: CommandTestCase[] = [
         {
@@ -40,4 +40,4 @@ export function main() {
     describe('no spanning-tree', () => {
         CommandTester.RunTestCases(testCases, noSpanningTreeCommand);
     });
-}
+//}

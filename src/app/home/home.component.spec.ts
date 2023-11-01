@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { HomeComponent } from './home.component';
 import { NameListService } from '../shared/name-list/name-list.service';
 
-export function main() {
+//export function main() {
   describe('Home component', () => {
 
     beforeEach(() => {
@@ -55,7 +55,7 @@ export function main() {
 
       }));
   });
-}
+//}
 
 class MockNameListService {
 

@@ -1,7 +1,7 @@
 import {CommandTester, CommandTestCase, CommandTestCaseResult} from '../command-tester';
 import {channelProtocol} from './channel-protocol-command';
 
-export function main() {
+//export function main() {
 
     const testCases: CommandTestCase[] = [
         {
@@ -41,4 +41,4 @@ export function main() {
         CommandTester.RunTestCases(noCases, channelProtocol);
     });
 
-}
+//}

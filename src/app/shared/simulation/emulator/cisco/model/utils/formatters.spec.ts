@@ -1,5 +1,5 @@
 import {toJSONObject} from './formatters';
-export function main() {
+//export function main() {
 
     describe('formatters()', () => {
 
@@ -60,4 +60,4 @@ export function main() {
         });
     });
 
-}
+//}

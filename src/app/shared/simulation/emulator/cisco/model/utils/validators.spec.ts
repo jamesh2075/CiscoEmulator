@@ -1,6 +1,6 @@
 import {isArray, isDate, isEmpty, isEqual, isObject, isString, isUndefined} from './validators';
 
-export function main() {
+//export function main() {
 
     describe('val is declared but not defined', () => {
         const val: any = undefined;
@@ -56,7 +56,7 @@ export function main() {
         describe('val is set to 0', () => {
             const val: any = 0;
             it('isEmpty() should be false', () => {
-                expect(isEmpty(val)).toBeTruthy();
+                expect(isEmpty(val)).toBeFalsy();
             });
         });
 
@@ -231,4 +231,4 @@ export function main() {
 
     });
 
-}
+//}

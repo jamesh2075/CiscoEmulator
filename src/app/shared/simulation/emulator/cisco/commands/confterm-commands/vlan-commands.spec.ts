@@ -8,7 +8,7 @@ import { NoCommands } from '../no-commands';
 //     output?: string | string[];
 // }
 
-export function main() {
+//export function main() {
 
     const testCases: CommandTestCase[] = [];
     const noTestCases: CommandTestCase[] = [{
@@ -47,4 +47,4 @@ export function main() {
     describe('no vlan', () => {
         CommandTester.RunTestCases(noTestCases, NoCommands.NoConfTermCommand);
     });
-}
+//}

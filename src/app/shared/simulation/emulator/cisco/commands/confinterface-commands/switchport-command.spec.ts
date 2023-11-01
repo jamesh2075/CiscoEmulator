@@ -2,7 +2,7 @@ import { CommandConstants } from '../../common/cisco-constants';
 import { switchportCommand } from './switchport-command';
 import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../command-tester';
 
-export function main() {
+//export function main() {
 
 
     // switchport base commands
@@ -624,4 +624,4 @@ export function main() {
         CommandTester.RunTestCases(testCases, switchportCommand);
     });
 
-}
+//}

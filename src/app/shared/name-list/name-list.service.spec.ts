@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { NameListService } from './name-list.service';
 
-export function main() {
+//export function main() {
   describe('NameList Service', () => {
     let nameListService: NameListService;
     let mockBackend: MockBackend;
@@ -44,4 +44,4 @@ export function main() {
       });
     }));
   });
-}
+//}

@@ -1,5 +1,5 @@
 import {Vlan} from './vlan.model';
-export function main() {
+//export function main() {
 
     describe('new Vlan()', () => {
         const vlan = new Vlan();
@@ -34,4 +34,4 @@ export function main() {
                 }});
         });
     });
-}
+//}

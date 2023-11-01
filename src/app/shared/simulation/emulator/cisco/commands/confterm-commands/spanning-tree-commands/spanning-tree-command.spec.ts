@@ -10,7 +10,7 @@ import { SpanningTreeCommandMessages } from './spanning-tree-command';
 import { CommandTester, CommandTestCase, CommandTestCaseResult } from '../../command-tester';
 
 
-export function main() {
+//export function main() {
 
     const testCases: CommandTestCase[] = [
         {
@@ -151,4 +151,4 @@ export function main() {
     describe('spanning-tree', () => {
         CommandTester.RunTestCases(testCases, spanningTreeCommand);
     });
-}
+//}

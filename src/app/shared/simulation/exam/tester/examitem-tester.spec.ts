@@ -106,7 +106,7 @@ const sampleExamItemSpec: IExamItemTasks = {
   ]
 };
 
-export function main() {
+//export function main() {
 
   // xdescribe('ExamItemTester', () => {
   //   let paths = new ExamItemPaths(sampleSpec, { includeCommandLineForms: true });
@@ -180,5 +180,5 @@ export function main() {
 
   });
 
-}
+//}
 

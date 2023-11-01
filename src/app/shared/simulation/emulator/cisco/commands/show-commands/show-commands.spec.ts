@@ -8,7 +8,7 @@ import {NotSupportedCommand} from '../notsupported';
 import {showCommand} from './show-command';
 import {CommandTester, CommandTestCase, CommandTestCaseResult} from '../command-tester';
 
-export function main() {
+//export function main() {
 
     const testCases: CommandTestCase[] = [];
 
@@ -57,4 +57,4 @@ export function main() {
     describe('show', () => {
         CommandTester.RunTestCases(testCases, showCommand);
     });
-}
+//}

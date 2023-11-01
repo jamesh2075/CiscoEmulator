@@ -20,7 +20,7 @@ import {
 import { ExamItemScoreKey } from '../../exam/score/scorekey';
 import { IExamItemTasks } from '../../exam/tester/examitem-spec';
 
-export function main() {
+//export function main() {
   // xdescribe('CiscoCommandActions', () => {
   //   xit('system test: "no shutdown" updates status', () => {
   //     let sim = SimulationFactory.load(SimICND2);
@@ -55,7 +55,7 @@ export function main() {
   //   });
 
   // });
-}
+//}
 
 
   // Basic test case where bundling doesn't happen

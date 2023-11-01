@@ -2,7 +2,7 @@ import {Observable} from 'rxjs/Observable';
 import {SimulationFactory} from '../simulation.factory';
 import {sim8} from './sim8';
 
-export function main() {
+//export function main() {
 
     const preludeCommands = [
         'enable',
@@ -163,4 +163,4 @@ export function main() {
         });
 
     });
-}
+//}

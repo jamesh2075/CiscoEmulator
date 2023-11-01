@@ -5,7 +5,7 @@ import { ipCommand } from './ip-command';
 import { showCommand } from './show-commands/show-command';
 import { channelGroupCommand, noChannelGroupModeCommand } from './channel-group-command';
 import { switchportCommand } from './confinterface-commands/switchport-command';
-import { ShutdownCommand } from './confinterface-commands/shutdown-command';
+import { shutdownCommand, noShutdownCommand } from './confinterface-commands/shutdown-command';
 import { channelProtocol, noChannelProtocol } from './confinterface-commands/channel-protocol-command';
 import { doCommand } from './confterm-commands/do-command';
 import { interfaceCommand } from './confterm-commands/interface-command';
@@ -133,7 +133,7 @@ const negatableCommands: TerminalCommand[] = [
     tunnel,
     keepalive,
     noChannelProtocol,
-    ShutdownCommand.noShutdown,
+    noShutdownCommand,
     noSwitchportCommand,
     noSpanningTreeCommand,
     NointerfaceCommand
@@ -167,7 +167,7 @@ export let configureInterfaceCommands: TerminalCommand[] = [
     tunnel,
     switchportCommand,
     keepalive,
-    ShutdownCommand.shutdownCommand,
+    shutdownCommand,
     noCommand,
     exitCommand,
     vtpCommand,

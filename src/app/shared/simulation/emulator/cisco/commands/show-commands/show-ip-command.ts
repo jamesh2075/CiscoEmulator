@@ -71,7 +71,7 @@ export class ShowIpCommand {
                     const interfaces = cmdContext.device.model.interfaces;
                     interfaces.forEach(function (iface: any) {
                         if (iface.name === 'GigabitEthernet0\/0') {
-                            result += `${iface.name} is ${iface.status}, line protocl is ${iface.status}
+                            result += `${iface.name} is ${iface.status}, line protocol is ${iface.status}
   Internet address is ${iface.ipv4}/${iface.subnet}
   Broadcast address is ${iface.ipv4Mask}
   Address determined by non-volatile memory
@@ -114,13 +114,13 @@ export class ShowIpCommand {
                                     // result += 'Address determined by non-volatile memory';
                                     // result += 'MTU is 1500 bytes';
                         } else if (iface.name === 'Loopback0') {
-                            result += `${iface.name} is ${iface.status}, line protocl is ${iface.status}
+                            result += `${iface.name} is ${iface.status}, line protocol is ${iface.status}
   Internet protocol processing disabled \n`;
                         } else if (iface.status === 'admin down') {
-                            result += `${iface.name} is administratively down, line protocl is down
+                            result += `${iface.name} is administratively down, line protocol is down
   Inbound access list is not set \n`;
                         } else {
-                            result += `${iface.name} is ${iface.status}, line protocl is ${iface.status}
+                            result += `${iface.name} is ${iface.status}, line protocol is ${iface.status}
   Inbound access list is not set \n`;
                         }
                     });
@@ -210,7 +210,7 @@ export class ShowIpCommand {
                 //             debugger;
                 //             if (iface.name === 'GigabitEthernet0\/0') {
                 //                 let adminStatus = (iface.status === 'admin down') ? 'administratively down' : iface.status;
-                //                 result = `${iface.name} is ${adminStatus}, line protocl is ${iface.status}\n`;
+                //                 result = `${iface.name} is ${adminStatus}, line protocol is ${iface.status}\n`;
                 //                 result += `  Inbound access list is not set \n`;
                 //             }
                 //         });
