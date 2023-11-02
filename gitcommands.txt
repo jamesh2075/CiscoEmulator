@@ -1,0 +1,13 @@
+git remote add azure https://bluevisionsoftware@dev.azure.com/bluevisionsoftware/CiscoEmulator/_git/CiscoEmulator
+
+git remote add github https://github.com/jamesh2075/CiscoEmulator.git
+
+git branch [feature_branch] master
+git checkout [feature_branch]
+
+git add --all
+
+git commit
+
+git push -u azure master
+git push -u github main
